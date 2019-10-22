@@ -1,0 +1,7 @@
+@charset "utf-8";
+
+@media(max-width:1000px){
+    section#botoes h1{
+        font-size:35px;
+    }
+}
