@@ -16,7 +16,6 @@ var BootScene = new Phaser.Class({
         // load resources
         this.load.image('fundo', 'Imagens/fundo_fase_teste.jpg');
         this.load.spritesheet("player", "assets/RPG_assets.png", { frameWidth: 16, frameHeight: 16 });
-        this.load.image("dragonblue", "assets/dragonblue.png");
         this.load.image("ligma", "Imagens/ligma.png");
         this.load.image('marielle','Imagens/Archer.png');
         this.load.image('crassus','Imagens/crassus.png');
@@ -42,31 +41,31 @@ var BattleScene = new Phaser.Class({
     },
     create: function ()
     {
-        this.add.image(400,200,'fundo');
+        this.add.image(400,160,'fundo');
         // Run UI Scene at the same time
         this.scene.launch("UIScene");
                 
         // player character - Crassus
-        var mage = new PlayerCharacter(this, 450, 100, "crassus", 4, "Crassus", 70, 10, 0.7);
+        var mage = new PlayerCharacter(this, 450, 100, "crassus", 4, "Crassus", 70, 10, 0.7, 13);
         this.add.existing(mage);
 
         // player character - Marielle
-        var archer = new PlayerCharacter(this, 450, 150, "marielle", 1, "Marielle", 65, 45, 1);        
+        var archer = new PlayerCharacter(this, 450, 150, "marielle", 1, "Marielle", 65, 45, 1, 12);        
         this.add.existing(archer);
 
         // player character - Yuusha
-        var yuusha = new PlayerCharacter(this, 390, 100, "yuusha", 2, "Yuusha", 80, 50, 1);
+        var yuusha = new PlayerCharacter(this, 390, 100, "yuusha", 2, "Yuusha", 80, 50, 1, 15);
         this.add.existing(yuusha);
 
         // player character - Hime
-        var healer = new PlayerCharacter(this, 390, 150, "hime", 3, "Hime", 55, 5, 1);        
+        var healer = new PlayerCharacter(this, 390, 150, "hime", 3, "Hime", 55, 5, 1, 10);        
         this.add.existing(healer);
 
         //var dragonblue = new Enemy(this, 50, 50, "dragonblue", null, "Dragon", 50, 3);
         //this.add.existing(dragonblue);
 
-        var ligma1 = new Enemy(this, 50, 100, "ligma", null,"Ligma", 10, 3);
-        var ligma2 = new Enemy(this, 50, 150, "ligma", null,"Ligma", 10, 3);
+        var ligma1 = new Enemy(this, 50, 100, "ligma", null,"Ligma", 10, 3, 9);
+        var ligma2 = new Enemy(this, 50, 150, "ligma", null,"Ligma", 10, 3, 9);
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -188,15 +187,18 @@ var BattleScene = new Phaser.Class({
 
 // base class for heroes and enemies
 var Unit = new Phaser.Class({
+    Extends: Phaser.Scene,
+    Extends: Phaser.GameObjects.Text,
     Extends: Phaser.GameObjects.Sprite,
-    
+
     initialize:
 
-    function Unit(scene, x, y, texture, frame, type, hp, damage) {
+    function Unit(scene, x, y, texture, frame, type, hp, damage, ca) {
         Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame)
         this.type = type;
         this.maxHp = this.hp = hp;
         this.damage = damage; // default damage
+        this.ca = ca;
         this.living = true;         
         this.menuItem = null;                
     },
@@ -205,9 +207,21 @@ var Unit = new Phaser.Class({
         this.menuItem = item;
     },
     attack: function(target) {
-        if(target.living){
+        var r;
+        r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
+
+        if(target.living && (r >= target.ca && r <= 20)){
             target.takeDamage(this.damage);
-            this.scene.events.emit("Message", this.type + " atacou " + target.type + " e deu " + this.damage + " de dano.");
+            if(target instanceof Enemy){
+                this.scene.events.emit("Message", "Acertou!\n" + " Dano do ataque: " +  this.damage + ".\n" + "Resultado do dado: " + r);
+            }   
+            else{
+                this.scene.events.emit("Message", "Acertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+            }
+            
+        }
+        else{
+            this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
         }
     },
     takeDamage: function(damage) {
@@ -226,8 +240,8 @@ var Enemy = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function Enemy(scene, x, y, texture, frame, type, hp, damage) {
-        Unit.call(this, scene, x, y, texture, frame, type, hp, damage);
+    function Enemy(scene, x, y, texture, frame, type, hp, damage, ca) {
+        Unit.call(this, scene, x, y, texture, frame, type, hp, damage, ca);
 
         this.setScale(0.5);
     }
@@ -237,8 +251,8 @@ var PlayerCharacter = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function PlayerCharacter(scene, x, y, texture, frame, type, hp, damage, escala) {
-        Unit.call(this, scene, x, y, texture, frame, type, hp, damage, escala);
+    function PlayerCharacter(scene, x, y, texture, frame, type, hp, damage, escala, ca) {
+        Unit.call(this, scene, x, y, texture, frame, type, hp, damage, ca);
         // flip the image so I don"t have to edit it manually
         this.flipX = true;
         this.setScale(escala);
@@ -564,9 +578,9 @@ var Message = new Phaser.Class({
         this.add(graphics);
         graphics.lineStyle(1, 0xffffff, 0.8);
         graphics.fillStyle(0x031f4c, 0.3);        
-        graphics.strokeRect(-90, -15, 180, 40);
-        graphics.fillRect(-90, -15, 180, 40);
-        this.text = new Phaser.GameObjects.Text(scene, 4, 4, "", { color: "#ffffff", align: "center", fontSize: 13, wordWrap: { width: 160, useAdvancedWrap: true }});
+        graphics.strokeRect(8, 220, 180, 70);
+        graphics.fillRect(8, 220, 180, 70);
+        this.text = new Phaser.GameObjects.Text(scene, 100, 255, "", { color: "#ffffff", align: "center", fontSize: 13, wordWrap: { width: 160, useAdvancedWrap: true }});
         this.add(this.text);
         this.text.setOrigin(0.5);        
         events.on("Message", this.showMessage, this);
@@ -577,7 +591,7 @@ var Message = new Phaser.Class({
         this.visible = true;
         if(this.hideEvent)
             this.hideEvent.remove(false);
-        this.hideEvent = this.scene.time.addEvent({ delay: 2000, callback: this.hideMessage, callbackScope: this });
+        this.hideEvent = this.scene.time.addEvent({ delay: 5000, callback: this.hideMessage, callbackScope: this });
     },
     hideMessage: function() {
         this.hideEvent = null;
