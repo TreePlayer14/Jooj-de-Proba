@@ -1,4 +1,4 @@
-var txt = [], sele, teste = [];
+var txt = [], sele, teste = [], obj;
 
 var BootScene = new Phaser.Class({
 
@@ -22,7 +22,7 @@ var BootScene = new Phaser.Class({
         this.load.image('yuusha','Imagens/Yuusha.png');
         this.load.image('hime','Imagens/Hime.png');
         this.load.image('mapa','Imagens/mapa.png');
-        this.load.image('seta','Imagens/')
+        this.load.image('seta','Imagens/seta.png');
     },
 
     create: function ()
@@ -62,9 +62,6 @@ var BattleScene = new Phaser.Class({
         // player character - Hime
         var healer = new PlayerCharacter(this, 390, 150, "hime", 3, "Hime", 55, 5, 1, 10);        
         this.add.existing(healer);
-
-        //var dragonblue = new Enemy(this, 50, 50, "dragonblue", null, "Dragon", 50, 3);
-        //this.add.existing(dragonblue);
 
         var ligma1 = new Enemy(this, 50, 100, "ligma", null,"Ligma", 10, 3, 9);
         var ligma2 = new Enemy(this, 50, 150, "ligma", null,"Ligma", 10, 3, 9);
@@ -188,7 +185,7 @@ var Mapa = new Phaser.Class({
         this.add.image(260,220,'mapa');
         
         this.scene.launch("UIScene2");
-
+        
         this.index = -1;    
     },
     receiveFaseSelection: function(action, cm) {
@@ -202,6 +199,19 @@ var Mapa = new Phaser.Class({
     
 });
 
+var Objetos = new Phaser.Class({
+    Extends: Phaser.GameObjects.Sprite,
+
+    initialize:
+
+    function Objetos(scene, x, y, texture, frame, escala){
+        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame);
+        this.setScale(escala);
+    }
+
+
+});
+
 // base class for heroes and enemies
 var Unit = new Phaser.Class({
     Extends: Phaser.Scene,
@@ -211,7 +221,7 @@ var Unit = new Phaser.Class({
     initialize:
 
     function Unit(scene, x, y, texture, frame, type, hp, damage, ca) {
-        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame)
+        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame);
         this.type = type;
         this.maxHp = this.hp = hp;
         this.damage = damage; // default damage
@@ -302,6 +312,7 @@ var MenuItem = new Phaser.Class({
 });
 
 var Menu = new Phaser.Class({
+    
     Extends: Phaser.GameObjects.Container,
     
     initialize:
@@ -326,11 +337,6 @@ var Menu = new Phaser.Class({
         this.menuItems.push(menuItem);
         this.add(menuItem);
         return menuItem;        
-    },
-    getMenuItem: function(index){
-        for(var i=0 ; i < index ; i++){
-            
-        }
     },
     // menu navigation 
     moveSelectionUp: function() {
@@ -387,6 +393,8 @@ var Menu = new Phaser.Class({
         }        
         this.menuItems[this.menuItemIndex].select();
         this.selected = true;
+        
+
     },
     // deselect this menu
     deselect: function() {        
@@ -639,6 +647,8 @@ var UIScene2 = new Phaser.Class({
         this.graphics.strokeRect(143, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
         this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
 
+        obj = new Objetos(this, 412, 215, "seta", 1, 0.4);
+
         // basic container to hold all menus
         this.menus = this.add.container();
                 
@@ -663,6 +673,7 @@ var UIScene2 = new Phaser.Class({
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedFase: function() {
+        
         var cm = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
@@ -670,6 +681,7 @@ var UIScene2 = new Phaser.Class({
         
     },
     onKeyInput: function(event) {
+        this.add.existing(obj);
         if(this.currentMenu && this.currentMenu.selected) {
             if(event.code === "ArrowLeft") {
                 this.currentMenu.moveSelectionLeft();
