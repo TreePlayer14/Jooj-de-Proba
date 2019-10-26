@@ -1,4 +1,4 @@
-var txt = [];
+var txt = [], sele;
 
 var BootScene = new Phaser.Class({
 
@@ -21,11 +21,12 @@ var BootScene = new Phaser.Class({
         this.load.image('crassus','Imagens/crassus.png');
         this.load.image('yuusha','Imagens/Yuusha.png');
         this.load.image('hime','Imagens/Hime.png');
+        this.load.image('mapa','Imagens/mapa.png')
     },
 
     create: function ()
     {
-        this.scene.start("BattleScene");
+        this.scene.start("Mapa");
     }
 });
 
@@ -107,26 +108,6 @@ var BattleScene = new Phaser.Class({
             // add timer for the next turn, so will have smooth gameplay
             this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
         }
-        
-        // this.index++;
-        // // if there are no more units, we start again from the first one
-        // if(this.index >= this.units.length) {
-        //     this.index = 0;
-        // }
-        // if(this.units[this.index]) {
-        //     // if its player hero
-        //     if(this.units[this.index] instanceof PlayerCharacter) {                
-        //         this.events.emit("PlayerSelect", this.index);
-        //     } else { // else if its enemy unit
-        //         // pick random hero
-        //         var r = Math.floor(Math.random() * this.heroes.length);
-        //         // call the enemy"s attack function 
-        //         this.units[this.index].attack(this.heroes[r]);  
-        //         // add timer for the next turn, so will have smooth gameplay
-        //         this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
-
-        //     }
-        // }
     },
     // check for game over or victory
     checkEndBattle: function() {        
@@ -183,6 +164,41 @@ var BattleScene = new Phaser.Class({
         // return to WorldScene and sleep current BattleScene
         //this.scene.switch('WorldScene');
     },
+});
+
+var Mapa = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Mapa ()
+    {
+        Phaser.Scene.call(this, { key: 'Mapa' });
+    },
+
+    preload: function ()
+    {
+        
+    },
+
+    create: function ()
+    {
+        this.add.image(260,220,'mapa');
+        
+        this.scene.launch("UIScene2");
+
+        this.index = -1;    
+    },
+    receiveFaseSelection: function(action, cm) {
+        if(action == "enter" && cm == "Fase 1") {            
+            this.scene.sleep('UIScene2');
+            this.scene.sleep('Mapa');
+            // start battle
+            this.scene.switch('BattleScene');             
+        }
+    },
+    
 });
 
 // base class for heroes and enemies
@@ -297,7 +313,13 @@ var Menu = new Phaser.Class({
         this.x = x;
         this.y = y;
         this.selected = false;
-    },     
+    },
+    addMenuItem2: function(unit) {
+        var menuItem = new MenuItem( this.menuItems.length * 70, 0, unit, this.scene);
+        this.menuItems.push(menuItem);
+        this.add(menuItem);
+        return menuItem;        
+    },
     addMenuItem: function(unit) {
         var menuItem = new MenuItem(0, this.menuItems.length * 20, unit, this.scene);
         this.menuItems.push(menuItem);
@@ -313,6 +335,7 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = this.menuItems.length - 1;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
+        sele = this.menuItemIndex;
     },
     moveSelectionDown: function() {
         this.menuItems[this.menuItemIndex].deselect();
@@ -322,22 +345,28 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = 0;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
+        sele = this.menuItemIndex;
+    },
+    moveSelectionRight: function() {
+        this.menuItems[this.menuItemIndex].deselect();
+        do {
+            this.menuItemIndex--;
+            if(this.menuItemIndex < 0)
+                this.menuItemIndex = this.menuItems.length - 1;
+        } while(!this.menuItems[this.menuItemIndex].active);
+        this.menuItems[this.menuItemIndex].select();
+        sele = this.menuItemIndex;
+    },
+    moveSelectionLeft: function() {
+        this.menuItems[this.menuItemIndex].deselect();
+        do {
+            this.menuItemIndex++;
+            if(this.menuItemIndex >= this.menuItems.length)
+                this.menuItemIndex = 0;
+        } while(!this.menuItems[this.menuItemIndex].active);
+        this.menuItems[this.menuItemIndex].select();
+        sele = this.menuItemIndex;
     },            
-    // moveSelectionUp: function() {
-    //     this.menuItems[this.menuItemIndex].deselect();
-    //     this.menuItemIndex--;
-    //     if(this.menuItemIndex < 0)
-    //         this.menuItemIndex = this.menuItems.length - 1;
-    //     this.menuItems[this.menuItemIndex].select();
-    // },
-    // moveSelectionDown: function() {
-    //     this.menuItems[this.menuItemIndex].deselect();
-    //     this.menuItemIndex++;
-    //     if(this.menuItemIndex >= this.menuItems.length)
-    //         this.menuItemIndex = 0;
-    //     this.menuItems[this.menuItemIndex].select();
-    // },
-    // select the menu as a whole and an element with index from it
     select: function(index) {
         if(!index)
             index = 0;       
@@ -352,11 +381,6 @@ var Menu = new Phaser.Class({
         }        
         this.menuItems[this.menuItemIndex].select();
         this.selected = true;
-        // if(!index)
-        //     index = 0;
-        // this.menuItems[this.menuItemIndex].deselect();
-        // this.menuItemIndex = index;
-        // this.menuItems[this.menuItemIndex].select();
     },
     // deselect this menu
     deselect: function() {        
@@ -381,12 +405,6 @@ var Menu = new Phaser.Class({
             unit.setMenuItem(this.addMenuItem(unit.type));            
         }
         this.menuItemIndex = 0;
-        // this.clear();        
-        // for(var i = 0; i < units.length; i++) {
-        //     var unit = units[i];
-        //     this.addMenuItem(unit.type);
-        // }
-        // this.menuItemIndex = 0;
     },
 });
 
@@ -429,6 +447,23 @@ var EnemiesMenu = new Phaser.Class({
         // the player has selected the enemy and we send its id with the event    
         this.scene.events.emit("Enemy", this.menuItemIndex);
     }
+});
+
+var FasesMenu = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function FasesMenu(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem2("Fase 1");
+        this.addMenuItem2("Fase 2");
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedFase");        
+    }
+    
 });
 
 // User Interface scene
@@ -539,10 +574,6 @@ var UIScene = new Phaser.Class({
         this.currentMenu = this.enemiesMenu;
         this.enemiesMenu.select(0);
     },
-    // onSelectEnemies: function() {
-    //     this.currentMenu = this.enemiesMenu;
-    //     this.enemiesMenu.select(0);
-    // },
     remapHeroes: function() {
         var heroes = this.battleScene.heroes;
         this.heroesMenu.remap(heroes);
@@ -560,6 +591,69 @@ var UIScene = new Phaser.Class({
             } else if(event.code === "ArrowRight" || event.code === "Shift") {
 
             } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+});
+
+// User Interface scene
+var UIScene2 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene2 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene2" });
+    },
+
+    create: function ()
+    {    
+
+        this.mapa = this.scene.get("Mapa");
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.fasesMenu = new FasesMenu(10,360,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.fasesMenu;
+        
+        this.fasesMenu.select(0);
+        sele = 0;
+
+        // add menus to the container
+        this.menus.add(this.fasesMenu);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedFase", this.onSelectedFase, this);
+           
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedFase: function() {
+        var cm = this.fasesMenu[sele].menuItem;
+        this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.mapa.receiveFaseSelection("enter",cm);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                this.currentMenu.moveSelectionLeft();
+            } else if(event.code === "ArrowRight") {
+                this.currentMenu.moveSelectionRight();
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
                 this.currentMenu.confirm();
             } 
         }
@@ -591,29 +685,10 @@ var Message = new Phaser.Class({
         this.visible = true;
         if(this.hideEvent)
             this.hideEvent.remove(false);
-        this.hideEvent = this.scene.time.addEvent({ delay: 5000, callback: this.hideMessage, callbackScope: this });
+        this.hideEvent = this.scene.time.addEvent({ delay: 4000, callback: this.hideMessage, callbackScope: this });
     },
     hideMessage: function() {
         this.hideEvent = null;
         this.visible = false;
     }
 });
-
-// the message class extends containter 
-var config = {
-    type: Phaser.AUTO,
-    parent: "content",
-    width: 520,
-    height: 440,
-    zoom: 2,
-    pixelArt: true,
-    physics: {
-        default: "arcade",
-        arcade: {
-            gravity: { y: 0 }
-        }
-    },
-    scene: [ BootScene, BattleScene, UIScene ]
-};
-
-var game = new Phaser.Game(config);
