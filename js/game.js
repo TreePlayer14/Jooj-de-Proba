@@ -1,4 +1,4 @@
-var txt = [], sele;
+var txt = [], sele, teste = [];
 
 var BootScene = new Phaser.Class({
 
@@ -21,7 +21,8 @@ var BootScene = new Phaser.Class({
         this.load.image('crassus','Imagens/crassus.png');
         this.load.image('yuusha','Imagens/Yuusha.png');
         this.load.image('hime','Imagens/Hime.png');
-        this.load.image('mapa','Imagens/mapa.png')
+        this.load.image('mapa','Imagens/mapa.png');
+        this.load.image('seta','Imagens/')
     },
 
     create: function ()
@@ -326,6 +327,11 @@ var Menu = new Phaser.Class({
         this.add(menuItem);
         return menuItem;        
     },
+    getMenuItem: function(index){
+        for(var i=0 ; i < index ; i++){
+            
+        }
+    },
     // menu navigation 
     moveSelectionUp: function() {
         this.menuItems[this.menuItemIndex].deselect();
@@ -347,7 +353,7 @@ var Menu = new Phaser.Class({
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
     },
-    moveSelectionRight: function() {
+    moveSelectionLeft: function() {
         this.menuItems[this.menuItemIndex].deselect();
         do {
             this.menuItemIndex--;
@@ -357,7 +363,7 @@ var Menu = new Phaser.Class({
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
     },
-    moveSelectionLeft: function() {
+    moveSelectionRight: function() {
         this.menuItems[this.menuItemIndex].deselect();
         do {
             this.menuItemIndex++;
@@ -457,7 +463,11 @@ var FasesMenu = new Phaser.Class({
     function FasesMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
         this.addMenuItem2("Fase 1");
+        teste[0] = "Fase 1";
         this.addMenuItem2("Fase 2");
+        teste[1] = "Fase 2";
+        this.addMenuItem2("Fase 3");
+        teste[2] = "Fase 3";
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -616,10 +626,23 @@ var UIScene2 = new Phaser.Class({
 
         this.mapa = this.scene.get("Mapa");
         
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(2, 339, 63, 50); //(2,150,90,100)
+        this.graphics.fillRect(2, 339, 63, 50); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(73, 339, 63, 50); //(95,150,90,100)
+        this.graphics.fillRect(73, 339, 63, 50); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(143, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
+
         // basic container to hold all menus
         this.menus = this.add.container();
                 
-        this.fasesMenu = new FasesMenu(10,360,this); //(eixo x, eixo y)
+        this.fasesMenu = new FasesMenu(7,360,this); //(eixo x, eixo y)
 
         // the currently selected menu 
         this.currentMenu = this.fasesMenu;
@@ -640,10 +663,11 @@ var UIScene2 = new Phaser.Class({
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedFase: function() {
-        var cm = this.fasesMenu[sele].menuItem;
+        var cm = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
         this.mapa.receiveFaseSelection("enter",cm);
+        
     },
     onKeyInput: function(event) {
         if(this.currentMenu && this.currentMenu.selected) {
