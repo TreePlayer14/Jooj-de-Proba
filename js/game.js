@@ -1,4 +1,4 @@
-var txt = [], sele, teste = [], obj;
+var txt = [], sele, teste = [], obj, cont = 0;
 
 var BootScene = new Phaser.Class({
 
@@ -648,6 +648,7 @@ var UIScene2 = new Phaser.Class({
         this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
 
         obj = new Objetos(this, 412, 215, "seta", 1, 0.4);
+        this.add.existing(obj);
 
         // basic container to hold all menus
         this.menus = this.add.container();
@@ -681,18 +682,47 @@ var UIScene2 = new Phaser.Class({
         
     },
     onKeyInput: function(event) {
-        this.add.existing(obj);
+        obj.destroy();
+
         if(this.currentMenu && this.currentMenu.selected) {
             if(event.code === "ArrowLeft") {
                 this.currentMenu.moveSelectionLeft();
+                if(cont - 1 >= 0){
+                    cont--;
+                }
+                else{
+                    cont = 2;
+                }
             } else if(event.code === "ArrowRight") {
                 this.currentMenu.moveSelectionRight();
+                if(cont + 1 < 3){
+                    cont++;
+                }
+                else{
+                    cont = 0;
+                }
+                
             } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
 
             } else if(event.code === "Space") {
                 this.currentMenu.confirm();
             } 
         }
+
+        if(cont == 0){
+            obj = new Objetos(this, 412, 215, "seta", 1, 0.4);
+            this.add.existing(obj);
+        }
+        else if(cont == 1){
+            obj = new Objetos(this, 395, 169, "seta", 1, 0.4);
+            this.add.existing(obj);
+        }
+        else if(cont == 2){
+            obj = new Objetos(this, 464, 103, "seta", 1, 0.4);
+            this.add.existing(obj);
+        }
+
+
     },
 });
 
