@@ -1,4 +1,27 @@
-var txt = [], sele, teste = [], obj, cont = 0;
+//Variáveis Random 1
+var txt = [], sele, teste = [], obj, cont = 0, pr, teste1 = [], funciona, tx, lista = [];
+
+//Atributos do Yuusha:
+var HP_Y = 15, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y; //CA = 8
+
+//Atributos da Hime:
+var HP_H = 7, VEL_H = 2, FOR_H = 1, DEF_H = 0, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H; //CA = 4
+
+//Atributos do Crassus:
+var HP_C = 12, VEL_C = 0, FOR_C = 4, DEF_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C; //CA = 7
+
+//Atributos da Marielle:
+var HP_M = 10, VEL_M = 3, FOR_M = 2, DEF_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M; //CA = 7
+
+//Atributos do Slime:
+var HP_S = 10, VEL_S = 2, FOR_S = 3, DEF_S = 1, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+
+//Variáveis Random 2
+var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
+
+//Variáveis para Estatísticas
+var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
+var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0;
 
 var BootScene = new Phaser.Class({
 
@@ -16,13 +39,14 @@ var BootScene = new Phaser.Class({
         // load resources
         this.load.image('fundo', 'Imagens/fundo_fase_teste.jpg');
         this.load.spritesheet("player", "assets/RPG_assets.png", { frameWidth: 16, frameHeight: 16 });
-        this.load.image("ligma", "Imagens/ligma.png");
+        this.load.image("slime", "Imagens/ligma.png");
         this.load.image('marielle','Imagens/Archer.png');
         this.load.image('crassus','Imagens/crassus.png');
         this.load.image('yuusha','Imagens/Yuusha.png');
         this.load.image('hime','Imagens/Hime.png');
         this.load.image('mapa','Imagens/mapa.png');
         this.load.image('seta','Imagens/seta.png');
+        this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
     },
 
     create: function ()
@@ -43,59 +67,112 @@ var BattleScene = new Phaser.Class({
     },
     create: function ()
     {
-        this.add.image(400,160,'fundo');
+        this.add.image(400,130,'fundo_gramado');
         // Run UI Scene at the same time
         this.scene.launch("UIScene");
                 
-        // player character - Crassus
-        var mage = new PlayerCharacter(this, 450, 100, "crassus", 4, "Crassus", 70, 10, 0.7, 13);
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C);
         this.add.existing(mage);
 
-        // player character - Marielle
-        var archer = new PlayerCharacter(this, 450, 150, "marielle", 1, "Marielle", 65, 45, 1, 12);        
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M);        
         this.add.existing(archer);
 
         // player character - Yuusha
-        var yuusha = new PlayerCharacter(this, 390, 100, "yuusha", 2, "Yuusha", 80, 50, 1, 15);
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y);
         this.add.existing(yuusha);
 
         // player character - Hime
-        var healer = new PlayerCharacter(this, 390, 150, "hime", 3, "Hime", 55, 5, 1, 10);        
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 100, "ligma", null,"Ligma", 10, 3, 9);
-        var ligma2 = new Enemy(this, 50, 150, "ligma", null,"Ligma", 10, 3, 9);
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+
         // array with enemies
         this.enemies = [ ligma1, ligma2 ];
         // array with both parties, who will attack
         this.units = this.heroes.concat(this.enemies);
 
         this.index = -1;
+
+        contadorzin = 0;
+
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            for(var j = tam_vetor_herois ; j > i ; j--){
+                if(vel_ordenada[j] > vel_ordenada[j-1]){
+                    auxiliar = vel_ordenada[j];
+                    vel_ordenada[j] = vel_ordenada[j-1];
+                    vel_ordenada[j-1] = auxiliar;
+                }
+            }
+        }
+
     },
     nextTurn: function() {
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
             return;
         }
-        do {
-            // currently active unit
+
+        var izo = this.add.text(220 + 20*ih, 223, "teste", {color: "#000000"});
+        this.add.existing(izo);
+        ih++;
+
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            if(velocidades[i] == vel_ordenada[contadorzin] && this.heroes[i].living){
+                if(vel_ordenada[contadorzin - 1] == vel_ordenada[contadorzin] && contadorzin != 0){
+                    max = velocidades[i];
+                    ind = i + 1;
+                    break;
+                }
+                else{
+                    max = velocidades[i];
+                    ind = i;
+                    break;
+                }
+                
+            }
+        }
+
+        contadorzin++;
+
+        // for(var i = 0 ; i < tam_vetor_herois ; i++){
+        //     var izo = this.add.text(220 + 20*ih, 223, vel_ordenada[i]);
+        //     this.add.existing(izo);
+        //     ih++;
+        // }
+        
+        // var izo = this.add.text(220 + 20*ih, 223, max, {color: "#000000"});
+        // this.add.existing(izo);
+        // ih++;
+
+        do { 
+            
             this.index++;
-            // if there are no more units, we start again from the first one
+
+            // // if there are no more units, we start again from the first one
             if(this.index >= this.units.length) {
                 this.index = 0;
-            }            
+            }
+
         } while(!this.units[this.index].living);
         // if its player hero
         if(this.units[this.index] instanceof PlayerCharacter) {
             // we need the player to select action and then enemy
-            this.events.emit("PlayerSelect", this.index);
+            this.events.emit("PlayerSelect", ind);
         } else { // else if its enemy unit
+            
             // pick random living hero to be attacked
             var r;
             do {
@@ -104,7 +181,9 @@ var BattleScene = new Phaser.Class({
             // call the enemy's attack function 
             this.units[this.index].attack(this.heroes[r]);  
             // add timer for the next turn, so will have smooth gameplay
-            this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
+            this.time.addEvent({ delay: 4500, callback: this.nextTurn, callbackScope: this });
+            contadorzin = 0;
+            
         }
     },
     // check for game over or victory
@@ -133,7 +212,7 @@ var BattleScene = new Phaser.Class({
     // when the player have selected the enemy to be attacked
     receivePlayerSelection: function(action, target) {
         if(action == "attack") {            
-            this.units[this.index].attack(this.enemies[target]);              
+            this.units[ind].attack(this.enemies[target]);              
         }
         // next turn in 3 seconds
         this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });        
@@ -147,20 +226,23 @@ var BattleScene = new Phaser.Class({
             this.units[i].destroy();            
         }
         this.units.length = 0;
-
-        if(resultado == 1){
-            var txt = this.add.text(210, 180, "Victory!!!");
-            this.add.existing(txt);
-        }
-        else if(resultado == 2){
-            var txt = this.add.text(210, 180, "GAME OVER!!!");
-            this.add.existing(txt);
-        }
-
+       
         // sleep the UI
         this.scene.sleep('UIScene');
-        // return to WorldScene and sleep current BattleScene
-        //this.scene.switch('WorldScene');
+        this.scene.sleep('BattleScene');
+
+        if(resultado == 1){
+            // var txt = this.add.text(210, 180, "Victory!!!");
+            // this.add.existing(txt);
+            this.scene.start('VictoryScene');
+            
+        }
+        else if(resultado == 2){
+            // var txt = this.add.text(210, 180, "GAME OVER!!!");
+            // this.add.existing(txt);
+
+        }
+        
     },
 });
 
@@ -187,13 +269,15 @@ var Mapa = new Phaser.Class({
         this.scene.launch("UIScene2");
         
         this.index = -1;    
+
     },
     receiveFaseSelection: function(action, cm) {
         if(action == "enter" && cm == "Fase 1") {            
             this.scene.sleep('UIScene2');
             this.scene.sleep('Mapa');
             // start battle
-            this.scene.switch('BattleScene');             
+            contadorzin = 0;
+            this.scene.start('BattleScene');             
         }
     },
     
@@ -204,8 +288,8 @@ var Objetos = new Phaser.Class({
 
     initialize:
 
-    function Objetos(scene, x, y, texture, frame, escala){
-        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame);
+    function Objetos(scene, x, y, texture, escala){
+        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture);
         this.setScale(escala);
     }
 
@@ -220,8 +304,8 @@ var Unit = new Phaser.Class({
 
     initialize:
 
-    function Unit(scene, x, y, texture, frame, type, hp, damage, ca) {
-        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture, frame);
+    function Unit(scene, x, y, texture, type, hp, damage, ca) {
+        Phaser.GameObjects.Sprite.call(this, scene, x, y, texture);
         this.type = type;
         this.maxHp = this.hp = hp;
         this.damage = damage; // default damage
@@ -241,14 +325,49 @@ var Unit = new Phaser.Class({
             target.takeDamage(this.damage);
             if(target instanceof Enemy){
                 this.scene.events.emit("Message", "Acertou!\n" + " Dano do ataque: " +  this.damage + ".\n" + "Resultado do dado: " + r);
+                if(this.type == "Yuusha"){
+                    atk_acertados_y++;
+                    dano_y = dano_y + this.damage;
+                }
+                else if(this.type == "Hime"){
+                    atk_acertados_h++;
+                    dano_h = dano_h + this.damage;
+                }
+                else if(this.type == "Crassus"){
+                    atk_acertados_c++;
+                    dano_c = dano_c + this.damage;
+                }
+                else if(this.type == "Marielle"){
+                    atk_acertados_m++;
+                    dano_m = dano_m + this.damage;
+                }
             }   
             else{
-                this.scene.events.emit("Message", "Acertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+                this.scene.events.emit("Message", "Turno do oponente!!!  \nAcertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
             }
             
         }
         else{
-            this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
+            if(target instanceof Enemy){
+                this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
+                if(this.type == "Yuusha"){
+                    atk_falhos_y++;
+                }
+                else if(this.type == "Hime"){
+                    atk_falhos_h++;
+                }
+                else if(this.type == "Crassus"){
+                    atk_falhos_c++;
+                }
+                else if(this.type == "Marielle"){
+                    atk_falhos_m++;
+                }
+            }
+            else{
+                this.scene.events.emit("Message", "Turno do oponente!!!  \nErrou o ataque!\n" + "Resultado do dado: " + r);
+            }
+            
+
         }
     },
     takeDamage: function(damage) {
@@ -267,8 +386,8 @@ var Enemy = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function Enemy(scene, x, y, texture, frame, type, hp, damage, ca) {
-        Unit.call(this, scene, x, y, texture, frame, type, hp, damage, ca);
+    function Enemy(scene, x, y, texture, type, hp, damage, ca) {
+        Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
 
         this.setScale(0.5);
     }
@@ -278,8 +397,8 @@ var PlayerCharacter = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function PlayerCharacter(scene, x, y, texture, frame, type, hp, damage, escala, ca) {
-        Unit.call(this, scene, x, y, texture, frame, type, hp, damage, ca);
+    function PlayerCharacter(scene, x, y, texture, type, hp, damage, escala, ca) {
+        Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
         // flip the image so I don"t have to edit it manually
         this.flipX = true;
         this.setScale(escala);
@@ -463,6 +582,7 @@ var EnemiesMenu = new Phaser.Class({
     }
 });
 
+//Menu das fases na interface do mapa
 var FasesMenu = new Phaser.Class({
     Extends: Menu,
     
@@ -482,6 +602,177 @@ var FasesMenu = new Phaser.Class({
         this.scene.events.emit("SelectedFase");        
     }
     
+});
+
+var VoltarMenu = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function VoltarMenu(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem2("Voltar ao mapa");
+        lista[0] = "Voltar ao mapa";
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedVoltar");        
+    }
+    
+});
+
+var VictoryScene = new Phaser.Class({
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function VictoryScene (){
+        Phaser.Scene.call(this, { key: "VictoryScene" });
+    },
+
+    create: function (){
+        this.add.image(400,178,'fundo_gramado');
+
+        this.scene.launch('UIScene3');
+
+        var txt_vic = this.add.text(165, 10, "VITÓRIA", { color: "#ffffff", fontSize: "45px"});
+        this.add.existing(txt_vic);
+        txt_vic.setStroke("#000000", 6);
+
+        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        this.add.existing(texto);
+        texto.setStroke("#000000", 6);
+
+        if(tam_vetor_herois == 1){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 2){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 3){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            this.add.existing(texto3);
+            texto3.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 4){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            this.add.existing(texto3);
+            texto3.setStroke("#000000", 6);
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            this.add.existing(texto4);
+            texto4.setStroke("#000000", 6);
+        }        
+            
+        var dan_txt = this.add.text(10, 180, "Quantidade de dano deferido em inimigos: ", { color: "#ffffff"});
+        this.add.existing(dan_txt);
+        dan_txt.setStroke("#000000", 6);
+
+        if(tam_vetor_herois == 1){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 2){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 3){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            var dan_txt3 = this.add.text(55, 240, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 4){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            var dan_txt3 = this.add.text(55, 240, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+            var dan_txt4 = this.add.text(55, 260, herois[3].type + ": " + dano_m, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+        }
+        
+        var mvp_txt = this.add.text(10, 290, "Melhor herói da batalha: ", { color: "#ffffff"});
+        this.add.existing(mvp_txt);
+        mvp_txt.setStroke("#000000", 6);    
+
+        var j = 0;
+
+        maior_dano = dano_y;
+        if(maior_dano < dano_h) maior_dano = dano_h;
+        if(maior_dano < dano_c) maior_dano = dano_c;
+        if(maior_dano < dano_m) maior_dano = dano_m;
+
+        if(dano_y == maior_dano){
+            var dan_txt4 = this.add.text(55, 310  + 20 * j, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_h == maior_dano){
+            var dan_txt2 = this.add.text(55, 310  + 20 * j, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_c == maior_dano){
+            var dan_txt3 = this.add.text(55, 310  + 20 * j, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_m == maior_dano){
+            var dan_txt4 = this.add.text(55, 310  + 20 * j, herois[3].type + ": " + dano_m, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+            j++;
+        }
+
+    },
+    receiveFaseSelection: function(action, cm) {
+        if(action == "enter" && cm == "Voltar ao mapa") {            
+            this.scene.sleep('VictoryScene');
+            this.scene.sleep('UIScene3');
+            // start battle
+            this.scene.start('Mapa');
+            obj.destroy();
+            
+        }
+    },
 });
 
 // User Interface scene
@@ -571,14 +862,22 @@ var UIScene = new Phaser.Class({
         this.battleScene.receivePlayerSelection("attack", index);
     },
     onPlayerSelect: function(id) {
-        for(var i=0 ; i < txt.length ; i++){
+        var prob = ((21 - CA_S) / 20 ) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
+            pr.destroy();
         }
         
-        for(var i=0 ; i < 4 ; i++){
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
             var hHp = this.battleScene.heroes[i].hp;
             txt[i] = this.add.text(440, 353 + 20*i, hHp);
             this.add.existing(txt[i]);
+
+            if(i == 0){
+                pr = this.add.text(270, 345 + 20*i, "Acerto: \n  " + prob + "%");
+                this.add.existing(pr);
+            }
         }
         // when its player turn, we select the active hero item and the first action
         // then we make actions menu active
@@ -647,7 +946,7 @@ var UIScene2 = new Phaser.Class({
         this.graphics.strokeRect(143, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
         this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
 
-        obj = new Objetos(this, 412, 215, "seta", 1, 0.4);
+        obj = new Objetos(this, 412, 215, "seta", 0.4);
         this.add.existing(obj);
 
         // basic container to hold all menus
@@ -674,7 +973,6 @@ var UIScene2 = new Phaser.Class({
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedFase: function() {
-        
         var cm = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
@@ -710,18 +1008,91 @@ var UIScene2 = new Phaser.Class({
         }
 
         if(cont == 0){
-            obj = new Objetos(this, 412, 215, "seta", 1, 0.4);
+            obj = new Objetos(this, 412, 215, "seta", 0.4);
             this.add.existing(obj);
         }
         else if(cont == 1){
-            obj = new Objetos(this, 395, 169, "seta", 1, 0.4);
+            obj = new Objetos(this, 395, 169, "seta", 0.4);
             this.add.existing(obj);
         }
         else if(cont == 2){
-            obj = new Objetos(this, 464, 103, "seta", 1, 0.4);
+            obj = new Objetos(this, 464, 103, "seta", 0.4);
             this.add.existing(obj);
         }
 
+
+    },
+});
+
+var UIScene3 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene3 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene3" });
+    },
+
+    create: function ()
+    {    
+
+        this.vic = this.scene.get("VictoryScene");
+        
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50); 
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.voltarMenu = new VoltarMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.voltarMenu;
+        
+        this.voltarMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.voltarMenu);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedVoltar", this.onSelectedVoltar, this);
+           
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedVoltar: function() {
+        
+        var cm = lista[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.vic.receiveFaseSelection("enter",cm);
+        
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
 
     },
 });
@@ -738,9 +1109,9 @@ var Message = new Phaser.Class({
         this.add(graphics);
         graphics.lineStyle(1, 0xffffff, 0.8);
         graphics.fillStyle(0x031f4c, 0.3);        
-        graphics.strokeRect(8, 220, 180, 70);
-        graphics.fillRect(8, 220, 180, 70);
-        this.text = new Phaser.GameObjects.Text(scene, 100, 255, "", { color: "#ffffff", align: "center", fontSize: 13, wordWrap: { width: 160, useAdvancedWrap: true }});
+        graphics.strokeRect(8, 25, 180, 100);
+        graphics.fillRect(8, 25, 180, 100);
+        this.text = new Phaser.GameObjects.Text(scene, 100, 75, "", { color: "#ffffff", align: "center", fontSize: 13, wordWrap: { width: 160, useAdvancedWrap: true }});
         this.add(this.text);
         this.text.setOrigin(0.5);        
         events.on("Message", this.showMessage, this);
