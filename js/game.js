@@ -21,7 +21,8 @@ var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_h
 
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
-var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0;
+var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0, izo = [];
+var dinheiros = 0;
 
 var BootScene = new Phaser.Class({
 
@@ -29,7 +30,7 @@ var BootScene = new Phaser.Class({
 
     initialize:
 
-    function BootScene ()
+    function BootScene () 
     {
         Phaser.Scene.call(this, { key: "BootScene" });
     },
@@ -51,7 +52,7 @@ var BootScene = new Phaser.Class({
 
     create: function ()
     {
-        this.scene.start("Mapa");
+        this.scene.start("UIScene2");
     }
 });
 
@@ -59,6 +60,7 @@ var BattleScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
     
+
     initialize:
 
     function BattleScene ()
@@ -69,8 +71,10 @@ var BattleScene = new Phaser.Class({
     {
         this.add.image(400,130,'fundo_gramado');
         // Run UI Scene at the same time
-        this.scene.launch("UIScene");
-                
+        this.scene.run("UIScene");
+         
+        exec++;
+
         //player character - Crassus
         var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C);
         this.add.existing(mage);
@@ -87,8 +91,8 @@ var BattleScene = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", 100, 100, CA_S); //HP_S e ATKB_S + FOR_S
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", 100, 100, CA_S); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -96,6 +100,7 @@ var BattleScene = new Phaser.Class({
         this.heroes = [ yuusha, healer, mage, archer ];
         herois = [ yuusha, healer, mage, archer ];
         tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
 
         // array with enemies
         this.enemies = [ ligma1, ligma2 ];
@@ -114,45 +119,43 @@ var BattleScene = new Phaser.Class({
                     vel_ordenada[j-1] = auxiliar;
                 }
             }
-        }
-
+        }      
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
     },
     nextTurn: function() {
-        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
             return;
         }
+        
+        // for(var i = 0 ; i < tam_vetor_herois ; i++){
+        //     if(velocidades[i] == vel_ordenada[contadorzin] && this.heroes[i].living){
+        //         if(vel_ordenada[contadorzin - 1] == vel_ordenada[contadorzin] && contadorzin != 0){
+        //             max = velocidades[i];
+        //             ind = i + 1;
+        //             break;
+        //         }
+        //         else{
+        //             max = velocidades[i];
+        //             ind = i;
+        //             break;
+        //         }
+        //     }
+        // }
 
-        var izo = this.add.text(220 + 20*ih, 223, "teste", {color: "#000000"});
-        this.add.existing(izo);
-        ih++;
-
-        for(var i = 0 ; i < tam_vetor_herois ; i++){
-            if(velocidades[i] == vel_ordenada[contadorzin] && this.heroes[i].living){
-                if(vel_ordenada[contadorzin - 1] == vel_ordenada[contadorzin] && contadorzin != 0){
-                    max = velocidades[i];
-                    ind = i + 1;
-                    break;
-                }
-                else{
-                    max = velocidades[i];
-                    ind = i;
-                    break;
-                }
-                
-            }
-        }
-
-        contadorzin++;
+        // contadorzin++;
 
         // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     var izo = this.add.text(220 + 20*ih, 223, vel_ordenada[i]);
-        //     this.add.existing(izo);
+        //     izo[i] = this.add.text(0 + 20*ih, 0 + 20*iii, vel_ordenada[i]);
+        //     this.add.existing(izo[i]);
         //     ih++;
         // }
-        
+        // iii++;
+
         // var izo = this.add.text(220 + 20*ih, 223, max, {color: "#000000"});
         // this.add.existing(izo);
         // ih++;
@@ -169,8 +172,11 @@ var BattleScene = new Phaser.Class({
         } while(!this.units[this.index].living);
         // if its player hero
         if(this.units[this.index] instanceof PlayerCharacter) {
+            // var izo = this.add.text(220 + 20*ih, 223, "Hero", {color: "#000000"});
+            // this.add.existing(izo);
+            // ih++;
             // we need the player to select action and then enemy
-            this.events.emit("PlayerSelect", ind);
+            this.events.emit("PlayerSelect", this.index); //ind);
         } else { // else if its enemy unit
             
             // pick random living hero to be attacked
@@ -181,9 +187,11 @@ var BattleScene = new Phaser.Class({
             // call the enemy's attack function 
             this.units[this.index].attack(this.heroes[r]);  
             // add timer for the next turn, so will have smooth gameplay
-            this.time.addEvent({ delay: 4500, callback: this.nextTurn, callbackScope: this });
-            contadorzin = 0;
-            
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+            // contadorzin = 0;
+            // ind = -1;
+            // max = 0;
+
         }
     },
     // check for game over or victory
@@ -212,10 +220,10 @@ var BattleScene = new Phaser.Class({
     // when the player have selected the enemy to be attacked
     receivePlayerSelection: function(action, target) {
         if(action == "attack") {            
-            this.units[ind].attack(this.enemies[target]);              
+            this.units[this.index].attack(this.enemies[target]); //this.units[ind]              
         }
         // next turn in 3 seconds
-        this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });        
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
     endBattle: function(resultado) {       
         // clear state, remove sprites
@@ -229,7 +237,6 @@ var BattleScene = new Phaser.Class({
        
         // sleep the UI
         this.scene.sleep('UIScene');
-        this.scene.sleep('BattleScene');
 
         if(resultado == 1){
             // var txt = this.add.text(210, 180, "Victory!!!");
@@ -240,47 +247,10 @@ var BattleScene = new Phaser.Class({
         else if(resultado == 2){
             // var txt = this.add.text(210, 180, "GAME OVER!!!");
             // this.add.existing(txt);
-
+            this.scene.start('DefeatScene');
         }
         
     },
-});
-
-var Mapa = new Phaser.Class({
-
-    Extends: Phaser.Scene,
-
-    initialize:
-
-    function Mapa ()
-    {
-        Phaser.Scene.call(this, { key: 'Mapa' });
-    },
-
-    preload: function ()
-    {
-        
-    },
-
-    create: function ()
-    {
-        this.add.image(260,220,'mapa');
-        
-        this.scene.launch("UIScene2");
-        
-        this.index = -1;    
-
-    },
-    receiveFaseSelection: function(action, cm) {
-        if(action == "enter" && cm == "Fase 1") {            
-            this.scene.sleep('UIScene2');
-            this.scene.sleep('Mapa');
-            // start battle
-            contadorzin = 0;
-            this.scene.start('BattleScene');             
-        }
-    },
-    
 });
 
 var Objetos = new Phaser.Class({
@@ -292,7 +262,6 @@ var Objetos = new Phaser.Class({
         Phaser.GameObjects.Sprite.call(this, scene, x, y, texture);
         this.setScale(escala);
     }
-
 
 });
 
@@ -373,6 +342,136 @@ var Unit = new Phaser.Class({
     takeDamage: function(damage) {
         this.hp = this.hp - damage;
         if(this.hp <= 0) {
+            // if(this.type instanceof PlayerCharacter){
+            //     tam_vetor_herois_ord--;
+            //     if(this.type == "Yuusha"){
+            //         if(tam_vetor_herois_ord == 3){
+            //             vel_ordenada = [ VEL_H, VEL_C, VEL_M ];
+            //             vel_rem = VEL_Y;
+            //         }
+            //         else if(tam_vetor_herois_ord == 2){
+            //             if(vel_rem == VEL_H){
+            //                 vel_ordenada = [ VEL_C, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_C){
+            //                 vel_ordenada = [ VEL_H, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_M){
+            //                 vel_ordenada = [ VEL_H, VEL_C ];
+            //             }
+            //             vel_rem2 = VEL_Y;
+            //         }
+            //         else if(tam_vetor_herois_ord == 1){
+            //             if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
+            //                 vel_ordenada = [ VEL_M ];
+            //             }
+            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
+            //                 vel_ordenada = [ VEL_C ];
+            //             }
+            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
+            //                 vel_ordenada = [ VEL_H ];
+            //             }
+            //         }
+                    
+            //     }
+            //     else if(this.type == "Hime"){
+            //         if(tam_vetor_herois_ord == 3){
+            //             vel_ordenada = [ VEL_Y, VEL_C, VEL_M ];
+            //             vel_rem = VEL_H;
+            //         }
+            //         else if(tam_vetor_herois_ord == 2){
+            //             if(vel_rem == VEL_Y){
+            //                 vel_ordenada = [ VEL_C, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_C){
+            //                 vel_ordenada = [ VEL_Y, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_M){
+            //                 vel_ordenada = [ VEL_Y, VEL_C ];
+            //             }
+            //             vel_rem2 = VEL_H;
+            //         }
+            //         else if(tam_vetor_herois_ord == 1){
+            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_M ];
+            //             }
+            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_C ];
+            //             }
+            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
+            //                 vel_ordenada = [ VEL_Y ];
+            //             }
+            //         }
+            //     }
+            //     else if(this.type == "Crassus"){
+            //         if(tam_vetor_herois_ord == 3){
+            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_M ];
+            //             vel_rem = VEL_C;
+            //         }
+            //         else if(tam_vetor_herois_ord == 2){
+            //             if(vel_rem == VEL_Y){
+            //                 vel_ordenada = [ VEL_H, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_H){
+            //                 vel_ordenada = [ VEL_Y, VEL_M ];
+            //             }
+            //             else if(vel_rem == VEL_M){
+            //                 vel_ordenada = [ VEL_Y, VEL_H ];
+            //             }
+            //             vel_rem2 = VEL_C;
+            //         }
+            //         else if(tam_vetor_herois_ord == 1){
+            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_M ];
+            //             }
+            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_H ];
+            //             }
+            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
+            //                 vel_ordenada = [ VEL_Y ];
+            //             }
+            //         }
+            //     }
+            //     else if(this.type == "Marielle"){
+            //         if(tam_vetor_herois_ord == 3){
+            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_C ];
+            //             vel_rem = VEL_M;
+            //         }
+            //         else if(tam_vetor_herois_ord == 2){
+            //             if(vel_rem == VEL_Y){
+            //                 vel_ordenada = [ VEL_H, VEL_C ];
+            //             }
+            //             else if(vel_rem == VEL_H){
+            //                 vel_ordenada = [ VEL_Y, VEL_C ];
+            //             }
+            //             else if(vel_rem == VEL_C){
+            //                 vel_ordenada = [ VEL_Y, VEL_H ];
+            //             }
+            //             vel_rem2 = VEL_M;
+            //         }
+            //         else if(tam_vetor_herois_ord == 1){
+            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_C ];
+            //             }
+            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
+            //                 vel_ordenada = [ VEL_H ];
+            //             }
+            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
+            //                 vel_ordenada = [ VEL_Y ];
+            //             }
+            //         }
+            //     }
+
+            //     for(var i = 0 ; i < tam_vetor_herois ; i++){
+            //         for(var j = tam_vetor_herois ; j > i ; j--){
+            //             if(vel_ordenada[j] > vel_ordenada[j-1]){
+            //                 auxiliar = vel_ordenada[j];
+            //                 vel_ordenada[j] = vel_ordenada[j-1];
+            //                 vel_ordenada[j-1] = auxiliar;
+            //             }
+            //         }
+            //     }
+            // }
             this.hp = 0;
             this.menuItem.unitKilled();
             this.living = false;
@@ -634,6 +733,7 @@ var VictoryScene = new Phaser.Class({
     create: function (){
         this.add.image(400,178,'fundo_gramado');
 
+        vod = 1;
         this.scene.launch('UIScene3');
 
         var txt_vic = this.add.text(165, 10, "VITÓRIA", { color: "#ffffff", fontSize: "45px"});
@@ -767,9 +867,166 @@ var VictoryScene = new Phaser.Class({
         if(action == "enter" && cm == "Voltar ao mapa") {            
             this.scene.sleep('VictoryScene');
             this.scene.sleep('UIScene3');
-            // start battle
-            this.scene.start('Mapa');
-            obj.destroy();
+            //Start mapa
+            
+            // this.scene.switch('Mapa');
+            this.scene.wake('UIScene2');
+            
+        }
+    },
+});
+
+var DefeatScene = new Phaser.Class({
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function DefeatScene (){
+        Phaser.Scene.call(this, { key: "DefeatScene" });
+    },
+
+    create: function (){
+        this.add.image(400,178,'fundo_gramado');
+
+        vod = 2;
+        this.scene.launch('UIScene3');
+
+        var txt_vic = this.add.text(165, 10, "DERROTA", { color: "#ffffff", fontSize: "45px"});
+        this.add.existing(txt_vic);
+        txt_vic.setStroke("#000000", 6);
+
+        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        this.add.existing(texto);
+        texto.setStroke("#000000", 6);
+
+        if(tam_vetor_herois == 1){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 2){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 3){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            this.add.existing(texto3);
+            texto3.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 4){
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            this.add.existing(texto1);
+            texto1.setStroke("#000000", 6);
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            this.add.existing(texto2);
+            texto2.setStroke("#000000", 6);
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            this.add.existing(texto3);
+            texto3.setStroke("#000000", 6);
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            this.add.existing(texto4);
+            texto4.setStroke("#000000", 6);
+        }        
+            
+        var dan_txt = this.add.text(10, 180, "Quantidade de dano deferido em inimigos: ", { color: "#ffffff"});
+        this.add.existing(dan_txt);
+        dan_txt.setStroke("#000000", 6);
+
+        if(tam_vetor_herois == 1){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 2){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 3){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            var dan_txt3 = this.add.text(55, 240, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+        }
+        else if(tam_vetor_herois == 4){
+            var dan_txt1 = this.add.text(55, 200, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt1);
+            dan_txt1.setStroke("#000000", 6);
+            var dan_txt2 = this.add.text(55, 220, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            var dan_txt3 = this.add.text(55, 240, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+            var dan_txt4 = this.add.text(55, 260, herois[3].type + ": " + dano_m, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+        }
+        
+        var mvp_txt = this.add.text(10, 290, "Melhor herói da batalha: ", { color: "#ffffff"});
+        this.add.existing(mvp_txt);
+        mvp_txt.setStroke("#000000", 6);    
+
+        var j = 0;
+
+        maior_dano = dano_y;
+        if(maior_dano < dano_h) maior_dano = dano_h;
+        if(maior_dano < dano_c) maior_dano = dano_c;
+        if(maior_dano < dano_m) maior_dano = dano_m;
+
+        if(dano_y == maior_dano){
+            var dan_txt4 = this.add.text(55, 310  + 20 * j, herois[0].type + ": " + dano_y, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_h == maior_dano){
+            var dan_txt2 = this.add.text(55, 310  + 20 * j, herois[1].type + ": " + dano_h, { color: "#ffffff"});
+            this.add.existing(dan_txt2);
+            dan_txt2.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_c == maior_dano){
+            var dan_txt3 = this.add.text(55, 310  + 20 * j, herois[2].type + ": " + dano_c, { color: "#ffffff"});
+            this.add.existing(dan_txt3);
+            dan_txt3.setStroke("#000000", 6);
+            j++;
+        }
+        if(dano_m == maior_dano){
+            var dan_txt4 = this.add.text(55, 310  + 20 * j, herois[3].type + ": " + dano_m, { color: "#ffffff"});
+            this.add.existing(dan_txt4);
+            dan_txt4.setStroke("#000000", 6);
+            j++;
+        }
+
+    },
+    receiveFaseSelection: function(action, cm) {
+        if(action == "enter" && cm == "Voltar ao mapa") {            
+            this.scene.sleep('DefeatScene');
+            this.scene.sleep('UIScene3');
+            //Start mapa
+            
+            // this.scene.switch('Mapa');
+            this.scene.wake('UIScene2');
             
         }
     },
@@ -834,16 +1091,17 @@ var UIScene = new Phaser.Class({
         
         // an enemy is selected
         this.events.on("Enemy", this.onEnemy, this);
-        
+
         // when the scene receives wake event
         this.sys.events.on('wake', this.createMenu, this);
 
         // the message describing the current action
         this.message = new Message(this, this.battleScene.events);
-        this.add.existing(this.message);       
-        
+        this.add.existing(this.message);         
+
         this.createMenu(); 
-           
+        
+        
     },
     createMenu: function() {
         // map hero menu items to heroes
@@ -851,7 +1109,7 @@ var UIScene = new Phaser.Class({
         // map enemies menu items to enemies
         this.remapEnemies();
         // first move
-        this.battleScene.nextTurn(); 
+        this.battleScene.nextTurn();  
     },
     onEnemy: function(index) {
         // when the enemy is selected, we deselect all menus and send event with the enemy id
@@ -931,7 +1189,7 @@ var UIScene2 = new Phaser.Class({
     create: function ()
     {    
 
-        this.mapa = this.scene.get("Mapa");
+        this.add.image(260,220,'mapa');
         
         this.graphics = this.add.graphics();
         this.graphics.lineStyle(1, 0xffffff);
@@ -968,7 +1226,16 @@ var UIScene2 = new Phaser.Class({
         
         // an enemy is selected
         this.events.on("SelectedFase", this.onSelectedFase, this);
-           
+
+        
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+        
+    },
+    acorda: function(){
+        this.currentMenu = this.fasesMenu;
+        this.fasesMenu.select(0);
+        sele = 0; 
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
@@ -976,8 +1243,20 @@ var UIScene2 = new Phaser.Class({
         var cm = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
-        this.mapa.receiveFaseSelection("enter",cm);
+        this.receiveFaseSelection("enter",cm);
         
+    },
+    remapFases: function(){
+        var fas = teste;
+        this.fasesMenu.remap2(fas);
+    },
+    receiveFaseSelection: function(action, cm) {
+        if(action == "enter" && cm == "Fase 1") {            
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('BattleScene');                  
+        }
     },
     onKeyInput: function(event) {
         obj.destroy();
@@ -1039,8 +1318,12 @@ var UIScene3 = new Phaser.Class({
 
     create: function ()
     {    
-
-        this.vic = this.scene.get("VictoryScene");
+        if(vod == 1){
+            this.vodSc = this.scene.get("VictoryScene");
+        }
+        else if(vod == 2){
+            this.vodSc = this.scene.get("DefeatScene");
+        }
         
         this.graphics = this.add.graphics();
         this.graphics.lineStyle(1, 0xffffff);
@@ -1077,7 +1360,7 @@ var UIScene3 = new Phaser.Class({
         var cm = lista[0];
         //this.fasesMenu.deselect();
         this.currentMenu = null;
-        this.vic.receiveFaseSelection("enter",cm);
+        this.vodSc.receiveFaseSelection("enter",cm);
         
     },
     onKeyInput: function(event) {

@@ -12,7 +12,7 @@ var config = {
             gravity: { y: 0 }
         }
     },
-    scene: [ BootScene, Mapa, BattleScene, UIScene, UIScene2, UIScene3, VictoryScene ]
+    scene: [ BootScene, BattleScene, UIScene, UIScene2, UIScene3, VictoryScene, DefeatScene ]
 };
 
 var game = new Phaser.Game(config);
