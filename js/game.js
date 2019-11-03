@@ -516,7 +516,15 @@ var MenuItem = new Phaser.Class({
     initialize:
             
     function MenuItem(x, y, text, scene) {
-        Phaser.GameObjects.Text.call(this, scene, x, y, text, { color: "#ffffff", align: "left", fontSize: 15});
+        if(text == "Aumentar HP dos personagens" || text == "Aumentar FORÇA dos personagens" || text == "Aumentar VELOCIDADE dos personagens" || text == "Aumentar DEFESA dos personagens" || text == "Aumentar ATAQUE BASE dos personagens" || text == "Voltar para o mapa"){
+            Phaser.GameObjects.Text.call(this, scene, x, y, text, { color: "#ffffff", align: "left", fontSize: 15});
+            this.setStroke("#000000", 6);
+            
+        }
+        else{
+            Phaser.GameObjects.Text.call(this, scene, x, y, text, { color: "#ffffff", align: "left", fontSize: 15});
+        }
+        
     },
     
     select: function() {
@@ -548,6 +556,12 @@ var Menu = new Phaser.Class({
         this.x = x;
         this.y = y;
         this.selected = false;
+    },
+    addMenuItem3: function(unit) {
+        var menuItem = new MenuItem(0, this.menuItems.length * 54, unit, this.scene);
+        this.menuItems.push(menuItem);
+        this.add(menuItem);
+        return menuItem;        
     },
     addMenuItem2: function(unit) {
         if(unit == "Loja"){
@@ -726,19 +740,19 @@ var LojaMenu = new Phaser.Class({
 
     function FasesMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
-        this.addMenuItem2("Aumentar HP dos personagens");
+        this.addMenuItem3("Aumentar HP dos personagens");
         lista_loja[0] = "Aumentar HP dos personagens";
-        this.addMenuItem2("Aumentar FORÇA dos personagens");
+        this.addMenuItem3("Aumentar FORÇA dos personagens");
         lista_loja[1] = "Aumentar FORÇA dos personagens";
-        this.addMenuItem2("Aumentar VELOCIDADE dos personagens");
+        this.addMenuItem3("Aumentar VELOCIDADE dos personagens");
         lista_loja[2] = "Aumentar VELOCIDADE dos personagens";
-        this.addMenuItem2("Aumentar DEFESA dos personagens");
+        this.addMenuItem3("Aumentar DEFESA dos personagens");
         lista_loja[3] = "Aumentar DEFESA dos personagens";
-        this.addMenuItem2("Aumentar ATAQUE BASE dos personagens");
+        this.addMenuItem3("Aumentar ATAQUE BASE dos personagens");
         lista_loja[4] = "Aumentar ATAQUE BASE dos personagens";
 
-        this.addMenuItem2("Voltar ao mapa");
-        lista_loja[5] = "Voltar ao mapa";
+        this.addMenuItem3("Voltar para o mapa");
+        lista_loja[5] = "Voltar para o mapa";
 
     },
     confirm: function() {      
@@ -1100,7 +1114,7 @@ var Loja = new Phaser.Class({
         // basic container to hold all menus
         this.menus = this.add.container();
                 
-        this.lojaMenu = new LojaMenu(7,360,this); //(eixo x, eixo y)
+        this.lojaMenu = new LojaMenu(13,125,this); //(eixo x, eixo y)
 
         // the currently selected menu 
         this.currentMenu = this.lojaMenu;
@@ -1115,46 +1129,57 @@ var Loja = new Phaser.Class({
         this.input.keyboard.on("keydown", this.onKeyInput, this); 
         
         // an enemy is selected
-        this.events.on("SelectedFase", this.onSelectedFase, this);
+        this.events.on("SelectedLoja", this.onSelectedLoja, this);
 
+        this.message = new Message(this, this.events);
+        this.add.existing(this.message);  
         
-        this.sys.events.on('wake', this.acorda, this);
+        this.sys.events.on('wake', this.acor, this);
+
+        this.acor();
     },
-    acorda: function(){
-        moedas.destroy();
+    acor: function(){
+        // moedas.destroy();
 
-        moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
-        this.add.existing(moedas);
-        moedas.setStroke("#000000", 6);
+        // moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
+        // this.add.existing(moedas);
+        // moedas.setStroke("#000000", 6);
 
-        this.currentMenu = this.fasesMenu;
-        this.fasesMenu.select(0);
-        sele = 0; 
+        this.currentMenu = this.lojaMenu;
+        this.lojaMenu.select(0);
+        sele2 = 0; 
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
-    onSelectedFase: function() {
-        var cm = teste[sele];
-        this.fasesMenu.deselect();
+    onSelectedLoja: function() {
+        var cm = lista_loja[sele2];
+        this.lojaMenu.deselect();
         this.currentMenu = null;
-        this.receiveFaseSelection("enter",cm);
+        this.receiveLojaSelection("enter",cm);
         
     },
-    remapFases: function(){
-        var fas = teste;
-        this.fasesMenu.remap2(fas);
-    },
-    receiveFaseSelection: function(action, cm) {
-        if(action == "enter" && cm == "Fase 1") {            
-            this.scene.sleep('UIScene2');
-            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
-            // start battle
-            this.scene.switch('BattleScene');                  
+    receiveLojaSelection: function(action, cm) {
+        if(action == "enter" && cm == "Aumentar HP dos personagens") {            
+            if(dinheiros >= 100){
+                this.events.emit("Message", "Compra realizada!");
+                HP_Y += 2;
+                HP_H += 2;
+                HP_C += 2;
+                HP_M += 2;
+                dinheiros -= 100;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(0); 
+            sele2 = 0;              
         }
-        else if(action == "enter" && cm == "Loja"){
-            this.scene.sleep('UIScene2');
+        else if(action == "enter" && cm == "Voltar para o mapa"){
+            this.scene.sleep('Loja');
 
-            this.scene.start('Loja');
+            this.scene.wake('UIScene2');
         }
     },
     onKeyInput: function(event) {
@@ -1391,6 +1416,10 @@ var UIScene2 = new Phaser.Class({
         this.currentMenu = this.fasesMenu;
         this.fasesMenu.select(0);
         sele = 0; 
+        cont = 0;
+        obj.destroy();
+        obj = new Objetos(this, 412, 215, "seta", 0.4);
+        this.add.existing(obj);
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
@@ -1400,10 +1429,6 @@ var UIScene2 = new Phaser.Class({
         this.currentMenu = null;
         this.receiveFaseSelection("enter",cm);
         
-    },
-    remapFases: function(){
-        var fas = teste;
-        this.fasesMenu.remap2(fas);
     },
     receiveFaseSelection: function(action, cm) {
         if(action == "enter" && cm == "Fase 1") {            
@@ -1415,7 +1440,7 @@ var UIScene2 = new Phaser.Class({
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
 
-            this.scene.start('Loja');
+            this.scene.switch('Loja');
         }
     },
     onKeyInput: function(event) {
