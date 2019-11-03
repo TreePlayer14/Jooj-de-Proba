@@ -22,7 +22,7 @@ var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_h
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0, izo = [];
-var dinheiros = 0;
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2;
 
 var BootScene = new Phaser.Class({
 
@@ -48,6 +48,8 @@ var BootScene = new Phaser.Class({
         this.load.image('mapa','Imagens/mapa.png');
         this.load.image('seta','Imagens/seta.png');
         this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
+        this.load.image('moeda_loja','Imagens/sprite-loja.png');
+        this.load.image('fundo_loja','Imagens/Loja.png');
     },
 
     create: function ()
@@ -91,8 +93,8 @@ var BattleScene = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", 100, 100, CA_S); //HP_S e ATKB_S + FOR_S
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", 100, 100, CA_S); 
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -235,6 +237,9 @@ var BattleScene = new Phaser.Class({
         }
         this.units.length = 0;
        
+        din_ant = dinheiros;
+        dinheiros += 30;
+
         // sleep the UI
         this.scene.sleep('UIScene');
 
@@ -545,7 +550,13 @@ var Menu = new Phaser.Class({
         this.selected = false;
     },
     addMenuItem2: function(unit) {
-        var menuItem = new MenuItem( this.menuItems.length * 70, 0, unit, this.scene);
+        if(unit == "Loja"){
+            var menuItem = new MenuItem( 460, -329, unit, this.scene);
+        }
+        else{
+            var menuItem = new MenuItem( this.menuItems.length * 70, 0, unit, this.scene);
+        }
+        
         this.menuItems.push(menuItem);
         this.add(menuItem);
         return menuItem;        
@@ -566,6 +577,7 @@ var Menu = new Phaser.Class({
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
+        sele2 = this.menuItemIndex;
     },
     moveSelectionDown: function() {
         this.menuItems[this.menuItemIndex].deselect();
@@ -576,6 +588,7 @@ var Menu = new Phaser.Class({
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
+        sele2 = this.menuItemIndex;
     },
     moveSelectionLeft: function() {
         this.menuItems[this.menuItemIndex].deselect();
@@ -586,6 +599,7 @@ var Menu = new Phaser.Class({
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
+        sele2 = this.menuItemIndex;
     },
     moveSelectionRight: function() {
         this.menuItems[this.menuItemIndex].deselect();
@@ -596,6 +610,7 @@ var Menu = new Phaser.Class({
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
         sele = this.menuItemIndex;
+        sele2 = this.menuItemIndex;
     },            
     select: function(index) {
         if(!index)
@@ -611,8 +626,6 @@ var Menu = new Phaser.Class({
         }        
         this.menuItems[this.menuItemIndex].select();
         this.selected = true;
-        
-
     },
     // deselect this menu
     deselect: function() {        
@@ -695,12 +708,43 @@ var FasesMenu = new Phaser.Class({
         teste[1] = "Fase 2";
         this.addMenuItem2("Fase 3");
         teste[2] = "Fase 3";
+        this.addMenuItem2("Loja");
+        teste[3] = "Loja";
+
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
         this.scene.events.emit("SelectedFase");        
-    }
+    },
     
+});
+
+var LojaMenu = new Phaser.Class({
+    Extends: Menu,
+
+    initialize:
+
+    function FasesMenu(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem2("Aumentar HP dos personagens");
+        lista_loja[0] = "Aumentar HP dos personagens";
+        this.addMenuItem2("Aumentar FORÇA dos personagens");
+        lista_loja[1] = "Aumentar FORÇA dos personagens";
+        this.addMenuItem2("Aumentar VELOCIDADE dos personagens");
+        lista_loja[2] = "Aumentar VELOCIDADE dos personagens";
+        this.addMenuItem2("Aumentar DEFESA dos personagens");
+        lista_loja[3] = "Aumentar DEFESA dos personagens";
+        this.addMenuItem2("Aumentar ATAQUE BASE dos personagens");
+        lista_loja[4] = "Aumentar ATAQUE BASE dos personagens";
+
+        this.addMenuItem2("Voltar ao mapa");
+        lista_loja[5] = "Voltar ao mapa";
+
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedLoja");        
+    },
 });
 
 var VoltarMenu = new Phaser.Class({
@@ -862,14 +906,17 @@ var VictoryScene = new Phaser.Class({
             j++;
         }
 
+        var cur_txt = this.add.text(290, 366, "Dinheiro Adquirido: " + (dinheiros - din_ant), { color: "#ffffff"});
+        this.add.existing(cur_txt);
+        cur_txt.setStroke("#000000", 6);
+
     },
     receiveFaseSelection: function(action, cm) {
         if(action == "enter" && cm == "Voltar ao mapa") {            
             this.scene.sleep('VictoryScene');
             this.scene.sleep('UIScene3');
+
             //Start mapa
-            
-            // this.scene.switch('Mapa');
             this.scene.wake('UIScene2');
             
         }
@@ -1018,6 +1065,10 @@ var DefeatScene = new Phaser.Class({
             j++;
         }
 
+        var cur_txt = this.add.text(290, 366, "Dinheiro Adquirido: " + (dinheiros - din_ant), { color: "#ffffff"});
+        this.add.existing(cur_txt);
+        cur_txt.setStroke("#000000", 6);
+
     },
     receiveFaseSelection: function(action, cm) {
         if(action == "enter" && cm == "Voltar ao mapa") {            
@@ -1030,6 +1081,97 @@ var DefeatScene = new Phaser.Class({
             
         }
     },
+});
+
+var Loja = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Loja()
+    {
+        Phaser.Scene.call(this, { key: "Loja" });
+    },
+    create: function()
+    {
+        this.add.image(260,220,'fundo_loja');
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.lojaMenu = new LojaMenu(7,360,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.lojaMenu;
+        
+        this.lojaMenu.select(0);
+        sele2 = 0;
+
+        // add menus to the container
+        this.menus.add(this.lojaMenu);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedFase", this.onSelectedFase, this);
+
+        
+        this.sys.events.on('wake', this.acorda, this);
+    },
+    acorda: function(){
+        moedas.destroy();
+
+        moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
+        this.add.existing(moedas);
+        moedas.setStroke("#000000", 6);
+
+        this.currentMenu = this.fasesMenu;
+        this.fasesMenu.select(0);
+        sele = 0; 
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedFase: function() {
+        var cm = teste[sele];
+        this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveFaseSelection("enter",cm);
+        
+    },
+    remapFases: function(){
+        var fas = teste;
+        this.fasesMenu.remap2(fas);
+    },
+    receiveFaseSelection: function(action, cm) {
+        if(action == "enter" && cm == "Fase 1") {            
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('BattleScene');                  
+        }
+        else if(action == "enter" && cm == "Loja"){
+            this.scene.sleep('UIScene2');
+
+            this.scene.start('Loja');
+        }
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+            } else if(event.code === "ArrowLeft" || event.code === "ArrowRight") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
 });
 
 // User Interface scene
@@ -1054,8 +1196,8 @@ var UIScene = new Phaser.Class({
         this.graphics.lineStyle(1, 0xffffff);
         this.graphics.fillStyle(0x031f4c, 1);
         //menu oponente        
-        this.graphics.strokeRect(2, 339, 175, 100); //(2,150,90,100)
-        this.graphics.fillRect(2, 339, 175, 100); //(2,150,90,100)
+        this.graphics.strokeRect(1, 339, 176, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 176, 100); //(2,150,90,100)
         //menu ataques
         this.graphics.strokeRect(178, 339, 160, 100); //(95,150,90,100)
         this.graphics.fillRect(178, 339, 160, 100); //(95,150,90,100)
@@ -1207,6 +1349,13 @@ var UIScene2 = new Phaser.Class({
         obj = new Objetos(this, 412, 215, "seta", 0.4);
         this.add.existing(obj);
 
+        obj2 = new Objetos(this, 484, 62, "moeda_loja", 0.04);
+        this.add.existing(obj2);
+
+        moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
+        this.add.existing(moedas);
+        moedas.setStroke("#000000", 6);
+
         // basic container to hold all menus
         this.menus = this.add.container();
                 
@@ -1233,6 +1382,12 @@ var UIScene2 = new Phaser.Class({
         
     },
     acorda: function(){
+        moedas.destroy();
+
+        moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
+        this.add.existing(moedas);
+        moedas.setStroke("#000000", 6);
+
         this.currentMenu = this.fasesMenu;
         this.fasesMenu.select(0);
         sele = 0; 
@@ -1257,6 +1412,11 @@ var UIScene2 = new Phaser.Class({
             // start battle
             this.scene.switch('BattleScene');                  
         }
+        else if(action == "enter" && cm == "Loja"){
+            this.scene.sleep('UIScene2');
+
+            this.scene.start('Loja');
+        }
     },
     onKeyInput: function(event) {
         obj.destroy();
@@ -1268,11 +1428,11 @@ var UIScene2 = new Phaser.Class({
                     cont--;
                 }
                 else{
-                    cont = 2;
+                    cont = 3;
                 }
             } else if(event.code === "ArrowRight") {
                 this.currentMenu.moveSelectionRight();
-                if(cont + 1 < 3){
+                if(cont + 1 < 4){
                     cont++;
                 }
                 else{
@@ -1298,7 +1458,9 @@ var UIScene2 = new Phaser.Class({
             obj = new Objetos(this, 464, 103, "seta", 0.4);
             this.add.existing(obj);
         }
-
+        else if(cont == 3){
+            
+        }
 
     },
 });
