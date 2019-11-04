@@ -1,0 +1,60 @@
+@charset "utf-8";
+
+#bodi{
+    background: url("../Imagens/fundo3.png") no-repeat fixed center top;
+    background-size: 90%;
+    background-color: #000;
+}
+
+section#botoes{
+    text-align:center;
+    margin-top:1%;
+    margin-left:11%;
+}
+
+#botao{
+    background-color:#d9a42f;
+    padding:1%;
+    border-radius:10px;
+}
+
+section#botoes h1{
+    font-size:40px;
+    color: #fff;
+    font-family: 'Trebuchet MS Bold',sans-serif;
+}
+
+#btn2{
+    margin-top:3%;
+}
+
+section#botoes a:hover{
+    text-decoration: none;
+}
+
+section#botoes h1:hover{
+    color:#d9a42f;
+}
+
+#botao:hover{
+    background-color: #fff;
+}
+
+section#textos{
+    text-align:center;
+    margin-top:12%;
+}
+
+section#textos h2{
+    font-size:55px;
+    color: #fff;
+    font-family: 'Trebuchet MS Bold',sans-serif;
+}
+
+section#textos p{
+    margin-top:3%;
+    text-align:justify;
+    font-size:35px;
+    color: #fff;
+    font-family: 'Trebuchet MS Bold',sans-serif;
+}

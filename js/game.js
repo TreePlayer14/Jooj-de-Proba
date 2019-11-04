@@ -120,15 +120,15 @@ var BattleScene = new Phaser.Class({
 
         contadorzin = 0;
 
-        for(var i = 0 ; i < tam_vetor_herois ; i++){
-            for(var j = tam_vetor_herois ; j > i ; j--){
-                if(vel_ordenada[j] > vel_ordenada[j-1]){
-                    auxiliar = vel_ordenada[j];
-                    vel_ordenada[j] = vel_ordenada[j-1];
-                    vel_ordenada[j-1] = auxiliar;
-                }
-            }
-        }      
+        // for(var i = 0 ; i < tam_vetor_herois ; i++){
+        //     for(var j = tam_vetor_herois ; j > i ; j--){
+        //         if(vel_ordenada[j] > vel_ordenada[j-1]){
+        //             auxiliar = vel_ordenada[j];
+        //             vel_ordenada[j] = vel_ordenada[j-1];
+        //             vel_ordenada[j-1] = auxiliar;
+        //         }
+        //     }
+        // }      
         
         ih = 0;
         max = 0;
@@ -1288,9 +1288,13 @@ var Loja = new Phaser.Class({
             if(dinheiros >= 100){
                 this.events.emit("Message", "Compra realizada!");
                 HPT_Y += 2;
+                HP_Y = HPT_Y; 
                 HPT_H += 2;
+                HP_H = HPT_H;
                 HPT_C += 2;
+                HP_C = HPT_C;
                 HPT_M += 2;
+                HP_M = HPT_M;
                 dinheiros -= 100;
                 
             }
@@ -1525,7 +1529,7 @@ var UIScene = new Phaser.Class({
         // then we make actions menu active
         this.heroesMenu.select(id);
         this.actionsMenu.select(0);
-        selecionou = "Attack";
+        //selecionou = "Attack";
         this.currentMenu = this.actionsMenu;
     },
     // we have action selected and we make the enemies menu active
@@ -1579,13 +1583,13 @@ var UIScene2 = new Phaser.Class({
         this.graphics = this.add.graphics();
         this.graphics.lineStyle(1, 0xffffff);
         this.graphics.fillStyle(0x031f4c, 1);
-        //menu oponente        
+        //Fase 1        
         this.graphics.strokeRect(2, 339, 63, 50); //(2,150,90,100)
         this.graphics.fillRect(2, 339, 63, 50); //(2,150,90,100)
-        //menu ataques
+        //Fase 2
         this.graphics.strokeRect(73, 339, 63, 50); //(95,150,90,100)
         this.graphics.fillRect(73, 339, 63, 50); //(95,150,90,100)
-        //menu herois
+        //Fase 3
         this.graphics.strokeRect(143, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
         this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
 
