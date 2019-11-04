@@ -2,19 +2,19 @@
 var txt = [], sele, teste = [], obj, cont = 0, pr, teste1 = [], funciona, tx, lista = [];
 
 //Atributos do Yuusha:
-var HP_Y = 15, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y; //CA = 8
+var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 10; //CA = 8
 
 //Atributos da Hime:
-var HP_H = 7, VEL_H = 2, FOR_H = 1, DEF_H = 0, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H; //CA = 4
+var HPT_H = 7, HP_H = HPT_H, VEL_H = 2, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 10; //CA = 4
 
 //Atributos do Crassus:
-var HP_C = 12, VEL_C = 0, FOR_C = 4, DEF_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C; //CA = 7
+var HPT_C = 12, HP_C = HPT_C, VEL_C = 0, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 10; //CA = 7
 
 //Atributos da Marielle:
-var HP_M = 10, VEL_M = 3, FOR_M = 2, DEF_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M; //CA = 7
+var HPT_M = 10, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 10; //CA = 7 
 
 //Atributos do Slime:
-var HP_S = 10, VEL_S = 2, FOR_S = 3, DEF_S = 1, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+var HP_S = 10, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -22,7 +22,7 @@ var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_h
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0, izo = [];
-var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2;
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0;
 
 var BootScene = new Phaser.Class({
 
@@ -49,7 +49,7 @@ var BootScene = new Phaser.Class({
         this.load.image('seta','Imagens/seta.png');
         this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
         this.load.image('moeda_loja','Imagens/sprite-loja.png');
-        this.load.image('fundo_loja','Imagens/Loja.png');
+        this.load.image('fundo_loja','Imagens/Loja2.png');
     },
 
     create: function ()
@@ -97,6 +97,11 @@ var BattleScene = new Phaser.Class({
         var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
+
+        MANA_Y = INT_Y + 10;
+        MANA_H = INT_H + 10;
+        MANA_C = INT_C + 10;
+        MANA_M = INT_M + 10;
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
@@ -224,34 +229,32 @@ var BattleScene = new Phaser.Class({
         if(action == "attack") {            
             this.units[this.index].attack(this.enemies[target]); //this.units[ind]              
         }
+        // else if(action == "habilidade"){
+        //     this.units[this.index].habilidade(this.enemies[target]);
+        // }
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
     endBattle: function(resultado) {       
-        // clear state, remove sprites
+
+        // remove os sprites e limpa a tela.
         this.heroes.length = 0;
         this.enemies.length = 0;
         for(var i = 0; i < this.units.length; i++) {
-            // link item
             this.units[i].destroy();            
         }
         this.units.length = 0;
        
-        din_ant = dinheiros;
-        dinheiros += 30;
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+        dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
 
-        // sleep the UI
-        this.scene.sleep('UIScene');
+        this.scene.sleep('UIScene'); //Sai da cena de combate
 
-        if(resultado == 1){
-            // var txt = this.add.text(210, 180, "Victory!!!");
-            // this.add.existing(txt);
-            this.scene.start('VictoryScene');
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            this.scene.start('VictoryScene'); 
             
         }
-        else if(resultado == 2){
-            // var txt = this.add.text(210, 180, "GAME OVER!!!");
-            // this.add.existing(txt);
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
             this.scene.start('DefeatScene');
         }
         
@@ -344,6 +347,91 @@ var Unit = new Phaser.Class({
 
         }
     },
+    // habilidade: function(target){
+    //     var r;
+    //     do{
+    //         r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
+    //     }while(r <= 20);
+        
+    //     if(MANA_Y <= 0 && this.type == "Yuusha"){
+    //         out_of_mana = 1;
+    //     }
+    //     else if(MANA_H <= 0 && this.type == "Hime"){
+    //         out_of_mana = 1;
+    //     }
+    //     else if(MANA_C <= 0 && this.type == "Crassus"){
+    //         out_of_mana = 1;
+    //     }
+    //     else if(MANA_M <= 0 && this.type == "Marielle"){
+    //         out_of_mana = 1;
+    //     }
+
+    //     if(target.living && (r >= target.ca + 3 && r <= 20) && out_of_mana == 0){
+    //         if(this.type == "Yuusha"){
+    //             MANA_Y -= 3;
+    //             target.takeDamage(this.damage + 4);    
+    //             this.scene.events.emit("Message", "Acertou o Corte-X!\n" + " Dano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
+    //             atk_acertados_y++;
+    //             dano_y = dano_y + this.damage + 4;
+    //         }
+    //         else if(this.type == "Hime"){
+    //             cura_total = 0;
+    //             MANA_H -= 5;
+    //             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
+    //                 HP_Y += 2;
+    //                 cura_total += 2;
+    //             }
+
+    //             if(HP_H < HPT_H && HPT_H >= HP_H + 2){
+    //                 HP_H += 2;
+    //                 cura_total += 2;
+    //             }
+                
+    //             if(HP_C < HPT_C && HPT_C >= HP_C + 2){
+    //                 HP_C += 2;
+    //                 cura_total += 2;
+    //             }
+
+    //             if(HP_M < HPT_M && HPT_M >= HP_M + 2){
+    //                 HP_M += 2;
+    //                 cura_total += 2;
+    //             }
+    //             this.scene.events.emit("Message", "Acertou a Palavra Curativa!\n" + " Cura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
+    //         }
+    //         else if(this.type == "Crassus"){
+    //             MANA_C -= 4;
+    //             target.takeDamage(INT_C + 6);    
+    //             this.scene.events.emit("Message", "Acertou a Bola de Fogo!\n" + " Dano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
+    //             atk_acertados_c++;
+    //             dano_c = dano_c + INT_C + 6;
+    //         }
+    //         else if(this.type == "Marielle"){
+    //             MANA_M -= 3;
+    //             target.takeDamage(VEL_C + 3);
+    //             this.scene.events.emit("Message", "Acertou as Flechas de Gelo!\n" + " Dano do ataque: " +  (VEL_C + 3) + ".\n" + "Resultado do dado: " + r);
+    //             atk_acertados_m++;
+    //             dano_m = dano_m + VEL_C + 3;
+    //         }   
+            
+    //     }
+    //     else{
+            
+    //         this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
+    //         if(this.type == "Yuusha"){
+    //             atk_falhos_y++;
+    //         }
+    //         else if(this.type == "Hime"){
+    //             atk_falhos_h++;
+    //         }
+    //         else if(this.type == "Crassus"){
+    //             atk_falhos_c++;
+    //         }
+    //         else if(this.type == "Marielle"){
+    //             atk_falhos_m++;
+    //         }
+            
+    //     }
+    // },
     takeDamage: function(damage) {
         this.hp = this.hp - damage;
         if(this.hp <= 0) {
@@ -516,7 +604,7 @@ var MenuItem = new Phaser.Class({
     initialize:
             
     function MenuItem(x, y, text, scene) {
-        if(text == "Aumentar HP dos personagens" || text == "Aumentar FORÇA dos personagens" || text == "Aumentar VELOCIDADE dos personagens" || text == "Aumentar DEFESA dos personagens" || text == "Aumentar ATAQUE BASE dos personagens" || text == "Voltar para o mapa"){
+        if(text == "Aumentar HP dos personagens" || text == "Aumentar FORÇA dos personagens" || text == "Aumentar VELOCIDADE dos personagens" || text == "Aumentar DEFESA dos personagens" || text == "Aumentar INTELIGÊNCIA dos personagens" || text == "Aumentar ATAQUE BASE dos personagens" || text == "Voltar para o mapa"){
             Phaser.GameObjects.Text.call(this, scene, x, y, text, { color: "#ffffff", align: "left", fontSize: 15});
             this.setStroke("#000000", 6);
             
@@ -558,7 +646,7 @@ var Menu = new Phaser.Class({
         this.selected = false;
     },
     addMenuItem3: function(unit) {
-        var menuItem = new MenuItem(0, this.menuItems.length * 54, unit, this.scene);
+        var menuItem = new MenuItem(0, this.menuItems.length * 46.5, unit, this.scene);
         this.menuItems.push(menuItem);
         this.add(menuItem);
         return menuItem;        
@@ -590,6 +678,10 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = this.menuItems.length - 1;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
+        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
+        //     selecionou = this.menuItems[this.menuItemIndex];
+        // }
+        
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
     },
@@ -601,6 +693,9 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = 0;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
+        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
+        //     selecionou = this.menuItems[this.menuItemIndex];
+        // }
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
     },
@@ -686,6 +781,7 @@ var ActionsMenu = new Phaser.Class({
     function ActionsMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
         this.addMenuItem("Attack");
+        //this.addMenuItem("Habilidade");
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -748,11 +844,13 @@ var LojaMenu = new Phaser.Class({
         lista_loja[2] = "Aumentar VELOCIDADE dos personagens";
         this.addMenuItem3("Aumentar DEFESA dos personagens");
         lista_loja[3] = "Aumentar DEFESA dos personagens";
+        this.addMenuItem3("Aumentar INTELIGÊNCIA dos personagens");
+        lista_loja[4] = "Aumentar INTELIGÊNCIA dos personagens";
         this.addMenuItem3("Aumentar ATAQUE BASE dos personagens");
-        lista_loja[4] = "Aumentar ATAQUE BASE dos personagens";
+        lista_loja[5] = "Aumentar ATAQUE BASE dos personagens";
 
         this.addMenuItem3("Voltar para o mapa");
-        lista_loja[5] = "Voltar para o mapa";
+        lista_loja[6] = "Voltar para o mapa";
 
     },
     confirm: function() {      
@@ -1125,6 +1223,31 @@ var Loja = new Phaser.Class({
         // add menus to the container
         this.menus.add(this.lojaMenu);
 
+        var preco1 = this.add.text(404, 125, "100 moedas", {color: "#ffffff"});
+        preco1.setStroke("#000000", 6);
+        this.add.existing(preco1);
+        
+        var preco2 = this.add.text(404, 170, "260 moedas", {color: "#ffffff"});
+        preco2.setStroke("#000000", 6);
+        this.add.existing(preco2);
+
+        var preco3 = this.add.text(404, 218, "170 moedas", {color: "#ffffff"});
+        preco3.setStroke("#000000", 6);
+        this.add.existing(preco3);
+
+        var preco4 = this.add.text(404, 265, "230 moedas", {color: "#ffffff"});
+        preco4.setStroke("#000000", 6);
+        this.add.existing(preco4);
+
+        var preco5 = this.add.text(404, 312, "280 moedas", {color: "#ffffff"});
+        preco5.setStroke("#000000", 6);
+        this.add.existing(preco5);
+
+        var preco6 = this.add.text(404, 360, "330 moedas", {color: "#ffffff"});
+        preco6.setStroke("#000000", 6);
+        this.add.existing(preco6);
+
+
         // listen for keyboard events
         this.input.keyboard.on("keydown", this.onKeyInput, this); 
         
@@ -1162,10 +1285,10 @@ var Loja = new Phaser.Class({
         if(action == "enter" && cm == "Aumentar HP dos personagens") {            
             if(dinheiros >= 100){
                 this.events.emit("Message", "Compra realizada!");
-                HP_Y += 2;
-                HP_H += 2;
-                HP_C += 2;
-                HP_M += 2;
+                HPT_Y += 2;
+                HPT_H += 2;
+                HPT_C += 2;
+                HPT_M += 2;
                 dinheiros -= 100;
                 
             }
@@ -1175,6 +1298,91 @@ var Loja = new Phaser.Class({
             this.currentMenu = this.lojaMenu;   
             this.lojaMenu.select(0); 
             sele2 = 0;              
+        }
+        else if(action == "enter" && cm == "Aumentar FORÇA dos personagens") {            
+            if(dinheiros >= 260){
+                this.events.emit("Message", "Compra realizada!");
+                FOR_Y += 1;
+                FOR_H += 1;
+                FOR_C += 1;
+                FOR_M += 1;
+                dinheiros -= 260;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(1); 
+            sele2 = 1;              
+        }
+        else if(action == "enter" && cm == "Aumentar VELOCIDADE dos personagens") {            
+            if(dinheiros >= 170){
+                this.events.emit("Message", "Compra realizada!");
+                VEL_Y += 1;
+                VEL_H += 1;
+                VEL_C += 1;
+                VEL_M += 1;
+                dinheiros -= 170;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(2); 
+            sele2 = 2;              
+        }
+        else if(action == "enter" && cm == "Aumentar DEFESA dos personagens") {            
+            if(dinheiros >= 230){
+                this.events.emit("Message", "Compra realizada!");
+                DEF_Y += 1;
+                DEF_H += 1;
+                DEF_C += 1;
+                DEF_M += 1;
+                dinheiros -= 230;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(3); 
+            sele2 = 3;              
+        }
+        else if(action == "enter" && cm == "Aumentar INTELIGÊNCIA dos personagens") {            
+            if(dinheiros >= 270){
+                this.events.emit("Message", "Compra realizada!");
+                DEF_Y += 1;
+                DEF_H += 1;
+                DEF_C += 1;
+                DEF_M += 1;
+                dinheiros -= 270;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(4); 
+            sele2 = 4;              
+        }
+        else if(action == "enter" && cm == "Aumentar ATAQUE BASE dos personagens") {            
+            if(dinheiros >= 330){
+                this.events.emit("Message", "Compra realizada!");
+                ATKB_Y += 1;
+                ATKB_H += 1;
+                ATKB_C += 1;
+                ATKB_M += 1;
+                dinheiros -= 330;
+                
+            }
+            else{
+                this.events.emit("Message", "Compra rejeitada! \n Não possui dinheiro suficiente.");
+            }
+            this.currentMenu = this.lojaMenu;   
+            this.lojaMenu.select(5); 
+            sele2 = 5;              
         }
         else if(action == "enter" && cm == "Voltar para o mapa"){
             this.scene.sleep('Loja');
@@ -1285,6 +1493,13 @@ var UIScene = new Phaser.Class({
         this.enemiesMenu.deselect();
         this.currentMenu = null;
         this.battleScene.receivePlayerSelection("attack", index);
+        // if(selecionou == "Attack"){
+        //     this.battleScene.receivePlayerSelection("attack", index);    
+        // }
+        // else if(selecionou == "Habilidade"){
+        //     this.battleScene.receivePlayerSelection("habilidade", index);
+        // }
+        
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - CA_S) / 20 ) * 100;
@@ -1308,6 +1523,7 @@ var UIScene = new Phaser.Class({
         // then we make actions menu active
         this.heroesMenu.select(id);
         this.actionsMenu.select(0);
+        selecionou = "Attack";
         this.currentMenu = this.actionsMenu;
     },
     // we have action selected and we make the enemies menu active
