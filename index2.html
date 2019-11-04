@@ -19,54 +19,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    
+    <script src="js/phaser.min.js"></script>       
+    <script src="js/game.js"></script>
+    <script src="js/start.js"></script>
+
+
 </head>
 <body id="bodi">
-
-<!--
-<section id="jooj">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
-            <div id="col-md-12">    
-                <script type="text/javascript">
-
-                    var config = {
-                        type: Phaser.CANVAS,
-                        width: 1600,
-                        height: 900,
-                        scene: {
-                            preload: preload,
-                            create: create,
-                            update: update
-                        }
-                    };
-                
-                    var game = new Phaser.Game(config);
-                
-                    function preload ()
-                    {
-                        this.load.image('mapa', 'Imagens/fundo-2.3.png');
-                    }
-                
-                    function create ()
-                    {
-                        this.add.image(800, 450, 'mapa');
-                    }
-                
-                    function update ()
-                    {
-                    }
-                
-                </script>
-            </div>
-        </div>
-    </div>
-</section>    
--->
     
     <section id="mapa">
         <div class="container-fluid">
-            <div class="row justify-content-between">
+            <div class="row">
                 <div class="col-md-3">
                     <a href="index.html">
                         <div id="botao">
@@ -74,17 +37,10 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3">
-                    <a href="index3.html">
-                        <div id="fase-teste">
-                            <h1>Vem pra fase</h1>
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </section>
     
-
+    <div id="content" style="display: block; width: 100%; text-align: center; float:left; margin-top: -11.5%;"></div>
 </body>
 </html>

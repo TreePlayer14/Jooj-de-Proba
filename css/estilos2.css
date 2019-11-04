@@ -4,9 +4,10 @@ section#jooj{
 }
 */
 #bodi{
-    background: url("../Imagens/fundo-2.2.png") no-repeat fixed center top;
-    background-size: 90%;
+    background: url("../Imagens/fundo-2.4.png") no-repeat center top;
+    background-size: 100%;
     background-color: #000;
+    padding-top:18%;
 }
 
 
@@ -17,11 +18,11 @@ section#jooj{
     width:60%;
     height:auto;
     text-align: center;
-    margin-left:-32%;
+    margin-left:25%;
 }
 
 section#mapa{
-    margin-top:45%;
+    margin-top:1%;
 }
 
 section#mapa h1{
@@ -49,7 +50,7 @@ section#mapa h1:hover{
     width:60%;
     height:auto;
     text-align: center;
-    margin-left:67%;
+    margin-left:40%;
 }
 
 #fase-teste:hover{
