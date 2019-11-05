@@ -5,10 +5,10 @@ var txt = [], sele, teste = [], obj, cont = 0, pr, teste1 = [], funciona, tx, li
 var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 10; //CA = 8
 
 //Atributos da Hime:
-var HPT_H = 7, HP_H = HPT_H, VEL_H = 2, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 10; //CA = 4
+var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 10; //CA = 4
 
 //Atributos do Crassus:
-var HPT_C = 9, HP_C = HPT_C, VEL_C = 0, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 10; //CA = 7
+var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 10; //CA = 7
 
 //Atributos da Marielle:
 var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 10; //CA = 7 
@@ -23,8 +23,8 @@ var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_h
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
 
 //Variáveis Random 3
-var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0, izo = [];
-var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0;
+var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [];
 
 var BootScene = new Phaser.Class({
 
@@ -120,15 +120,7 @@ var BattleScene = new Phaser.Class({
 
         contadorzin = 0;
 
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     for(var j = tam_vetor_herois ; j > i ; j--){
-        //         if(vel_ordenada[j] > vel_ordenada[j-1]){
-        //             auxiliar = vel_ordenada[j];
-        //             vel_ordenada[j] = vel_ordenada[j-1];
-        //             vel_ordenada[j-1] = auxiliar;
-        //         }
-        //     }
-        // }      
+        ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];  
         
         ih = 0;
         max = 0;
@@ -140,67 +132,47 @@ var BattleScene = new Phaser.Class({
             this.endBattle(this.checkEndBattle());
             return;
         }
-        
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     if(velocidades[i] == vel_ordenada[contadorzin] && this.heroes[i].living){
-        //         if(vel_ordenada[contadorzin - 1] == vel_ordenada[contadorzin] && contadorzin != 0){
-        //             max = velocidades[i];
-        //             ind = i + 1;
-        //             break;
-        //         }
-        //         else{
-        //             max = velocidades[i];
-        //             ind = i;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        // contadorzin++;
-
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     izo[i] = this.add.text(0 + 20*ih, 0 + 20*iii, vel_ordenada[i]);
-        //     this.add.existing(izo[i]);
-        //     ih++;
-        // }
-        // iii++;
-
-        // var izo = this.add.text(220 + 20*ih, 223, max, {color: "#000000"});
-        // this.add.existing(izo);
-        // ih++;
 
         do { 
             
-            this.index++;
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+    
+            contadorzin++;
 
             // // if there are no more units, we start again from the first one
-            if(this.index >= this.units.length) {
-                this.index = 0;
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
             }
 
-        } while(!this.units[this.index].living);
+        } while(!this.units[ind].living);
         // if its player hero
-        if(this.units[this.index] instanceof PlayerCharacter) {
-            // var izo = this.add.text(220 + 20*ih, 223, "Hero", {color: "#000000"});
-            // this.add.existing(izo);
-            // ih++;
-            // we need the player to select action and then enemy
-            this.events.emit("PlayerSelect", this.index); //ind);
-        } else { // else if its enemy unit
+        if(this.units[ind] instanceof PlayerCharacter) {
             
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind); //ind);
+            izo.destroy();
+            izo = this.add.text(180, 20, "Turno do Jogador", {color: "#3A68FF"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(175, 20, "Turno do Oponente", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
             // pick random living hero to be attacked
             var r;
             do {
                 r = Math.floor(Math.random() * this.heroes.length);
             } while(!this.heroes[r].living) 
             // call the enemy's attack function 
-            this.units[this.index].attack(this.heroes[r]);  
+            this.units[ind].attack(this.heroes[r]);  
             // add timer for the next turn, so will have smooth gameplay
             this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
-            // contadorzin = 0;
-            // ind = -1;
-            // max = 0;
-
         }
     },
     // check for game over or victory
@@ -229,11 +201,12 @@ var BattleScene = new Phaser.Class({
     // when the player have selected the enemy to be attacked
     receivePlayerSelection: function(action, target) {
         if(action == "attack") {            
-            this.units[this.index].attack(this.enemies[target]); //this.units[ind]              
+            this.units[ind].attack(this.enemies[target]); //this.units[ind]              
         }
         // else if(action == "habilidade"){
         //     this.units[this.index].habilidade(this.enemies[target]);
         // }
+
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
@@ -322,7 +295,7 @@ var Unit = new Phaser.Class({
                 }
             }   
             else{
-                this.scene.events.emit("Message", "Turno do oponente!!!  \nAcertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+                this.scene.events.emit("Message", "Acertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
             }
             
         }
@@ -343,7 +316,7 @@ var Unit = new Phaser.Class({
                 }
             }
             else{
-                this.scene.events.emit("Message", "Turno do oponente!!!  \nErrou o ataque!\n" + "Resultado do dado: " + r);
+                this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
             }
             
 
@@ -1489,6 +1462,9 @@ var UIScene = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
+        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
         // first move
         this.battleScene.nextTurn();  
     },
