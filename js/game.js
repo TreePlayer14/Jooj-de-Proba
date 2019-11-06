@@ -105,6 +105,22 @@ var BattleScene = new Phaser.Class({
         MANA_C = INT_C + 10;
         MANA_M = INT_M + 10;
 
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_S = HPT_S;
+        ligma1.hp = HPT_S;
+        ligma2.hp = HPT_S;
+
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
         herois = [ yuusha, healer, mage, archer ];
