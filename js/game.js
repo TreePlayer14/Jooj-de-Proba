@@ -24,7 +24,7 @@ var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0
 
 //Variáveis Random 3
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
-var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [];
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de;
 
 var BootScene = new Phaser.Class({
 
@@ -127,6 +127,8 @@ var BattleScene = new Phaser.Class({
         ind = -1;
     },
     nextTurn: function() {
+        
+        turno_de = ordem_turnos[contadorzin].type;
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
@@ -153,7 +155,7 @@ var BattleScene = new Phaser.Class({
         if(this.units[ind] instanceof PlayerCharacter) {
             
             // we need the player to select action and then enemy
-            this.events.emit("PlayerSelect", ind); //ind);
+            this.events.emit("PlayerSelect", ind);
             izo.destroy();
             izo = this.add.text(180, 20, "Turno do Jogador", {color: "#3A68FF"});
             izo.setStroke("#000000", 6);
@@ -203,9 +205,45 @@ var BattleScene = new Phaser.Class({
         if(action == "attack") {            
             this.units[ind].attack(this.enemies[target]); //this.units[ind]              
         }
-        // else if(action == "habilidade"){
-        //     this.units[this.index].habilidade(this.enemies[target]);
-        // }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime"){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
 
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
@@ -322,225 +360,150 @@ var Unit = new Phaser.Class({
 
         }
     },
-    // habilidade: function(target){
-    //     var r;
-    //     do{
-    //         r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-    //     }while(r <= 20);
+    habilidade: function(target){
+        var r;
+        r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
         
-    //     if(MANA_Y <= 0 && this.type == "Yuusha"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_H <= 0 && this.type == "Hime"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_C <= 0 && this.type == "Crassus"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_M <= 0 && this.type == "Marielle"){
-    //         out_of_mana = 1;
-    //     }
+        if(MANA_Y <= 0 && this.type == "Yuusha"){
+            out_of_mana = 1;
+        }
+        else if(MANA_H <= 0 && this.type == "Hime"){
+            out_of_mana = 1;
+        }
+        else if(MANA_C <= 0 && this.type == "Crassus"){
+            out_of_mana = 1;
+        }
+        else if(MANA_M <= 0 && this.type == "Marielle"){
+            out_of_mana = 1;
+        }
 
-    //     if(target.living && (r >= target.ca + 3 && r <= 20) && out_of_mana == 0){
-    //         if(this.type == "Yuusha"){
-    //             MANA_Y -= 3;
-    //             target.takeDamage(this.damage + 4);    
-    //             this.scene.events.emit("Message", "Acertou o Corte-X!\n" + " Dano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_y++;
-    //             dano_y = dano_y + this.damage + 4;
-    //         }
-    //         else if(this.type == "Hime"){
-    //             cura_total = 0;
-    //             MANA_H -= 5;
-    //             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
-    //                 HP_Y += 2;
-    //                 cura_total += 2;
-    //             }
+        if(this.type == "Hime"){
+            cura_total = 0;
+            MANA_H -= 5;
+            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
+                HP_Y += 2;
 
-    //             if(HP_H < HPT_H && HPT_H >= HP_H + 2){
-    //                 HP_H += 2;
-    //                 cura_total += 2;
-    //             }
+                cura_total += 2;
+            }
+            else{
+                var dif_hp = HPT_Y - HP_Y;
+                HP_Y += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            if(HP_H < HPT_H && HPT_H >= HP_H + 2){
+                HP_H += 2;
+                cura_total += 2;
+            }
+            else{
+                var dif_hp = HPT_H - HP_H;
+                HP_H += dif_hp;
+                cura_total += dif_hp;
+            }
+            
+            if(HP_C < HPT_C && HPT_C >= HP_C + 2){
+                HP_C += 2;
+                cura_total += 2;
+            }
+            else{
+                var dif_hp = HPT_C - HP_C;
+                HP_C += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            if(HP_M < HPT_M && HPT_M >= HP_M + 2){
+                HP_M += 2;
+                cura_total += 2;
+            }
+            else{
+                var dif_hp = HPT_M - HP_M;
+                HP_M += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            this.scene.events.emit("Message", "Acertou a Palavra Curativa!\n" + " Cura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
+        }
+        else{
+            if(target.living && (r >= target.ca + 3 && r <= 20) && out_of_mana == 0){
+                if(this.type == "Yuusha"){
+                    MANA_Y -= 3;
+                    target.takeDamage(this.damage + 4);    
+                    this.scene.events.emit("Message", "Acertou o Corte-X!\n" + " Dano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_y++;
+                    dano_y = dano_y + this.damage + 4;
+                }
+                else if(this.type == "Crassus"){
+                    MANA_C -= 4;
+                    target.takeDamage(INT_C + 6);    
+                    this.scene.events.emit("Message", "Acertou a Bola de Fogo!\n" + " Dano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_c++;
+                    dano_c = dano_c + INT_C + 6;
+                }
+                else if(this.type == "Marielle"){
+                    MANA_M -= 3;
+                    target.takeDamage(VEL_C + 3);
+                    this.scene.events.emit("Message", "Acertou as Flechas de Gelo!\n" + " Dano do ataque: " +  (VEL_C + 3) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_m++;
+                    dano_m = dano_m + VEL_C + 3;
+                }   
                 
-    //             if(HP_C < HPT_C && HPT_C >= HP_C + 2){
-    //                 HP_C += 2;
-    //                 cura_total += 2;
-    //             }
-
-    //             if(HP_M < HPT_M && HPT_M >= HP_M + 2){
-    //                 HP_M += 2;
-    //                 cura_total += 2;
-    //             }
-    //             this.scene.events.emit("Message", "Acertou a Palavra Curativa!\n" + " Cura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
-    //         }
-    //         else if(this.type == "Crassus"){
-    //             MANA_C -= 4;
-    //             target.takeDamage(INT_C + 6);    
-    //             this.scene.events.emit("Message", "Acertou a Bola de Fogo!\n" + " Dano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_c++;
-    //             dano_c = dano_c + INT_C + 6;
-    //         }
-    //         else if(this.type == "Marielle"){
-    //             MANA_M -= 3;
-    //             target.takeDamage(VEL_C + 3);
-    //             this.scene.events.emit("Message", "Acertou as Flechas de Gelo!\n" + " Dano do ataque: " +  (VEL_C + 3) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_m++;
-    //             dano_m = dano_m + VEL_C + 3;
-    //         }   
-            
-    //     }
-    //     else{
-            
-    //         this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
-    //         if(this.type == "Yuusha"){
-    //             atk_falhos_y++;
-    //         }
-    //         else if(this.type == "Hime"){
-    //             atk_falhos_h++;
-    //         }
-    //         else if(this.type == "Crassus"){
-    //             atk_falhos_c++;
-    //         }
-    //         else if(this.type == "Marielle"){
-    //             atk_falhos_m++;
-    //         }
-            
-    //     }
-    // },
+            }
+            else{
+                
+                this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
+                if(this.type == "Yuusha"){
+                    atk_falhos_y++;
+                }
+                else if(this.type == "Hime"){
+                    atk_falhos_h++;
+                }
+                else if(this.type == "Crassus"){
+                    atk_falhos_c++;
+                }
+                else if(this.type == "Marielle"){
+                    atk_falhos_m++;
+                }
+                
+            }
+        }
+    },
     takeDamage: function(damage) {
         this.hp = this.hp - damage;
-        if(this.hp <= 0) {
-            // if(this.type instanceof PlayerCharacter){
-            //     tam_vetor_herois_ord--;
-            //     if(this.type == "Yuusha"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_H, VEL_C, VEL_M ];
-            //             vel_rem = VEL_Y;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_C, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_H, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_H, VEL_C ];
-            //             }
-            //             vel_rem2 = VEL_Y;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //         }
-                    
-            //     }
-            //     else if(this.type == "Hime"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_C, VEL_M ];
-            //             vel_rem = VEL_H;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_C, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_Y, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_Y, VEL_C ];
-            //             }
-            //             vel_rem2 = VEL_H;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
-            //     else if(this.type == "Crassus"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_M ];
-            //             vel_rem = VEL_C;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_H, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_Y, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_Y, VEL_H ];
-            //             }
-            //             vel_rem2 = VEL_C;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
-            //     else if(this.type == "Marielle"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_C ];
-            //             vel_rem = VEL_M;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_H, VEL_C ];
-            //             }
-            //             else if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_Y, VEL_C ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_Y, VEL_H ];
-            //             }
-            //             vel_rem2 = VEL_M;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
+        if(this.type == "Yuusha"){
+            HP_Y -= damage;
+        }
+        else if(this.type == "Hime"){
+            HP_H -= damage;
+        }
+        else if(this.type == "Crassus"){
+            HP_C -= damage;
+        }
+        else if(this.type == "Marielle"){
+            HP_M -= damage;
+        }
+        else if(this.type == "Slime"){
+            HP_S -= damage;
+        }
 
-            //     for(var i = 0 ; i < tam_vetor_herois ; i++){
-            //         for(var j = tam_vetor_herois ; j > i ; j--){
-            //             if(vel_ordenada[j] > vel_ordenada[j-1]){
-            //                 auxiliar = vel_ordenada[j];
-            //                 vel_ordenada[j] = vel_ordenada[j-1];
-            //                 vel_ordenada[j-1] = auxiliar;
-            //             }
-            //         }
-            //     }
-            // }
+        if(this.hp <= 0) {
             this.hp = 0;
+
+            if(this.type == "Yuusha"){
+                HP_Y = 0;
+            }
+            else if(this.type == "Hime"){
+                HP_H = 0;
+            }
+            else if(this.type == "Crassus"){
+                HP_C = 0;
+            }
+            else if(this.type == "Marielle"){
+                HP_M = 0;
+            }
+            else if(this.type == "Slime"){
+                HP_S = 0;
+            }
+
             this.menuItem.unitKilled();
             this.living = false;
             this.visible = false;   
@@ -653,9 +616,6 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = this.menuItems.length - 1;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
-        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
-        //     selecionou = this.menuItems[this.menuItemIndex];
-        // }
         
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
@@ -668,9 +628,7 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = 0;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
-        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
-        //     selecionou = this.menuItems[this.menuItemIndex];
-        // }
+
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
     },
@@ -756,7 +714,7 @@ var ActionsMenu = new Phaser.Class({
     function ActionsMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
         this.addMenuItem("Attack");
-        //this.addMenuItem("Habilidade");
+        this.addMenuItem("Habilidade");
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -1163,7 +1121,6 @@ var DefeatScene = new Phaser.Class({
             this.scene.sleep('UIScene3');
             //Start mapa
             
-            // this.scene.switch('Mapa');
             this.scene.wake('UIScene2');
             
         }
@@ -1433,6 +1390,8 @@ var UIScene = new Phaser.Class({
         this.menus.add(this.actionsMenu);
         this.menus.add(this.enemiesMenu);
 
+        selecionou = "Attack";
+
         // listen for keyboard events
         this.input.keyboard.on("keydown", this.onKeyInput, this);   
         
@@ -1465,6 +1424,9 @@ var UIScene = new Phaser.Class({
         izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
         izo.setStroke("#000000", 6);
         this.add.existing(izo);
+
+        selecionou = "Attack";
+
         // first move
         this.battleScene.nextTurn();  
     },
@@ -1474,17 +1436,18 @@ var UIScene = new Phaser.Class({
         this.actionsMenu.deselect();
         this.enemiesMenu.deselect();
         this.currentMenu = null;
-        this.battleScene.receivePlayerSelection("attack", index);
-        // if(selecionou == "Attack"){
-        //     this.battleScene.receivePlayerSelection("attack", index);    
-        // }
-        // else if(selecionou == "Habilidade"){
-        //     this.battleScene.receivePlayerSelection("habilidade", index);
-        // }
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Attack"){
+            this.battleScene.receivePlayerSelection("attack", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
         
     },
     onPlayerSelect: function(id) {
-        var prob = ((21 - CA_S) / 20 ) * 100;
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20 ) * 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -1505,14 +1468,20 @@ var UIScene = new Phaser.Class({
         // then we make actions menu active
         this.heroesMenu.select(id);
         this.actionsMenu.select(0);
-        //selecionou = "Attack";
+        selecionou = "Attack";
         this.currentMenu = this.actionsMenu;
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedAction: function() {
-        this.currentMenu = this.enemiesMenu;
-        this.enemiesMenu.select(0);
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Attack"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){
+            this.onEnemy(null);
+        }
+        
     },
     remapHeroes: function() {
         var heroes = this.battleScene.heroes;
@@ -1526,8 +1495,14 @@ var UIScene = new Phaser.Class({
         if(this.currentMenu && this.currentMenu.selected) {
             if(event.code === "ArrowUp") {
                 this.currentMenu.moveSelectionUp();
+                if(this.currentMenu == this.actionsMenu){
+                    selecionou = "Attack";
+                }
             } else if(event.code === "ArrowDown") {
                 this.currentMenu.moveSelectionDown();
+                if(this.currentMenu == this.actionsMenu){
+                    selecionou = "Habilidade";
+                }
             } else if(event.code === "ArrowRight" || event.code === "Shift") {
 
             } else if(event.code === "Space" || event.code === "ArrowLeft") {
