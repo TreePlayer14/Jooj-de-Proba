@@ -14,10 +14,10 @@ var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, 
 var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 10; //CA = 7 
 
 //Atributos do Slime:
-var HP_S = 10, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+var HPT_S =10, HP_S=HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Variáveis Random 2
-var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
+var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [], txt2=[];
 
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
@@ -80,23 +80,23 @@ var BattleScene = new Phaser.Class({
         exec++;
 
         //player character - Crassus
-        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C);
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
         this.add.existing(mage);
 
         //player character - Marielle
-        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M);        
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
         this.add.existing(archer);
 
         // player character - Yuusha
-        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y);
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
         this.add.existing(yuusha);
 
         // player character - Hime
-        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H);        
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S); 
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -173,12 +173,12 @@ var BattleScene = new Phaser.Class({
             // we need the player to select action and then enemy
             this.events.emit("PlayerSelect", ind);
             izo.destroy();
-            izo = this.add.text(180, 20, "Turno do Jogador", {color: "#3A68FF"});
+            izo = this.add.text(215, 20, "Seu Turno!", {color: "#4BFF50"});
             izo.setStroke("#000000", 6);
             this.add.existing(izo);
         } else { // else if its enemy unit
             izo.destroy();
-            izo = this.add.text(175, 20, "Turno do Oponente", {color: "#FF2A1E"});
+            izo = this.add.text(175, 20, "Turno do Oponente!", {color: "#FF2A1E"});
             izo.setStroke("#000000", 6);
             this.add.existing(izo);
 
@@ -310,12 +310,13 @@ var Unit = new Phaser.Class({
 
     initialize:
 
-    function Unit(scene, x, y, texture, type, hp, damage, ca) {
+    function Unit(scene, x, y, texture, type, hp, damage, ca, mana) {
         Phaser.GameObjects.Sprite.call(this, scene, x, y, texture);
         this.type = type;
         this.maxHp = this.hp = hp;
         this.damage = damage; // default damage
         this.ca = ca;
+	this.mana = mana;
         this.living = true;         
         this.menuItem = null;                
     },
@@ -395,7 +396,7 @@ var Unit = new Phaser.Class({
 
         if(this.type == "Hime"){
             cura_total = 0;
-            MANA_H -= 5;
+	    this.mana -= 5;
             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
                 HP_Y += 2;
 
@@ -442,21 +443,21 @@ var Unit = new Phaser.Class({
         else{
             if(target.living && (r >= target.ca + 3 && r <= 20) && out_of_mana == 0){
                 if(this.type == "Yuusha"){
-                    MANA_Y -= 3;
+                    this.mana -= 3;
                     target.takeDamage(this.damage + 4);    
                     this.scene.events.emit("Message", "Acertou o Corte-X!\n" + " Dano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_y++;
                     dano_y = dano_y + this.damage + 4;
                 }
                 else if(this.type == "Crassus"){
-                    MANA_C -= 4;
+                    this.mana -= 4;
                     target.takeDamage(INT_C + 6);    
                     this.scene.events.emit("Message", "Acertou a Bola de Fogo!\n" + " Dano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_c++;
                     dano_c = dano_c + INT_C + 6;
                 }
                 else if(this.type == "Marielle"){
-                    MANA_M -= 3;
+                    this.mana -= 3;
                     target.takeDamage(VEL_C + 3);
                     this.scene.events.emit("Message", "Acertou as Flechas de Gelo!\n" + " Dano do ataque: " +  (VEL_C + 3) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_m++;
@@ -543,8 +544,8 @@ var PlayerCharacter = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function PlayerCharacter(scene, x, y, texture, type, hp, damage, escala, ca) {
-        Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
+    function PlayerCharacter(scene, x, y, texture, type, hp, damage, escala, ca, mana) {
+        Unit.call(this, scene, x, y, texture, type, hp, damage, ca, mana);
         // flip the image so I don"t have to edit it manually
         this.flipX = true;
         this.setScale(escala);
@@ -1467,6 +1468,7 @@ var UIScene = new Phaser.Class({
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
+	    txt2[i].destroy();
             pr.destroy();
         }
         
@@ -1474,6 +1476,10 @@ var UIScene = new Phaser.Class({
             var hHp = this.battleScene.heroes[i].hp;
             txt[i] = this.add.text(440, 353 + 20*i, hHp);
             this.add.existing(txt[i]);
+	    var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(480, 353 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
 
             if(i == 0){
                 pr = this.add.text(270, 345 + 20*i, "Acerto: \n  " + prob + "%");
