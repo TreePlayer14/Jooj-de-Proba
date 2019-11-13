@@ -628,7 +628,7 @@ var BattleScene2 = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
+        dinheiros += 150; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene4'); //Sai da cena de combate
 
@@ -1680,27 +1680,27 @@ var Loja = new Phaser.Class({
         // add menus to the container
         this.menus.add(this.lojaMenu);
 
-        var preco1 = this.add.text(404, 125, "100 moedas", {color: "#ffffff"});
+        var preco1 = this.add.text(404, 125, "40 moedas", {color: "#ffffff"});
         preco1.setStroke("#000000", 6);
         this.add.existing(preco1);
         
-        var preco2 = this.add.text(404, 170, "260 moedas", {color: "#ffffff"});
+        var preco2 = this.add.text(404, 170, "104 moedas", {color: "#ffffff"});
         preco2.setStroke("#000000", 6);
         this.add.existing(preco2);
 
-        var preco3 = this.add.text(404, 218, "170 moedas", {color: "#ffffff"});
+        var preco3 = this.add.text(404, 218, "68 moedas", {color: "#ffffff"});
         preco3.setStroke("#000000", 6);
         this.add.existing(preco3);
 
-        var preco4 = this.add.text(404, 265, "230 moedas", {color: "#ffffff"});
+        var preco4 = this.add.text(404, 265, "60 moedas", {color: "#ffffff"});
         preco4.setStroke("#000000", 6);
         this.add.existing(preco4);
 
-        var preco5 = this.add.text(404, 312, "280 moedas", {color: "#ffffff"});
+        var preco5 = this.add.text(404, 312, "112 moedas", {color: "#ffffff"});
         preco5.setStroke("#000000", 6);
         this.add.existing(preco5);
 
-        var preco6 = this.add.text(404, 360, "330 moedas", {color: "#ffffff"});
+        var preco6 = this.add.text(404, 360, "120 moedas", {color: "#ffffff"});
         preco6.setStroke("#000000", 6);
         this.add.existing(preco6);
 
@@ -1740,8 +1740,8 @@ var Loja = new Phaser.Class({
     },
     receiveLojaSelection: function(action, cm) {
         if(action == "enter" && cm == "Aumentar HP dos personagens") {            
-            if(dinheiros >= 100){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 40){
+                this.events.emit("Message", "Compra realizada!  HP aumentado em 2 unidades.");
                 HPT_Y += 2;
                 HP_Y = HPT_Y; 
                 HPT_H += 2;
@@ -1750,7 +1750,7 @@ var Loja = new Phaser.Class({
                 HP_C = HPT_C;
                 HPT_M += 2;
                 HP_M = HPT_M;
-                dinheiros -= 100;
+                dinheiros -= 40;
                 
             }
             else{
@@ -1761,13 +1761,13 @@ var Loja = new Phaser.Class({
             sele2 = 0;              
         }
         else if(action == "enter" && cm == "Aumentar FORÇA dos personagens") {            
-            if(dinheiros >= 260){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 104){
+                this.events.emit("Message", "Compra realizada!  FORÇA aumentada em 1 unidade.");
                 FOR_Y += 1;
                 FOR_H += 1;
                 FOR_C += 1;
                 FOR_M += 1;
-                dinheiros -= 260;
+                dinheiros -= 104;
                 
             }
             else{
@@ -1778,13 +1778,13 @@ var Loja = new Phaser.Class({
             sele2 = 1;              
         }
         else if(action == "enter" && cm == "Aumentar VELOCIDADE dos personagens") {            
-            if(dinheiros >= 170){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 68){
+                this.events.emit("Message", "Compra realizada!  VELOCIDADE aumentada em 1 unidade.");
                 VEL_Y += 1;
                 VEL_H += 1;
                 VEL_C += 1;
                 VEL_M += 1;
-                dinheiros -= 170;
+                dinheiros -= 68;
                 
             }
             else{
@@ -1795,13 +1795,13 @@ var Loja = new Phaser.Class({
             sele2 = 2;              
         }
         else if(action == "enter" && cm == "Aumentar DEFESA dos personagens") {            
-            if(dinheiros >= 230){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 60){
+                this.events.emit("Message", "Compra realizada!  DEFESA aumentada em 1 unidade.");
                 DEF_Y += 1;
                 DEF_H += 1;
                 DEF_C += 1;
                 DEF_M += 1;
-                dinheiros -= 230;
+                dinheiros -= 60;
                 
             }
             else{
@@ -1812,13 +1812,13 @@ var Loja = new Phaser.Class({
             sele2 = 3;              
         }
         else if(action == "enter" && cm == "Aumentar INTELIGÊNCIA dos personagens") {            
-            if(dinheiros >= 270){
-                this.events.emit("Message", "Compra realizada!");
-                DEF_Y += 1;
-                DEF_H += 1;
-                DEF_C += 1;
-                DEF_M += 1;
-                dinheiros -= 270;
+            if(dinheiros >= 112){
+                this.events.emit("Message", "Compra realizada!  INTELIGÊNCIA aumentada em 1 unidade.");
+                INT_Y += 1;
+                INT_H += 1;
+                INT_C += 1;
+                INT_M += 1;
+                dinheiros -= 112;
                 
             }
             else{
@@ -1829,13 +1829,13 @@ var Loja = new Phaser.Class({
             sele2 = 4;              
         }
         else if(action == "enter" && cm == "Aumentar ATAQUE BASE dos personagens") {            
-            if(dinheiros >= 330){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 120){
+                this.events.emit("Message", "Compra realizada!  ATAQUE BASE aumentado em 1 unidade.");
                 ATKB_Y += 1;
                 ATKB_H += 1;
                 ATKB_C += 1;
                 ATKB_M += 1;
-                dinheiros -= 330;
+                dinheiros -= 120;
                 
             }
             else{
