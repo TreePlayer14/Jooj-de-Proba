@@ -17,7 +17,7 @@ var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M,
 var SOR = 0;
 
 //Atributos do Slime:
-var HPT_S = 40, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -361,7 +361,7 @@ var BattleScene2 = new Phaser.Class({
 
     initialize:
 
-    function BattleScene ()
+    function BattleScene2 ()
     {
         Phaser.Scene.call(this, { key: "BattleScene2" });
     },
@@ -628,16 +628,16 @@ var BattleScene2 = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
+        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene4'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
-            this.scene.start('VictoryScene2'); 
+            this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
-            this.scene.start('DefeatScene2');
+            this.scene.start('DefeatScene');
         }
         
     },
@@ -2345,6 +2345,243 @@ var UIScene3 = new Phaser.Class({
                 this.currentMenu.confirm();
             } 
         }
+
+    },
+});
+
+var UIScene4 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene4 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene4" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene2");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        // first move
+        this.battleScene.nextTurn();  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
 
     },
 });
