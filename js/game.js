@@ -143,7 +143,21 @@ var BattleScene = new Phaser.Class({
 
         contadorzin = 0;
 
-        ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];  
+        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+        }
+        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+        }
         
         ih = 0;
         max = 0;
