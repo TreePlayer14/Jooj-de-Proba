@@ -2,28 +2,29 @@
 var txt = [], txt2 = [], sele, teste = [], obj, cont = 0, pr, pro, teste1 = [], funciona, tx, lista = [], cont2 = 0;
 
 //Atributos do Yuusha:
-var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 10; //CA = 8
+var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 3, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 5; //CA = 8
 
 //Atributos da Hime:
-var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 10; //CA = 4
+var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5; //CA = 4
 
 //Atributos do Crassus:
-var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 10; //CA = 7
+var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 3, DEF_C = 2, INT_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 5; //CA = 5
 
 //Atributos da Marielle:
-var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 10; //CA = 7 
+var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M, ATKB_M = 3, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 5; //CA = 7 
 
 //Atributo geral:
 var SOR = 0;
 
 //Atributos do Slime:
-var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+var HPT_S = 40, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
 
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
+var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 
 //Variáveis Random 3
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
@@ -55,6 +56,7 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
         this.load.image('moeda_loja','Imagens/sprite-loja.png');
         this.load.image('fundo_loja','Imagens/Loja2.png');
+        this.load.image('fundo_deserto','Imagens/Wasteland_background1.png');
     },
 
     create: function ()
@@ -79,7 +81,7 @@ var BattleScene = new Phaser.Class({
         this.add.image(400,130,'fundo_gramado');
         // Run UI Scene at the same time
         this.scene.run("UIScene");
-         
+        
         exec++;
 
         //player character - Crassus
@@ -103,13 +105,13 @@ var BattleScene = new Phaser.Class({
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
-        MANA_Y = INT_Y + 10;
+        MANA_Y = INT_Y + 5;
         yuusha.mana = MANA_Y;
-        MANA_H = INT_H + 10;
+        MANA_H = INT_H + 5;
         healer.mana = MANA_H;
-        MANA_C = INT_C + 10;
+        MANA_C = INT_C + 5;
         mage.mana = MANA_C;
-        MANA_M = INT_M + 10;
+        MANA_M = INT_M + 5;
         archer.mana = MANA_M;
 
         HP_Y = HPT_Y;
@@ -317,6 +319,11 @@ var BattleScene = new Phaser.Class({
                 }
             }
         }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
 
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
@@ -342,6 +349,295 @@ var BattleScene = new Phaser.Class({
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
             this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var BattleScene2 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene2" });
+    },
+    create: function ()
+    {
+        this.add.image(400,130,'fundo_deserto');
+        // Run UI Scene at the same time
+        this.scene.run("UIScene4");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0); 
+        this.add.existing(ligma1);
+        this.add.existing(ligma2);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_S = HPT_S;
+        ligma1.hp = HPT_S;
+        ligma2.hp = HPT_S;
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ ligma1, ligma2 ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+        }
+        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        turno_de = ordem_turnos[contadorzin].type;
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+    
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
+        // next turn in 3 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+        dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
+
+        this.scene.sleep('UIScene4'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            this.scene.start('VictoryScene2'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            this.scene.start('DefeatScene2');
         }
         
     },
@@ -407,6 +703,18 @@ var Unit = new Phaser.Class({
             }   
             else{
                 this.scene.events.emit("Message", "Acertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+                if(target.type == "Yuusha"){
+                    atk_sofrido_y++;
+                }
+                else if(target.type == "Hime"){
+                    atk_sofrido_h++;
+                }
+                else if(target.type == "Crassus"){
+                    atk_sofrido_c++;
+                }
+                else if(target.type == "Marielle"){
+                    atk_sofrido_m++;
+                }
             }
             
         }
@@ -433,6 +741,18 @@ var Unit = new Phaser.Class({
             }   
             else{
                 this.scene.events.emit("Message", "Acerto Crítico!\n" + this.type + " atacou " + target.type + " e deu " + (this.damage * 2) + " de dano. " + "\nResultado do dado:" + r);
+                if(target.type == "Yuusha"){
+                    atk_sofrido_y++;
+                }
+                else if(target.type == "Hime"){
+                    atk_sofrido_h++;
+                }
+                else if(target.type == "Crassus"){
+                    atk_sofrido_c++;
+                }
+                else if(target.type == "Marielle"){
+                    atk_sofrido_m++;
+                }
             }
         }
         else{
@@ -463,22 +783,24 @@ var Unit = new Phaser.Class({
         
         out_of_mana = 0;
 
-        if(MANA_Y <= 0 && this.type == "Yuusha"){
+        if(this.mana < 3 && this.type == "Yuusha"){
             out_of_mana = 1;
         }
-        else if(MANA_H <= 0 && this.type == "Hime"){
+        else if(this.mana < 3 && this.type == "Hime"){
             out_of_mana = 1;
         }
-        else if(MANA_C <= 0 && this.type == "Crassus"){
+        else if(this.mana < 4 && this.type == "Crassus"){
             out_of_mana = 1;
         }
-        else if(MANA_M <= 0 && this.type == "Marielle"){
+        else if(this.mana < 3 && this.type == "Marielle"){
             out_of_mana = 1;
         }
 
         if(this.type == "Hime" && r >= 10 && r < 20 && out_of_mana == 0){
             cura_total = 0;
-            this.mana -= 5;
+            if(this.mana - 3 >= 0){
+                this.mana -= 3;
+            }
             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
                 HP_Y += 2;
 
@@ -524,7 +846,9 @@ var Unit = new Phaser.Class({
         }
         else if(this.type == "Hime" && r == 20 && out_of_mana == 0){
             cura_total = 0;
-            this.mana -= 5;
+            if(this.mana - 3 >= 0){
+                this.mana -= 3;
+            }
             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 4){
                 HP_Y += 4;
 
@@ -569,7 +893,7 @@ var Unit = new Phaser.Class({
             this.scene.events.emit("Message", "Acertou Crítico da Palavra Curativa!" + " \nCura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
         }
         else if(this.type == "Hime" && out_of_mana == 1){
-            this.scene.events.emit("Message", "O personagem está sem mana!");
+            this.scene.events.emit("Message", "O personagem está sem mana suficiente!");
         }
         else if(this.type == "Hime" && r < 10){
             this.scene.events.emit("Message", "Errou a habilidade!\n" + "Resultado do dado: " + r);
@@ -577,21 +901,27 @@ var Unit = new Phaser.Class({
         else{
             if(target.living && (r >= target.ca + 3 && r < 20) && out_of_mana == 0){
                 if(this.type == "Yuusha"){
-                    this.mana -= 3;
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
                     target.takeDamage(this.damage + 4);    
                     this.scene.events.emit("Message", "Acertou o Corte-X!" + " \nDano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_y++;
                     dano_y = dano_y + this.damage + 4;
                 }
                 else if(this.type == "Crassus"){
-                    this.mana -= 4;
+                    if(this.mana - 4 >= 0){
+                        this.mana -= 4;
+                    }
                     target.takeDamage(INT_C + 6);    
                     this.scene.events.emit("Message", "Acertou a Bola de Fogo!" + " \nDano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_c++;
                     dano_c = dano_c + INT_C + 6;
                 }
                 else if(this.type == "Marielle"){
-                    this.mana -= 3;
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
                     target.takeDamage(this.damage + INT_M);
                     this.scene.events.emit("Message", "Acertou as Flechas de Gelo!" + " \nDano do ataque: " +  (this.damage + INT_M) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_m++;
@@ -601,21 +931,30 @@ var Unit = new Phaser.Class({
             }
             else if(target.living && r == 20 && out_of_mana == 0){
                 if(this.type == "Yuusha"){
-                    this.mana -= 3;
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+
                     target.takeDamage((this.damage + 4) * 2);    
                     this.scene.events.emit("Message", "Acerto Crítico do Corte-X!" + " \nDano do ataque: " +  ((this.damage + 4) * 2) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_y++;
                     dano_y = dano_y + (this.damage + 4) * 2;
                 }
                 else if(this.type == "Crassus"){
-                    this.mana -= 4;
+                    if(this.mana - 4 >= 0){
+                        this.mana -= 4;
+                    }
+                    
                     target.takeDamage((INT_C + 6) * 2);    
                     this.scene.events.emit("Message", "Acerto Crítico da Bola de Fogo!" + " \nDano do ataque: " +  ((INT_C + 6) * 2) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_c++;
                     dano_c = dano_c + (INT_C + 6) * 2;
                 }
                 else if(this.type == "Marielle"){
-                    this.mana -= 3;
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+                    
                     target.takeDamage((this.damage + INT_M) * 2);
                     this.scene.events.emit("Message", "Acerto Crítico das Flechas de Gelo!" + " \nDano do ataque: " +  ((this.damage + INT_M) * 2) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_m++;
@@ -623,7 +962,7 @@ var Unit = new Phaser.Class({
                 }
             }
             else if(target.living && out_of_mana == 1){
-                this.scene.events.emit("Message", "O personagem está sem mana!");
+                this.scene.events.emit("Message", "O personagem está sem mana suficiente!");
             }
             else{
                 
@@ -898,6 +1237,7 @@ var ActionsMenu = new Phaser.Class({
         Menu.call(this, x, y, scene);   
         this.addMenuItem4("Ataque");
         this.addMenuItem4("Habilidade");
+        //this.addMenuItem4("Fugir");
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -1014,45 +1354,45 @@ var VictoryScene = new Phaser.Class({
         this.add.existing(txt_vic);
         txt_vic.setStroke("#000000", 6);
 
-        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        var texto = this.add.text(10, 70, "Ataques sofridos por personagem: ", { color: "#ffffff"});
         this.add.existing(texto);
         texto.setStroke("#000000", 6);
 
         if(tam_vetor_herois == 1){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 2){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 3){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 4){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
-            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_sofrido_m, { color: "#ffffff"});
             this.add.existing(texto4);
             texto4.setStroke("#000000", 6);
         }        
@@ -1173,45 +1513,45 @@ var DefeatScene = new Phaser.Class({
         this.add.existing(txt_vic);
         txt_vic.setStroke("#000000", 6);
 
-        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        var texto = this.add.text(10, 70, "Ataques sofridos por personagem: ", { color: "#ffffff"});
         this.add.existing(texto);
         texto.setStroke("#000000", 6);
 
         if(tam_vetor_herois == 1){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 2){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 3){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 4){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
-            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_sofrido_m, { color: "#ffffff"});
             this.add.existing(texto4);
             texto4.setStroke("#000000", 6);
         }        
@@ -1640,6 +1980,9 @@ var UIScene = new Phaser.Class({
             this.battleScene.receivePlayerSelection("habilidade", index);
             
         }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
         
     },
     onPlayerSelect: function(id) {
@@ -1694,7 +2037,7 @@ var UIScene = new Phaser.Class({
             this.currentMenu = this.enemiesMenu;
             this.enemiesMenu.select(0);
         }
-        else if(turno_de == "Hime" && selecionou == "Habilidade"){
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
             this.onEnemy(null);
         }
         
@@ -1750,8 +2093,13 @@ var UIScene = new Phaser.Class({
                 selecionou = "Habilidade";
             }
         }
-        else if(cont == 2){
-            
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
         }
         
 
@@ -1858,7 +2206,14 @@ var UIScene2 = new Phaser.Class({
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            this.scene.switch('BattleScene');                  
+            this.scene.switch('BattleScene');
+            
+        }
+        else if(action == "enter" && cm == "Fase 2"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('BattleScene2');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
