@@ -51,12 +51,16 @@ var BootScene = new Phaser.Class({
         this.load.image('crassus','Imagens/crassus.png');
         this.load.image('yuusha','Imagens/Yuusha.png');
         this.load.image('hime','Imagens/Hime.png');
+        this.load.image('borgrok','Imagens/flame_blood_lancer1.png');
         this.load.image('mapa','Imagens/mapa.png');
         this.load.image('seta','Imagens/setinea.png');
         this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
         this.load.image('moeda_loja','Imagens/sprite-loja.png');
         this.load.image('fundo_loja','Imagens/Loja2.png');
         this.load.image('fundo_deserto','Imagens/Wasteland_background1.png');
+        this.load.image('fundo_mar','Imagens/Ocean_backgound22.png');
+        this.load.image('fundo_bossfight','Imagens/Burned_background-Recovered.jpg');
+        
     },
 
     create: function ()
@@ -100,8 +104,8 @@ var BattleScene = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0); 
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -389,8 +393,8 @@ var BattleScene2 = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0); 
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
@@ -631,6 +635,586 @@ var BattleScene2 = new Phaser.Class({
         dinheiros += 150; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene4'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            this.scene.start('VictoryScene'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var BattleScene3 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene3 ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene3" });
+    },
+    create: function ()
+    {
+        this.add.image(400,-90,'fundo_mar');
+        // Run UI Scene at the same time
+        this.scene.run("UIScene5");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
+        this.add.existing(ligma1);
+        this.add.existing(ligma2);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_S = HPT_S;
+        ligma1.hp = HPT_S;
+        ligma2.hp = HPT_S;
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ ligma1, ligma2 ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+        }
+        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        turno_de = ordem_turnos[contadorzin].type;
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+    
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
+        // next turn in 3 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
+
+        this.scene.sleep('UIScene5'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            this.scene.start('VictoryScene'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var BattleScene4 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene4 ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene4" });
+    },
+    create: function ()
+    {
+        var image = this.add.image(300, 146,'fundo_bossfight');
+        let scaleX = this.cameras.main.width / image.width;
+        let scaleY = this.cameras.main.height / image.height;
+        let scale = Math.max(scaleX, scaleY);
+        image.setScale(1.5).setScrollFactor(0);
+        // Run UI Scene at the same time
+        this.scene.run("UIScene6");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var boss = new Enemy(this, 140, 230, "borgrok","Borgrok", HP_S, ATKB_S + FOR_S, CA_S, 1);
+        this.add.existing(boss);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_S = HPT_S;
+        boss.hp = HPT_S;
+        
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ boss ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, boss, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, boss, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, healer, boss, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+            ordem_turnos = [archer, yuusha, healer, mage, boss];
+        }
+        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [ boss, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        turno_de = ordem_turnos[contadorzin].type;
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+    
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Yuusha"){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Hime"){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 2;
+                    }
+                    else if(this.heroes[i].type == "Crassus"){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                        this.heroes[i].hp += 4;
+                    }
+                    else if(this.heroes[i].type == "Marielle"){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
+        // next turn in 3 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
+
+        this.scene.sleep('UIScene6'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
             this.scene.start('VictoryScene'); 
@@ -1032,10 +1616,12 @@ var Enemy = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function Enemy(scene, x, y, texture, type, hp, damage, ca) {
+    function Enemy(scene, x, y, texture, type, hp, damage, ca, escala) {
         Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
-
-        this.setScale(0.5);
+        if(type == "Borgrok"){
+            this.flipX = true;
+        }
+        this.setScale(escala);
     }
 });
 
@@ -2215,6 +2801,18 @@ var UIScene2 = new Phaser.Class({
             // start battle
             this.scene.switch('BattleScene2');
         }
+        else if(action == "enter" && cm == "Fase 3"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('BattleScene3');
+        }
+        else if(action == "enter" && cm == "Fase 4"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('BattleScene4');
+        }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
 
@@ -2365,6 +2963,480 @@ var UIScene4 = new Phaser.Class({
     create: function ()
     {    
         this.battleScene = this.scene.get("BattleScene2");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        // first move
+        this.battleScene.nextTurn();  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
+
+    },
+});
+
+var UIScene5 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene5 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene5" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene3");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        // first move
+        this.battleScene.nextTurn();  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
+
+    },
+});
+
+var UIScene6 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene6 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene6" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene4");
 
         this.graphics = this.add.graphics();
         this.graphics.lineStyle(1, 0xffffff);
