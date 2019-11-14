@@ -19,6 +19,15 @@ var SOR = 0;
 //Atributos do Slime:
 var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
+//Atributos do Golem:
+var HPT_GO = 20, HP_GO = HPT_GO, VEL_GO = 2, FOR_GO = 3, DEF_GO = 1, INT_GO = 0, SOR_GO, ATKB_GO = 0, CA_GO = 1 + VEL_GO + DEF_GO;
+
+//Atributos do Gárgula:
+var HPT_GA = 20, HP_GA = HPT_GA, VEL_GA = 2, FOR_GA = 3, DEF_GA = 1, INT_GA = 0, SOR_GA, ATKB_GA = 0, CA_GA = 1 + VEL_GA + DEF_GA;
+
+//Atributos do Borgrok:
+var HPT_B = 120, HP_B = HPT_B, VEL_B = 2, FOR_B = 3, DEF_B = 1, INT_B = 0, SOR_B, ATKB_B = 0, CA_B = 1 + VEL_B + DEF_B; //CA = 
+
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
 
@@ -47,10 +56,12 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo', 'Imagens/fundo_fase_teste.jpg');
         this.load.spritesheet("player", "assets/RPG_assets.png", { frameWidth: 16, frameHeight: 16 });
         this.load.image("slime", "Imagens/ligma.png");
-        this.load.image('marielle','Imagens/Archer.png');
+        this.load.image('golem','Imagens/golem.png');
+        this.load.image('gargula','Imagens/Gargula.png');
+        this.load.image('marielle','Imagens/archer2.png');
         this.load.image('crassus','Imagens/crassus.png');
-        this.load.image('yuusha','Imagens/Yuusha.png');
-        this.load.image('hime','Imagens/Hime.png');
+        this.load.image('yuusha','Imagens/Yuusha2.png');
+        this.load.image('hime','Imagens/Hime2.png');
         this.load.image('borgrok','Imagens/flame_blood_lancer1.png');
         this.load.image('mapa','Imagens/mapa.png');
         this.load.image('seta','Imagens/setinea.png');
@@ -393,10 +404,10 @@ var BattleScene2 = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
-        this.add.existing(ligma1);
-        this.add.existing(ligma2);
+        var golem1 = new Enemy(this, 80, 230, "golem","Golem", HP_GO, ATKB_GO + FOR_GO, CA_GO, 0.5);
+        var golem2 = new Enemy(this, 80, 280, "golem","Golem", HP_GO, ATKB_GO + FOR_GO, CA_GO, 0.5); 
+        this.add.existing(golem1);
+        this.add.existing(golem2);
 
         MANA_Y = INT_Y + 5;
         yuusha.mana = MANA_Y;
@@ -419,9 +430,9 @@ var BattleScene2 = new Phaser.Class({
         HP_M = HPT_M;
         archer.hp = HPT_M;
 
-        HP_S = HPT_S;
-        ligma1.hp = HPT_S;
-        ligma2.hp = HPT_S;
+        HP_GO = HPT_GO;
+        golem1.hp = HPT_GO;
+        golem2.hp = HPT_GO;
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
@@ -430,7 +441,7 @@ var BattleScene2 = new Phaser.Class({
         tam_vetor_herois_ord = 4;
 
         // array with enemies
-        this.enemies = [ ligma1, ligma2 ];
+        this.enemies = [ golem1, golem2 ];
         // array with both parties, who will attack
         this.units = this.heroes.concat(this.enemies);
 
@@ -439,19 +450,19 @@ var BattleScene2 = new Phaser.Class({
         contadorzin = 0;
 
         if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+            ordem_turnos = [archer, golem1, golem2, yuusha, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+            ordem_turnos = [archer, yuusha, golem1, golem2, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+            ordem_turnos = [archer, yuusha, healer, golem1, golem2, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
-            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+            ordem_turnos = [archer, yuusha, healer, mage, golem1, golem2];
         }
         else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+            ordem_turnos = [ golem1, golem2, archer, yuusha, healer, mage];
         }
         
         ih = 0;
@@ -682,10 +693,10 @@ var BattleScene3 = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
-        this.add.existing(ligma1);
-        this.add.existing(ligma2);
+        var gargula1 = new Enemy(this, 70, 100, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+        var gargula2 = new Enemy(this, 70, 160, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5); 
+        this.add.existing(gargula1);
+        this.add.existing(gargula2);
 
         MANA_Y = INT_Y + 5;
         yuusha.mana = MANA_Y;
@@ -708,9 +719,9 @@ var BattleScene3 = new Phaser.Class({
         HP_M = HPT_M;
         archer.hp = HPT_M;
 
-        HP_S = HPT_S;
-        ligma1.hp = HPT_S;
-        ligma2.hp = HPT_S;
+        HP_GA = HPT_GA;
+        gargula1.hp = HPT_GA;
+        gargula2.hp = HPT_GA;
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
@@ -719,7 +730,7 @@ var BattleScene3 = new Phaser.Class({
         tam_vetor_herois_ord = 4;
 
         // array with enemies
-        this.enemies = [ ligma1, ligma2 ];
+        this.enemies = [ gargula1, gargula2 ];
         // array with both parties, who will attack
         this.units = this.heroes.concat(this.enemies);
 
@@ -728,19 +739,19 @@ var BattleScene3 = new Phaser.Class({
         contadorzin = 0;
 
         if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+            ordem_turnos = [archer, gargula1, gargula2, yuusha, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+            ordem_turnos = [archer, yuusha, gargula1, gargula2, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+            ordem_turnos = [archer, yuusha, healer, gargula1, gargula2, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
-            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+            ordem_turnos = [archer, yuusha, healer, mage, gargula1, gargula2];
         }
         else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+            ordem_turnos = [ gargula1, gargula2, archer, yuusha, healer, mage];
         }
         
         ih = 0;
@@ -975,7 +986,7 @@ var BattleScene4 = new Phaser.Class({
         var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var boss = new Enemy(this, 140, 230, "borgrok","Borgrok", HP_S, ATKB_S + FOR_S, CA_S, 1);
+        var boss = new Enemy(this, 140, 230, "borgrok","Borgrok", HP_B, ATKB_B + FOR_B, CA_B, 1);
         this.add.existing(boss);
 
         MANA_Y = INT_Y + 5;
@@ -999,8 +1010,8 @@ var BattleScene4 = new Phaser.Class({
         HP_M = HPT_M;
         archer.hp = HPT_M;
 
-        HP_S = HPT_S;
-        boss.hp = HPT_S;
+        HP_B = HPT_B;
+        boss.hp = HPT_B;
         
 
         // array with heroes
@@ -1618,7 +1629,7 @@ var Enemy = new Phaser.Class({
     initialize:
     function Enemy(scene, x, y, texture, type, hp, damage, ca, escala) {
         Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
-        if(type == "Borgrok"){
+        if(type == "Borgrok" || type == "Golem"){
             this.flipX = true;
         }
         this.setScale(escala);
