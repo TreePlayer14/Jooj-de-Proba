@@ -37,7 +37,7 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 
 //Variáveis Random 3
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
-var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r;
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase;
 
 var BootScene = new Phaser.Class({
 
@@ -2009,7 +2009,19 @@ var VictoryScene = new Phaser.Class({
     },
 
     create: function (){
-        this.add.image(400,178,'fundo_gramado');
+        if(qual_fase == "Fase 1"){
+            this.add.image(400,178,'fundo_gramado');
+        }
+        else if(qual_fase == "Fase 2"){
+            this.add.image(400,180,'fundo_deserto');
+        }
+        else if(qual_fase == "Fase 3"){
+            this.add.image(400,-152,'fundo_mar');
+        }
+        else if(qual_fase == "Fase 4"){
+            var image = this.add.image(300, 188,'fundo_bossfight');
+            image.setScale(1.5).setScrollFactor(0);
+        }
 
         vod = 1;
         this.scene.launch('UIScene3');
@@ -2168,7 +2180,19 @@ var DefeatScene = new Phaser.Class({
     },
 
     create: function (){
-        this.add.image(400,178,'fundo_gramado');
+        if(qual_fase == "Fase 1"){
+            this.add.image(400,178,'fundo_gramado');
+        }
+        else if(qual_fase == "Fase 2"){
+            this.add.image(400,180,'fundo_deserto');
+        }
+        else if(qual_fase == "Fase 3"){
+            this.add.image(400,-152,'fundo_mar');
+        }
+        else if(qual_fase == "Fase 4"){
+            var image = this.add.image(300, 188,'fundo_bossfight');
+            image.setScale(1.5).setScrollFactor(0);
+        }
 
         vod = 2;
         this.scene.launch('UIScene3');
@@ -2898,6 +2922,7 @@ var UIScene2 = new Phaser.Class({
     // the player needs to choose an enemy to attack
     onSelectedFase: function() {
         var cm = teste[sele];
+        qual_fase = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
         this.receiveFaseSelection("enter",cm);
