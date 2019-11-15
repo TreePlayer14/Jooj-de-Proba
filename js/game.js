@@ -26,7 +26,7 @@ var HPT_GO = 100, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0
 var HPT_GA = 130, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
 
 //Atributos do Borgrok:
-var HPT_B = 220, HP_B = HPT_B, VEL_B = 2, FOR_B = 3, DEF_B = 1, INT_B = 0, SOR_B, ATKB_B = 0, CA_B = 3 + VEL_B + DEF_B; //CA = 
+var HPT_B = 220, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -219,6 +219,7 @@ var BattleScene = new Phaser.Class({
             izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
             izo.setStroke("#000000", 6);
             this.add.existing(izo);
+            
         } else { // else if its enemy unit
             izo.destroy();
             izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
@@ -345,7 +346,7 @@ var BattleScene = new Phaser.Class({
         //     this.scene.switch('UIScene2');
         // }
 
-        // next turn in 3 seconds
+        // next turn in 4 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
     endBattle: function(resultado) {       
@@ -461,19 +462,19 @@ var BattleScene2 = new Phaser.Class({
 
         contadorzin = 0;
 
-        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        if(VEL_M >= VEL_GO && VEL_Y < VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
             ordem_turnos = [archer, golem1, golem2, yuusha, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
             ordem_turnos = [archer, yuusha, golem1, golem2, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H >= VEL_GO && VEL_C < VEL_GO){
             ordem_turnos = [archer, yuusha, healer, golem1, golem2, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H >= VEL_GO && VEL_C >= VEL_GO){
             ordem_turnos = [archer, yuusha, healer, mage, golem1, golem2];
         }
-        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M < VEL_GO && VEL_Y < VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
             ordem_turnos = [ golem1, golem2, archer, yuusha, healer, mage];
         }
         
@@ -760,19 +761,19 @@ var BattleScene3 = new Phaser.Class({
 
         contadorzin = 0;
 
-        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        if(VEL_M >= VEL_GA && VEL_Y < VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
             ordem_turnos = [archer, gargula1, gargula2, gargula3, yuusha, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
             ordem_turnos = [archer, yuusha, gargula1, gargula2, gargula3, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H >= VEL_GA && VEL_C < VEL_GA){
             ordem_turnos = [archer, yuusha, healer, gargula1, gargula2, gargula3, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H >= VEL_GA && VEL_C >= VEL_GA){
             ordem_turnos = [archer, yuusha, healer, mage, gargula1, gargula2, gargula3];
         }
-        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M < VEL_GA && VEL_Y < VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
             ordem_turnos = [ gargula1, gargula2, gargula3, archer, yuusha, healer, mage];
         }
         
@@ -1057,19 +1058,19 @@ var BattleScene4 = new Phaser.Class({
 
         contadorzin = 0;
 
-        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        if(VEL_M >= VEL_B && VEL_Y < VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
             ordem_turnos = [archer, boss, yuusha, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
             ordem_turnos = [archer, yuusha, boss, healer, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H >= VEL_B && VEL_C < VEL_B){
             ordem_turnos = [archer, yuusha, healer, boss, mage];
         }
-        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H >= VEL_B && VEL_C >= VEL_B){
             ordem_turnos = [archer, yuusha, healer, mage, boss];
         }
-        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+        else if(VEL_M < VEL_B && VEL_Y < VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
             ordem_turnos = [ boss, archer, yuusha, healer, mage];
         }
         
@@ -1123,7 +1124,7 @@ var BattleScene4 = new Phaser.Class({
                 r = Math.floor(Math.random() * this.heroes.length);
             } while(!this.heroes[r].living) 
             // call the enemy's attack function 
-            this.units[ind].ataque(this.heroes[r]);  
+            this.units[ind].ataque(this.heroes[r]);    
             // add timer for the next turn, so will have smooth gameplay
             this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
         }
@@ -2619,15 +2620,53 @@ var UIScene = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
-        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
         izo.setStroke("#000000", 6);
         this.add.existing(izo);
 
         cont2 = 0;
         selecionou = "Ataque";
 
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
         // first move
-        this.battleScene.nextTurn();  
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});
     },
     onEnemy: function(index) {
         // when the enemy is selected, we deselect all menus and send event with the enemy id
@@ -3111,15 +3150,53 @@ var UIScene4 = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
-        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
         izo.setStroke("#000000", 6);
         this.add.existing(izo);
 
         cont2 = 0;
         selecionou = "Ataque";
 
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
         // first move
-        this.battleScene.nextTurn();  
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
     },
     onEnemy: function(index) {
         // when the enemy is selected, we deselect all menus and send event with the enemy id
@@ -3348,15 +3425,53 @@ var UIScene5 = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
-        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
         izo.setStroke("#000000", 6);
         this.add.existing(izo);
 
         cont2 = 0;
         selecionou = "Ataque";
 
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
         // first move
-        this.battleScene.nextTurn();  
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
     },
     onEnemy: function(index) {
         // when the enemy is selected, we deselect all menus and send event with the enemy id
@@ -3585,36 +3700,13 @@ var UIScene6 = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
-        izo = this.add.text(180, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
         izo.setStroke("#000000", 6);
         this.add.existing(izo);
 
         cont2 = 0;
         selecionou = "Ataque";
 
-        // first move
-        this.battleScene.nextTurn();  
-    },
-    onEnemy: function(index) {
-        // when the enemy is selected, we deselect all menus and send event with the enemy id
-        this.heroesMenu.deselect();
-        this.actionsMenu.deselect();
-        this.enemiesMenu.deselect();
-        this.currentMenu = null;
-        //this.battleScene.receivePlayerSelection("attack", index);
-        if(selecionou == "Ataque"){
-            this.battleScene.receivePlayerSelection("ataque", index);    
-        }
-        else if(selecionou == "Habilidade"){
-            this.battleScene.receivePlayerSelection("habilidade", index);
-            
-        }
-        // else if(selecionou == "Fugir"){
-        //     this.battleScene.receivePlayerSelection("fugir", index);
-        // }
-        
-    },
-    onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
         var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
         var prob3 = ((21 - 10) / 20) * 100;
@@ -3652,6 +3744,69 @@ var UIScene6 = new Phaser.Class({
             }
 
         }
+
+        // first move
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
+        var prob3 = ((21 - 10) / 20) * 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
         // when its player turn, we select the active hero item and the first action
         // then we make actions menu active
         this.heroesMenu.select(id);
