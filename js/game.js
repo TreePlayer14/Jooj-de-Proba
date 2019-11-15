@@ -2,16 +2,16 @@
 var txt = [], txt2 = [], sele, teste = [], obj, cont = 0, pr, pro, teste1 = [], funciona, tx, lista = [], cont2 = 0;
 
 //Atributos do Yuusha:
-var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 3, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 5; //CA = 8
+var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 3, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 5, VIVO_Y = true; //CA = 8
 
 //Atributos da Hime:
-var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5; //CA = 4
+var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5, VIVO_H = true; //CA = 4
 
 //Atributos do Crassus:
-var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 3, DEF_C = 2, INT_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 5; //CA = 5
+var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 3, DEF_C = 2, INT_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 5, VIVO_C = true; //CA = 5
 
 //Atributos da Marielle:
-var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M, ATKB_M = 3, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 5; //CA = 7 
+var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M, ATKB_M = 3, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 5, VIVO_M = true; //CA = 7 
 
 //Atributo geral:
 var SOR = 0;
@@ -20,13 +20,13 @@ var SOR = 0;
 var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Atributos do Golem:
-var HPT_GO = 20, HP_GO = HPT_GO, VEL_GO = 2, FOR_GO = 3, DEF_GO = 1, INT_GO = 0, SOR_GO, ATKB_GO = 0, CA_GO = 1 + VEL_GO + DEF_GO;
+var HPT_GO = 100, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
 
 //Atributos do Gárgula:
-var HPT_GA = 20, HP_GA = HPT_GA, VEL_GA = 2, FOR_GA = 3, DEF_GA = 1, INT_GA = 0, SOR_GA, ATKB_GA = 0, CA_GA = 1 + VEL_GA + DEF_GA;
+var HPT_GA = 130, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
 
 //Atributos do Borgrok:
-var HPT_B = 120, HP_B = HPT_B, VEL_B = 2, FOR_B = 3, DEF_B = 1, INT_B = 0, SOR_B, ATKB_B = 0, CA_B = 1 + VEL_B + DEF_B; //CA = 
+var HPT_B = 220, HP_B = HPT_B, VEL_B = 2, FOR_B = 3, DEF_B = 1, INT_B = 0, SOR_B, ATKB_B = 0, CA_B = 3 + VEL_B + DEF_B; //CA = 
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -128,6 +128,11 @@ var BattleScene = new Phaser.Class({
         mage.mana = MANA_C;
         MANA_M = INT_M + 5;
         archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
 
         HP_Y = HPT_Y;
         yuusha.hp = HPT_Y;
@@ -263,34 +268,34 @@ var BattleScene = new Phaser.Class({
             this.units[ind].habilidade(this.enemies[target]);
             if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -299,34 +304,34 @@ var BattleScene = new Phaser.Class({
             }
             else if(this.units[ind].type == "Hime" && r == 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -354,15 +359,17 @@ var BattleScene = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
+        
 
         this.scene.sleep('UIScene'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 50; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('DefeatScene');
         }
         
@@ -417,6 +424,11 @@ var BattleScene2 = new Phaser.Class({
         mage.mana = MANA_C;
         MANA_M = INT_M + 5;
         archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
 
         HP_Y = HPT_Y;
         yuusha.hp = HPT_Y;
@@ -552,34 +564,34 @@ var BattleScene2 = new Phaser.Class({
             this.units[ind].habilidade(this.enemies[target]);
             if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -588,34 +600,34 @@ var BattleScene2 = new Phaser.Class({
             }
             else if(this.units[ind].type == "Hime" && r == 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -643,15 +655,16 @@ var BattleScene2 = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 150; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene4'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 150; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 75; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('DefeatScene');
         }
         
@@ -694,9 +707,12 @@ var BattleScene3 = new Phaser.Class({
         this.add.existing(healer);
 
         var gargula1 = new Enemy(this, 70, 100, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
-        var gargula2 = new Enemy(this, 70, 160, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5); 
+        var gargula2 = new Enemy(this, 70, 160, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+        var gargula3 = new Enemy(this, 170, 130, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+
         this.add.existing(gargula1);
         this.add.existing(gargula2);
+        this.add.existing(gargula3);
 
         MANA_Y = INT_Y + 5;
         yuusha.mana = MANA_Y;
@@ -706,6 +722,11 @@ var BattleScene3 = new Phaser.Class({
         mage.mana = MANA_C;
         MANA_M = INT_M + 5;
         archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
 
         HP_Y = HPT_Y;
         yuusha.hp = HPT_Y;
@@ -722,6 +743,7 @@ var BattleScene3 = new Phaser.Class({
         HP_GA = HPT_GA;
         gargula1.hp = HPT_GA;
         gargula2.hp = HPT_GA;
+        gargula3.hp = HPT_GA;
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
@@ -730,7 +752,7 @@ var BattleScene3 = new Phaser.Class({
         tam_vetor_herois_ord = 4;
 
         // array with enemies
-        this.enemies = [ gargula1, gargula2 ];
+        this.enemies = [ gargula1, gargula2, gargula3 ];
         // array with both parties, who will attack
         this.units = this.heroes.concat(this.enemies);
 
@@ -739,19 +761,19 @@ var BattleScene3 = new Phaser.Class({
         contadorzin = 0;
 
         if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, gargula1, gargula2, yuusha, healer, mage];
+            ordem_turnos = [archer, gargula1, gargula2, gargula3, yuusha, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, gargula1, gargula2, healer, mage];
+            ordem_turnos = [archer, yuusha, gargula1, gargula2, gargula3, healer, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [archer, yuusha, healer, gargula1, gargula2, mage];
+            ordem_turnos = [archer, yuusha, healer, gargula1, gargula2, gargula3, mage];
         }
         else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
-            ordem_turnos = [archer, yuusha, healer, mage, gargula1, gargula2];
+            ordem_turnos = [archer, yuusha, healer, mage, gargula1, gargula2, gargula3];
         }
         else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
-            ordem_turnos = [ gargula1, gargula2, archer, yuusha, healer, mage];
+            ordem_turnos = [ gargula1, gargula2, gargula3, archer, yuusha, healer, mage];
         }
         
         ih = 0;
@@ -841,34 +863,34 @@ var BattleScene3 = new Phaser.Class({
             this.units[ind].habilidade(this.enemies[target]);
             if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -877,34 +899,34 @@ var BattleScene3 = new Phaser.Class({
             }
             else if(this.units[ind].type == "Hime" && r == 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -932,15 +954,16 @@ var BattleScene3 = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene5'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('DefeatScene');
         }
         
@@ -997,6 +1020,11 @@ var BattleScene4 = new Phaser.Class({
         mage.mana = MANA_C;
         MANA_M = INT_M + 5;
         archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
 
         HP_Y = HPT_Y;
         yuusha.hp = HPT_Y;
@@ -1132,34 +1160,34 @@ var BattleScene4 = new Phaser.Class({
             this.units[ind].habilidade(this.enemies[target]);
             if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 2 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -1168,34 +1196,34 @@ var BattleScene4 = new Phaser.Class({
             }
             else if(this.units[ind].type == "Hime" && r == 20){
                 for(var i = 0 ; i < 4 ; i++){
-                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Yuusha"){
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
                         var dif_hp = HPT_Y - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
         
-                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Hime"){
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
                         var dif_hp = HPT_H - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 2;
                     }
-                    else if(this.heroes[i].type == "Crassus"){
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
                         var dif_hp = HPT_C - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
 
-                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4){
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + 4 && this.heroes[i].living){
                         this.heroes[i].hp += 4;
                     }
-                    else if(this.heroes[i].type == "Marielle"){
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
                         var dif_hp = HPT_M - this.heroes[i].hp;
                         this.heroes[i].hp += dif_hp;
                     }
@@ -1223,15 +1251,16 @@ var BattleScene4 = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
 
         this.scene.sleep('UIScene6'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 400; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 175; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('DefeatScene');
         }
         
@@ -1396,10 +1425,13 @@ var Unit = new Phaser.Class({
             if(this.mana - 3 >= 0){
                 this.mana -= 3;
             }
-            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
+            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2 && VIVO_Y){
                 HP_Y += 2;
 
                 cura_total += 2;
+            }
+            else if(!VIVO_Y){
+                
             }
             else{
                 var dif_hp = HPT_Y - HP_Y;
@@ -1407,9 +1439,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
 
-            if(HP_H < HPT_H && HPT_H >= HP_H + 2){
+            if(HP_H < HPT_H && HPT_H >= HP_H + 2 && VIVO_H){
                 HP_H += 2;
                 cura_total += 2;
+            }
+            else if(!VIVO_H){
+                
             }
             else{
                 var dif_hp = HPT_H - HP_H;
@@ -1417,9 +1452,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
             
-            if(HP_C < HPT_C && HPT_C >= HP_C + 2){
+            if(HP_C < HPT_C && HPT_C >= HP_C + 2 && VIVO_C){
                 HP_C += 2;
                 cura_total += 2;
+            }
+            else if(!VIVO_C){
+                
             }
             else{
                 var dif_hp = HPT_C - HP_C;
@@ -1427,9 +1465,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
 
-            if(HP_M < HPT_M && HPT_M >= HP_M + 2){
+            if(HP_M < HPT_M && HPT_M >= HP_M + 2 && VIVO_M){
                 HP_M += 2;
                 cura_total += 2;
+            }
+            else if(!VIVO_M){
+                
             }
             else{
                 var dif_hp = HPT_M - HP_M;
@@ -1444,10 +1485,13 @@ var Unit = new Phaser.Class({
             if(this.mana - 3 >= 0){
                 this.mana -= 3;
             }
-            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 4){
+            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 4 && VIVO_Y){
                 HP_Y += 4;
 
                 cura_total += 4;
+            }
+            else if(!VIVO_Y){
+                
             }
             else{
                 var dif_hp = HPT_Y - HP_Y;
@@ -1455,9 +1499,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
 
-            if(HP_H < HPT_H && HPT_H >= HP_H + 4){
+            if(HP_H < HPT_H && HPT_H >= HP_H + 4 && VIVO_H){
                 HP_H += 4;
                 cura_total += 4;
+            }
+            else if(!VIVO_H){
+                
             }
             else{
                 var dif_hp = HPT_H - HP_H;
@@ -1465,9 +1512,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
             
-            if(HP_C < HPT_C && HPT_C >= HP_C + 4){
+            if(HP_C < HPT_C && HPT_C >= HP_C + 4 && VIVO_C){
                 HP_C += 4;
                 cura_total += 4;
+            }
+            else if(!VIVO_C){
+                
             }
             else{
                 var dif_hp = HPT_C - HP_C;
@@ -1475,9 +1525,12 @@ var Unit = new Phaser.Class({
                 cura_total += dif_hp;
             }
 
-            if(HP_M < HPT_M && HPT_M >= HP_M + 4){
+            if(HP_M < HPT_M && HPT_M >= HP_M + 4 && VIVO_M){
                 HP_M += 4;
                 cura_total += 4;
+            }
+            else if(!VIVO_M){
+                
             }
             else{
                 var dif_hp = HPT_M - HP_M;
@@ -1601,18 +1654,31 @@ var Unit = new Phaser.Class({
 
             if(this.type == "Yuusha"){
                 HP_Y = 0;
+                VIVO_Y = false;
             }
             else if(this.type == "Hime"){
                 HP_H = 0;
+                VIVO_H = false;
             }
             else if(this.type == "Crassus"){
                 HP_C = 0;
+                VIVO_C = false;
             }
             else if(this.type == "Marielle"){
                 HP_M = 0;
+                VIVO_M = false;
             }
             else if(this.type == "Slime"){
                 HP_S = 0;
+            }
+            else if(this.type == "Gargula"){
+                HP_GA = 0;
+            }
+            else if(this.type == "Golem"){
+                HP_GO = 0;
+            }
+            else if(this.type == "Borgrok"){
+                HP_B = 0;
             }
 
             this.menuItem.unitKilled();
@@ -2584,7 +2650,7 @@ var UIScene = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
         var prob3 = ((21 - 10) / 20) * 100;
 
         for(var i = 0 ; i < txt.length ; i++){
@@ -3076,7 +3142,7 @@ var UIScene4 = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
         var prob3 = ((21 - 10) / 20) * 100;
 
         for(var i = 0 ; i < txt.length ; i++){
@@ -3313,7 +3379,7 @@ var UIScene5 = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
         var prob3 = ((21 - 10) / 20) * 100;
 
         for(var i = 0 ; i < txt.length ; i++){
@@ -3550,7 +3616,7 @@ var UIScene6 = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 3)) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
         var prob3 = ((21 - 10) / 20) * 100;
 
         for(var i = 0 ; i < txt.length ; i++){
