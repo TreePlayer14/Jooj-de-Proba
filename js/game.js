@@ -5,7 +5,7 @@ var txt = [], txt2 = [], sele, teste = [], obj, cont = 0, pr, pro, teste1 = [], 
 var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 3, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 5, VIVO_Y = true; //CA = 8
 
 //Atributos da Hime:
-var HPT_H = 7, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 1, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5, VIVO_H = true; //CA = 4
+var HPT_H = 8, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 1, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5, VIVO_H = true; //CA = 4
 
 //Atributos do Crassus:
 var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 3, DEF_C = 2, INT_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 5, VIVO_C = true; //CA = 5
@@ -1571,10 +1571,10 @@ var Unit = new Phaser.Class({
                     if(this.mana - 3 >= 0){
                         this.mana -= 3;
                     }
-                    target.takeDamage(this.damage + INT_M);
-                    this.scene.events.emit("Message", "Acertou as Flechas de Gelo!" + " \nDano do ataque: " +  (this.damage + INT_M) + ".\n" + "Resultado do dado: " + r);
+                    target.takeDamage(this.damage + INT_M + 2);
+                    this.scene.events.emit("Message", "Acertou as Flechas de Gelo!" + " \nDano do ataque: " +  (this.damage + INT_M + 2) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_m++;
-                    dano_m = dano_m + this.damage + INT_M;
+                    dano_m = dano_m + this.damage + INT_M + 2;
                 }   
                 
             }
@@ -1604,10 +1604,10 @@ var Unit = new Phaser.Class({
                         this.mana -= 3;
                     }
                     
-                    target.takeDamage((this.damage + INT_M) * 2);
-                    this.scene.events.emit("Message", "Acerto Crítico das Flechas de Gelo!" + " \nDano do ataque: " +  ((this.damage + INT_M) * 2) + ".\n" + "Resultado do dado: " + r);
+                    target.takeDamage((this.damage + INT_M + 2) * 2);
+                    this.scene.events.emit("Message", "Acerto Crítico das Flechas de Gelo!" + " \nDano do ataque: " +  ((this.damage + INT_M + 2) * 2) + ".\n" + "Resultado do dado: " + r);
                     atk_acertados_m++;
-                    dano_m = dano_m + (this.damage + INT_M) * 2;
+                    dano_m = dano_m + (this.damage + INT_M + 2) * 2;
                 }
             }
             else if(target.living && out_of_mana == 1){
