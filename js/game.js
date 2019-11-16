@@ -23,7 +23,7 @@ var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S,
 var HPT_GO = 60, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
 
 //Atributos do Gárgula:
-var HPT_GA = 110, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
+var HPT_GA = 70, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
 
 //Atributos do Borgrok:
 var HPT_B = 200, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
@@ -1080,7 +1080,7 @@ var BattleScene4 = new Phaser.Class({
     },
     nextTurn: function() {
         cont2 = 0;
-        turno_de = ordem_turnos[contadorzin].type;
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
@@ -1094,7 +1094,7 @@ var BattleScene4 = new Phaser.Class({
                     ind = i;
                 }
             }
-    
+            turno_de = ordem_turnos[contadorzin].type;
             contadorzin++;
 
             // // if there are no more units, we start again from the first one
