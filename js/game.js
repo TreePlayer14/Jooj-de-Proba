@@ -71,6 +71,7 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_deserto','Imagens/Wasteland_background1.png');
         this.load.image('fundo_mar','Imagens/Ocean_backgound22.png');
         this.load.image('fundo_bossfight','Imagens/Burned_background-Recovered.jpg');
+        this.load.image('fundo_acontecimento','Imagens/placa.png');
         
     },
 
@@ -1268,6 +1269,20 @@ var BattleScene4 = new Phaser.Class({
     },
 });
 
+var Acontecimento1 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento1(){
+        Phaser.Scene.call(this, { key: "Acontecimento1" });
+    },
+    create: function (){
+        this.add.image(300, 146,'fundo_acontecimento');
+    },
+
+});
+
 var Objetos = new Phaser.Class({
     Extends: Phaser.GameObjects.Sprite,
 
@@ -1421,7 +1436,7 @@ var Unit = new Phaser.Class({
             out_of_mana = 1;
         }
 
-        if(this.type == "Hime" && r >= 10 && r < 20 && out_of_mana == 0){
+        if(this.type == "Hime" && r >= 1 && r < 20 && out_of_mana == 0){
             cura_total = 0;
             if(this.mana - 3 >= 0){
                 this.mana -= 3;
@@ -1548,7 +1563,7 @@ var Unit = new Phaser.Class({
             this.scene.events.emit("Message", "Errou a habilidade!\n" + "Resultado do dado: " + r);
         }
         else{
-            if(target.living && (r >= target.ca + 3 && r < 20) && out_of_mana == 0){
+            if(target.living && (r >= target.ca + 1 && r < 20) && out_of_mana == 0){
                 if(this.type == "Yuusha"){
                     if(this.mana - 3 >= 0){
                         this.mana -= 3;
@@ -2652,8 +2667,8 @@ var UIScene = new Phaser.Class({
         selecionou = "Ataque";
 
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -2677,11 +2692,11 @@ var UIScene = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -2713,8 +2728,8 @@ var UIScene = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -2738,11 +2753,11 @@ var UIScene = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3183,8 +3198,8 @@ var UIScene4 = new Phaser.Class({
         selecionou = "Ataque";
 
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3208,11 +3223,11 @@ var UIScene4 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3244,8 +3259,8 @@ var UIScene4 = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3269,11 +3284,11 @@ var UIScene4 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3458,8 +3473,8 @@ var UIScene5 = new Phaser.Class({
         selecionou = "Ataque";
 
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3483,11 +3498,11 @@ var UIScene5 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3519,8 +3534,8 @@ var UIScene5 = new Phaser.Class({
     },
     onPlayerSelect: function(id) {
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3544,11 +3559,11 @@ var UIScene5 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3733,8 +3748,8 @@ var UIScene6 = new Phaser.Class({
         selecionou = "Ataque";
 
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3758,11 +3773,11 @@ var UIScene6 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
@@ -3795,8 +3810,8 @@ var UIScene6 = new Phaser.Class({
     onPlayerSelect: function(id) {
         
         var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
-        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 2)) / 20) * 100;
-        var prob3 = ((21 - 10) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
@@ -3820,11 +3835,11 @@ var UIScene6 = new Phaser.Class({
             }
             else if(i == 1){
                 if(turno_de != "Hime"){
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob3.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 else{
-                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
                     this.add.existing(pro);
                 }
                 
