@@ -187,7 +187,7 @@ var BattleScene = new Phaser.Class({
     },
     nextTurn: function() {
         cont2 = 0;
-        turno_de = ordem_turnos[contadorzin].type;
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
@@ -201,7 +201,7 @@ var BattleScene = new Phaser.Class({
                     ind = i;
                 }
             }
-    
+            turno_de = ordem_turnos[contadorzin].type;
             contadorzin++;
 
             // // if there are no more units, we start again from the first one
@@ -484,7 +484,7 @@ var BattleScene2 = new Phaser.Class({
     },
     nextTurn: function() {
         cont2 = 0;
-        turno_de = ordem_turnos[contadorzin].type;
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
@@ -498,7 +498,7 @@ var BattleScene2 = new Phaser.Class({
                     ind = i;
                 }
             }
-    
+            turno_de = ordem_turnos[contadorzin].type;
             contadorzin++;
 
             // // if there are no more units, we start again from the first one
@@ -783,7 +783,7 @@ var BattleScene3 = new Phaser.Class({
     },
     nextTurn: function() {
         cont2 = 0;
-        turno_de = ordem_turnos[contadorzin].type;
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
@@ -797,7 +797,7 @@ var BattleScene3 = new Phaser.Class({
                     ind = i;
                 }
             }
-    
+            turno_de = ordem_turnos[contadorzin].type;
             contadorzin++;
 
             // // if there are no more units, we start again from the first one
