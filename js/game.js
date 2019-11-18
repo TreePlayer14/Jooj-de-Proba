@@ -1,30 +1,43 @@
 //Variáveis Random 1
-var txt = [], sele, teste = [], obj, cont = 0, pr, teste1 = [], funciona, tx, lista = [];
+var txt = [], txt2 = [], sele, teste = [], obj, cont = 0, pr, pro, teste1 = [], funciona, tx, lista = [], cont2 = 0;
 
 //Atributos do Yuusha:
-var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 6, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 10; //CA = 8
+var HPT_Y = 15, HP_Y = HPT_Y, VEL_Y = 2, FOR_Y = 3, DEF_Y = 3, INT_Y = 1, SOR_Y, ATKB_Y = 3, CA_Y = 3 + VEL_Y + DEF_Y, MANA_Y = INT_Y + 5, VIVO_Y = true; //CA = 8
 
 //Atributos da Hime:
-var HPT_H = 7, HP_H = HPT_H, VEL_H = 2, FOR_H = 1, DEF_H = 0, INT_H = 2, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 10; //CA = 4
+var HPT_H = 8, HP_H = HPT_H, VEL_H = 1, FOR_H = 1, DEF_H = 0, INT_H = 1, SOR_H, ATKB_H = 2, CA_H = 3 + VEL_H + DEF_H, MANA_H = INT_H + 5, VIVO_H = true; //CA = 4
 
 //Atributos do Crassus:
-var HPT_C = 9, HP_C = HPT_C, VEL_C = 0, FOR_C = 4, DEF_C = 4, INT_C = 3, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 10; //CA = 7
+var HPT_C = 9, HP_C = HPT_C, VEL_C = 1, FOR_C = 3, DEF_C = 2, INT_C = 4, SOR_C, ATKB_C = 0, CA_C = 3 + VEL_C + DEF_C, MANA_C = INT_C + 5, VIVO_C = true; //CA = 5
 
 //Atributos da Marielle:
-var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 1, SOR_M, ATKB_M = 6, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 10; //CA = 7 
+var HPT_M = 12, HP_M = HPT_M, VEL_M = 3, FOR_M = 2, DEF_M = 1, INT_M = 2, SOR_M, ATKB_M = 3, CA_M = 3 + VEL_M + DEF_M, MANA_M = INT_M + 5, VIVO_M = true; //CA = 7 
+
+//Atributo geral:
+var SOR = 0;
 
 //Atributos do Slime:
-var HP_S = 10, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
+
+//Atributos do Golem:
+var HPT_GO = 60, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
+
+//Atributos do Gárgula:
+var HPT_GA = 70, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
+
+//Atributos do Borgrok:
+var HPT_B = 200, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
 
 //Variáveis para Estatísticas
 var atk_falhos_y = 0, atk_acertados_y = 0, atk_falhos_h = 0, atk_acertados_h = 0, atk_falhos_c = 0, atk_acertados_c = 0, atk_falhos_m = 0, atk_acertados_m = 0, dano_y = 0, dano_h = 0, dano_c = 0, dano_m = 0, MVIP;
+var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 
 //Variáveis Random 3
-var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0, izo = [];
-var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0;
+var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
+var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 
 var BootScene = new Phaser.Class({
 
@@ -43,15 +56,23 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo', 'Imagens/fundo_fase_teste.jpg');
         this.load.spritesheet("player", "assets/RPG_assets.png", { frameWidth: 16, frameHeight: 16 });
         this.load.image("slime", "Imagens/ligma.png");
-        this.load.image('marielle','Imagens/Archer.png');
+        this.load.image('golem','Imagens/golem.png');
+        this.load.image('gargula','Imagens/Gargula.png');
+        this.load.image('marielle','Imagens/archer2.png');
         this.load.image('crassus','Imagens/crassus.png');
-        this.load.image('yuusha','Imagens/Yuusha.png');
-        this.load.image('hime','Imagens/Hime.png');
+        this.load.image('yuusha','Imagens/Yuusha2.png');
+        this.load.image('hime','Imagens/Hime2.png');
+        this.load.image('borgrok','Imagens/flame_blood_lancer1.png');
         this.load.image('mapa','Imagens/mapa.png');
-        this.load.image('seta','Imagens/seta.png');
+        this.load.image('seta','Imagens/setinea.png');
         this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
         this.load.image('moeda_loja','Imagens/sprite-loja.png');
         this.load.image('fundo_loja','Imagens/Loja2.png');
+        this.load.image('fundo_deserto','Imagens/Wasteland_background1.png');
+        this.load.image('fundo_mar','Imagens/Ocean_backgound22.png');
+        this.load.image('fundo_bossfight','Imagens/Burned_background-Recovered.jpg');
+        this.load.image('fundo_acontecimento','Imagens/placa.png');
+        
     },
 
     create: function ()
@@ -76,34 +97,59 @@ var BattleScene = new Phaser.Class({
         this.add.image(400,130,'fundo_gramado');
         // Run UI Scene at the same time
         this.scene.run("UIScene");
-         
+        
         exec++;
 
         //player character - Crassus
-        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C);
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
         this.add.existing(mage);
 
         //player character - Marielle
-        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M);        
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
         this.add.existing(archer);
 
         // player character - Yuusha
-        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y);
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
         this.add.existing(yuusha);
 
         // player character - Hime
-        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H);        
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
         this.add.existing(healer);
 
-        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S);
-        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S); 
+        var ligma1 = new Enemy(this, 50, 260, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5);
+        var ligma2 = new Enemy(this, 50, 310, "slime","Slime", HP_S, ATKB_S + FOR_S, CA_S, 0.5); 
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
-        MANA_Y = INT_Y + 10;
-        MANA_H = INT_H + 10;
-        MANA_C = INT_C + 10;
-        MANA_M = INT_M + 10;
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_S = HPT_S;
+        ligma1.hp = HPT_S;
+        ligma2.hp = HPT_S;
 
         // array with heroes
         this.heroes = [ yuusha, healer, mage, archer ];
@@ -120,87 +166,76 @@ var BattleScene = new Phaser.Class({
 
         contadorzin = 0;
 
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     for(var j = tam_vetor_herois ; j > i ; j--){
-        //         if(vel_ordenada[j] > vel_ordenada[j-1]){
-        //             auxiliar = vel_ordenada[j];
-        //             vel_ordenada[j] = vel_ordenada[j-1];
-        //             vel_ordenada[j-1] = auxiliar;
-        //         }
-        //     }
-        // }      
+        if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, ligma1, ligma2, healer, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [archer, yuusha, healer, ligma1, ligma2, mage];
+        }
+        else if(VEL_M >= VEL_S && VEL_Y >= VEL_S && VEL_H >= VEL_S && VEL_C >= VEL_S){
+            ordem_turnos = [archer, yuusha, healer, mage, ligma1, ligma2];
+        }
+        else if(VEL_M < VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
+            ordem_turnos = [ ligma1, ligma2, archer, yuusha, healer, mage];
+        }
         
         ih = 0;
         max = 0;
         ind = -1;
     },
     nextTurn: function() {
+        cont2 = 0;
+        
         // if we have victory or game over
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
             return;
         }
-        
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     if(velocidades[i] == vel_ordenada[contadorzin] && this.heroes[i].living){
-        //         if(vel_ordenada[contadorzin - 1] == vel_ordenada[contadorzin] && contadorzin != 0){
-        //             max = velocidades[i];
-        //             ind = i + 1;
-        //             break;
-        //         }
-        //         else{
-        //             max = velocidades[i];
-        //             ind = i;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        // contadorzin++;
-
-        // for(var i = 0 ; i < tam_vetor_herois ; i++){
-        //     izo[i] = this.add.text(0 + 20*ih, 0 + 20*iii, vel_ordenada[i]);
-        //     this.add.existing(izo[i]);
-        //     ih++;
-        // }
-        // iii++;
-
-        // var izo = this.add.text(220 + 20*ih, 223, max, {color: "#000000"});
-        // this.add.existing(izo);
-        // ih++;
 
         do { 
             
-            this.index++;
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+            turno_de = ordem_turnos[contadorzin].type;
+            contadorzin++;
 
             // // if there are no more units, we start again from the first one
-            if(this.index >= this.units.length) {
-                this.index = 0;
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
             }
 
-        } while(!this.units[this.index].living);
+        } while(!this.units[ind].living);
         // if its player hero
-        if(this.units[this.index] instanceof PlayerCharacter) {
-            // var izo = this.add.text(220 + 20*ih, 223, "Hero", {color: "#000000"});
-            // this.add.existing(izo);
-            // ih++;
-            // we need the player to select action and then enemy
-            this.events.emit("PlayerSelect", this.index); //ind);
-        } else { // else if its enemy unit
+        if(this.units[ind] instanceof PlayerCharacter) {
             
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+            
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
             // pick random living hero to be attacked
             var r;
             do {
                 r = Math.floor(Math.random() * this.heroes.length);
             } while(!this.heroes[r].living) 
             // call the enemy's attack function 
-            this.units[this.index].attack(this.heroes[r]);  
+            this.units[ind].ataque(this.heroes[r]);  
             // add timer for the next turn, so will have smooth gameplay
             this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
-            // contadorzin = 0;
-            // ind = -1;
-            // max = 0;
-
         }
     },
     // check for game over or victory
@@ -228,12 +263,386 @@ var BattleScene = new Phaser.Class({
     },
     // when the player have selected the enemy to be attacked
     receivePlayerSelection: function(action, target) {
-        if(action == "attack") {            
-            this.units[this.index].attack(this.enemies[target]); //this.units[ind]              
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
         }
-        // else if(action == "habilidade"){
-        //     this.units[this.index].habilidade(this.enemies[target]);
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
         // }
+
+        // next turn in 4 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+        
+
+        this.scene.sleep('UIScene'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('VictoryScene'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 50; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var BattleScene2 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene2 ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene2" });
+    },
+    create: function ()
+    {
+        this.add.image(400,130,'fundo_deserto');
+        // Run UI Scene at the same time
+        this.scene.run("UIScene4");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var golem1 = new Enemy(this, 80, 230, "golem","Golem", HP_GO, ATKB_GO + FOR_GO, CA_GO, 0.5);
+        var golem2 = new Enemy(this, 80, 280, "golem","Golem", HP_GO, ATKB_GO + FOR_GO, CA_GO, 0.5); 
+        this.add.existing(golem1);
+        this.add.existing(golem2);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_GO = HPT_GO;
+        golem1.hp = HPT_GO;
+        golem2.hp = HPT_GO;
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ golem1, golem2 ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_GO && VEL_Y < VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
+            ordem_turnos = [archer, golem1, golem2, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
+            ordem_turnos = [archer, yuusha, golem1, golem2, healer, mage];
+        }
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H >= VEL_GO && VEL_C < VEL_GO){
+            ordem_turnos = [archer, yuusha, healer, golem1, golem2, mage];
+        }
+        else if(VEL_M >= VEL_GO && VEL_Y >= VEL_GO && VEL_H >= VEL_GO && VEL_C >= VEL_GO){
+            ordem_turnos = [archer, yuusha, healer, mage, golem1, golem2];
+        }
+        else if(VEL_M < VEL_GO && VEL_Y < VEL_GO && VEL_H < VEL_GO && VEL_C < VEL_GO){
+            ordem_turnos = [ golem1, golem2, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+            turno_de = ordem_turnos[contadorzin].type;
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
@@ -248,19 +657,1084 @@ var BattleScene = new Phaser.Class({
         this.units.length = 0;
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
-        dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
 
-        this.scene.sleep('UIScene'); //Sai da cena de combate
+        this.scene.sleep('UIScene4'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 150; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('VictoryScene'); 
             
         }
         else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 75; //Aumenta a quantidade de moedas que o jogador possui
             this.scene.start('DefeatScene');
         }
         
     },
+});
+
+var BattleScene3 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene3 ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene3" });
+    },
+    create: function ()
+    {
+        this.add.image(400,-90,'fundo_mar');
+        // Run UI Scene at the same time
+        this.scene.run("UIScene5");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var gargula1 = new Enemy(this, 70, 100, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+        var gargula2 = new Enemy(this, 70, 160, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+        var gargula3 = new Enemy(this, 170, 130, "gargula", "Gargula", HP_GA, ATKB_GA + FOR_GA, CA_GA, 1.5);
+
+        this.add.existing(gargula1);
+        this.add.existing(gargula2);
+        this.add.existing(gargula3);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_GA = HPT_GA;
+        gargula1.hp = HPT_GA;
+        gargula2.hp = HPT_GA;
+        gargula3.hp = HPT_GA;
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ gargula1, gargula2, gargula3 ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_GA && VEL_Y < VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
+            ordem_turnos = [archer, gargula1, gargula2, gargula3, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
+            ordem_turnos = [archer, yuusha, gargula1, gargula2, gargula3, healer, mage];
+        }
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H >= VEL_GA && VEL_C < VEL_GA){
+            ordem_turnos = [archer, yuusha, healer, gargula1, gargula2, gargula3, mage];
+        }
+        else if(VEL_M >= VEL_GA && VEL_Y >= VEL_GA && VEL_H >= VEL_GA && VEL_C >= VEL_GA){
+            ordem_turnos = [archer, yuusha, healer, mage, gargula1, gargula2, gargula3];
+        }
+        else if(VEL_M < VEL_GA && VEL_Y < VEL_GA && VEL_H < VEL_GA && VEL_C < VEL_GA){
+            ordem_turnos = [ gargula1, gargula2, gargula3, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+            turno_de = ordem_turnos[contadorzin].type;
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
+        // next turn in 3 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+
+        this.scene.sleep('UIScene5'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 200; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('VictoryScene'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 100; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var BattleScene4 = new Phaser.Class({
+
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function BattleScene4 ()
+    {
+        Phaser.Scene.call(this, { key: "BattleScene4" });
+    },
+    create: function ()
+    {
+        var image = this.add.image(300, 146,'fundo_bossfight');
+        let scaleX = this.cameras.main.width / image.width;
+        let scaleY = this.cameras.main.height / image.height;
+        let scale = Math.max(scaleX, scaleY);
+        image.setScale(1.5).setScrollFactor(0);
+        // Run UI Scene at the same time
+        this.scene.run("UIScene6");
+        
+        exec++;
+
+        //player character - Crassus
+        var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
+        this.add.existing(mage);
+
+        //player character - Marielle
+        var archer = new PlayerCharacter(this, 450, 290, "marielle", "Marielle", HP_M, ATKB_M + VEL_M, 1, CA_M, MANA_M);        
+        this.add.existing(archer);
+
+        // player character - Yuusha
+        var yuusha = new PlayerCharacter(this, 390, 240, "yuusha", "Yuusha", HP_Y, ATKB_Y + FOR_Y, 1, CA_Y, MANA_Y);
+        this.add.existing(yuusha);
+
+        // player character - Hime
+        var healer = new PlayerCharacter(this, 390, 290, "hime", "Hime", HP_H, ATKB_H + FOR_H, 1, CA_H, MANA_H);        
+        this.add.existing(healer);
+
+        var boss = new Enemy(this, 140, 230, "borgrok","Borgrok", HP_B, ATKB_B + FOR_B, CA_B, 1);
+        this.add.existing(boss);
+
+        MANA_Y = INT_Y + 5;
+        yuusha.mana = MANA_Y;
+        MANA_H = INT_H + 5;
+        healer.mana = MANA_H;
+        MANA_C = INT_C + 5;
+        mage.mana = MANA_C;
+        MANA_M = INT_M + 5;
+        archer.mana = MANA_M;
+
+        VIVO_Y = true;
+        VIVO_H = true;
+        VIVO_C = true;
+        VIVO_M = true;
+
+        HP_Y = HPT_Y;
+        yuusha.hp = HPT_Y;
+
+        HP_H = HPT_H;
+        healer.hp = HPT_H;
+
+        HP_C = HPT_C;
+        mage.hp = HPT_C;
+
+        HP_M = HPT_M;
+        archer.hp = HPT_M;
+
+        HP_B = HPT_B;
+        boss.hp = HPT_B;
+        
+
+        // array with heroes
+        this.heroes = [ yuusha, healer, mage, archer ];
+        herois = [ yuusha, healer, mage, archer ];
+        tam_vetor_herois = 4;
+        tam_vetor_herois_ord = 4;
+
+        // array with enemies
+        this.enemies = [ boss ];
+        // array with both parties, who will attack
+        this.units = this.heroes.concat(this.enemies);
+
+        this.index = -1;
+
+        contadorzin = 0;
+
+        if(VEL_M >= VEL_B && VEL_Y < VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
+            ordem_turnos = [archer, boss, yuusha, healer, mage];
+        }
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
+            ordem_turnos = [archer, yuusha, boss, healer, mage];
+        }
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H >= VEL_B && VEL_C < VEL_B){
+            ordem_turnos = [archer, yuusha, healer, boss, mage];
+        }
+        else if(VEL_M >= VEL_B && VEL_Y >= VEL_B && VEL_H >= VEL_B && VEL_C >= VEL_B){
+            ordem_turnos = [archer, yuusha, healer, mage, boss];
+        }
+        else if(VEL_M < VEL_B && VEL_Y < VEL_B && VEL_H < VEL_B && VEL_C < VEL_B){
+            ordem_turnos = [ boss, archer, yuusha, healer, mage];
+        }
+        
+        ih = 0;
+        max = 0;
+        ind = -1;
+    },
+    nextTurn: function() {
+        cont2 = 0;
+        
+        // if we have victory or game over
+        if(this.checkEndBattle()) {           
+            this.endBattle(this.checkEndBattle());
+            return;
+        }
+
+        do { 
+            
+            for(var i = 0 ; i < this.units.length ; i++){
+                if(this.units[i] == ordem_turnos[contadorzin]){
+                    ind = i;
+                }
+            }
+            turno_de = ordem_turnos[contadorzin].type;
+            contadorzin++;
+
+            // // if there are no more units, we start again from the first one
+            if(contadorzin >= this.units.length) {
+                contadorzin = 0;
+            }
+
+        } while(!this.units[ind].living);
+        // if its player hero
+        if(this.units[ind] instanceof PlayerCharacter) {
+            
+            // we need the player to select action and then enemy
+            this.events.emit("PlayerSelect", ind);
+            izo.destroy();
+            izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+        } else { // else if its enemy unit
+            izo.destroy();
+            izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
+            izo.setStroke("#000000", 6);
+            this.add.existing(izo);
+
+            // pick random living hero to be attacked
+            var r;
+            do {
+                r = Math.floor(Math.random() * this.heroes.length);
+            } while(!this.heroes[r].living) 
+            // call the enemy's attack function 
+            this.units[ind].ataque(this.heroes[r]);    
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });
+        }
+    },
+    // check for game over or victory
+    checkEndBattle: function() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < this.enemies.length; i++) {
+            if(this.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < this.heroes.length; i++) {
+            if(this.heroes[i].living)
+                gameOver = false;
+        }
+
+        if(victory){
+            return 1;
+        }
+        if(gameOver){
+            return 2;
+        }
+        
+    },
+    // when the player have selected the enemy to be attacked
+    receivePlayerSelection: function(action, target) {
+        if(action == "ataque") {            
+            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+        }
+        else if(action == "habilidade"){
+            this.units[ind].habilidade(this.enemies[target]);
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (2 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+            else if(this.units[ind].type == "Hime" && r == 20){
+                for(var i = 0 ; i < 4 ; i++){
+                    if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Yuusha" && this.heroes[i].living){
+                        var dif_hp = HPT_Y - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                    if(this.heroes[i].type == "Hime" && this.heroes[i].hp < HPT_H && HPT_H >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Hime" && this.heroes[i].living){
+                        var dif_hp = HPT_H - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Crassus" && this.heroes[i].hp < HPT_C && HPT_C >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Crassus" && this.heroes[i].living){
+                        var dif_hp = HPT_C - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+
+                    if(this.heroes[i].type == "Marielle" && this.heroes[i].hp < HPT_M && HPT_M >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
+                        this.heroes[i].hp += (4 + INT_H);
+                    }
+                    else if(this.heroes[i].type == "Marielle" && this.heroes[i].living){
+                        var dif_hp = HPT_M - this.heroes[i].hp;
+                        this.heroes[i].hp += dif_hp;
+                    }
+        
+                }
+            }
+        }
+        // else if(action == "fugir"){
+        //     this.scene.sleep('UIScene');
+
+        //     this.scene.switch('UIScene2');
+        // }
+
+        // next turn in 3 seconds
+        this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
+    },
+    endBattle: function(resultado) {       
+
+        // remove os sprites e limpa a tela.
+        this.heroes.length = 0;
+        this.enemies.length = 0;
+        for(var i = 0; i < this.units.length; i++) {
+            this.units[i].destroy();            
+        }
+        this.units.length = 0;
+       
+        din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
+
+        this.scene.sleep('UIScene6'); //Sai da cena de combate
+
+        if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
+            dinheiros += 400; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('VictoryScene'); 
+            
+        }
+        else if(resultado == 2){ //Se o jogador perdeu a partida, ele entra na tela de derrota.
+            dinheiros += 175; //Aumenta a quantidade de moedas que o jogador possui
+            this.scene.start('DefeatScene');
+        }
+        
+    },
+});
+
+var Acontecimento1 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento1(){
+        Phaser.Scene.call(this, { key: "Acontecimento1" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(145, 30, "Ataque dos Slimes", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(56, 70, "Logo no começo de sua jornada, nossos heróis", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(40, 93, "se deparam com alguns slimes atacando merca-", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(40, 116, "dores.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(56, 139, "Eles então decidem salvá-los e partem para", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(40, 162, "cima dos monstros.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 100 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "50 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento1');
+            
+            //Start battle
+            this.scene.switch('BattleScene');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
+});
+
+var Acontecimento2 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento2(){
+        Phaser.Scene.call(this, { key: "Acontecimento2" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(145, 30, "Golens do deserto", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(66, 70, "Após passarem pelos slimes, nossos heróis", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(48, 93, "continuam sua jornada e, em meio ao temível", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(48, 116, "deserto Sabaku, são surpreendidos por golens", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(48, 139, "de pedra criados por Borgrok, os mesmos", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(48, 162, "tentam se livrar de nossos heróis.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 150 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "75 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento2');
+            
+            //Start battle
+            this.scene.switch('BattleScene2');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
+});
+
+var Acontecimento3 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento3(){
+        Phaser.Scene.call(this, { key: "Acontecimento3" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(118, 10, "Assalto das Gárgulas", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(66, 40, "Ao sair do deserto, nossos herois decidem", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(48, 63, "descansar na cidade de Guidelight antes da", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(48, 86, "batalha final, porém mal sabiam eles que", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(48, 109, "Borgrok havia enviado Gárgulas para destruí-", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(48, 132, "los juntamente com a cidade portuária.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_texto6 = this.add.text(66, 155, "Eles então devem derrotá-las e salvar a", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto6);
+        txt_texto6.setStroke("#000000", 6);
+
+        var txt_texto7 = this.add.text(48, 178, "cidade.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto7);
+        txt_texto7.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 200 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "100 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento3');
+            
+            //Start battle
+            this.scene.switch('BattleScene3');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
+});
+
+var Acontecimento4 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento4(){
+        Phaser.Scene.call(this, { key: "Acontecimento4" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(168, 10, "Batalha Final", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(66, 40, "Nossos heróis finalmente chegam as ruínas", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(48, 63, "de Baldur Grok para sua última batalha desta", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(48, 86, "jornada.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(66, 109, "É chegada a hora de enfrentar Borgrok com", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(48, 132, "todas as forças e trazer a paz definitiva ", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_texto6 = this.add.text(48, 155, "para o reino de Winx.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto6);
+        txt_texto6.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 400 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "175 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento4');
+            
+            //Start battle
+            this.scene.switch('BattleScene4');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
 });
 
 var Objetos = new Phaser.Class({
@@ -283,12 +1757,13 @@ var Unit = new Phaser.Class({
 
     initialize:
 
-    function Unit(scene, x, y, texture, type, hp, damage, ca) {
+    function Unit(scene, x, y, texture, type, hp, damage, ca, mana) {
         Phaser.GameObjects.Sprite.call(this, scene, x, y, texture);
         this.type = type;
         this.maxHp = this.hp = hp;
         this.damage = damage; // default damage
         this.ca = ca;
+        this.maxMana = this.mana = mana;
         this.living = true;         
         this.menuItem = null;                
     },
@@ -296,11 +1771,10 @@ var Unit = new Phaser.Class({
     setMenuItem: function(item) {
         this.menuItem = item;
     },
-    attack: function(target) {
-        var r;
+    ataque: function(target) {
         r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
 
-        if(target.living && (r >= target.ca && r <= 20)){
+        if(target.living && (r >= target.ca && r < 20)){
             target.takeDamage(this.damage);
             if(target instanceof Enemy){
                 this.scene.events.emit("Message", "Acertou!\n" + " Dano do ataque: " +  this.damage + ".\n" + "Resultado do dado: " + r);
@@ -322,9 +1796,58 @@ var Unit = new Phaser.Class({
                 }
             }   
             else{
-                this.scene.events.emit("Message", "Turno do oponente!!!  \nAcertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+                this.scene.events.emit("Message", "Acertou!\n" + this.type + " atacou " + target.type + " e deu " + this.damage + " de dano. " + "\nResultado do dado:" + r);
+                if(target.type == "Yuusha"){
+                    atk_sofrido_y++;
+                }
+                else if(target.type == "Hime"){
+                    atk_sofrido_h++;
+                }
+                else if(target.type == "Crassus"){
+                    atk_sofrido_c++;
+                }
+                else if(target.type == "Marielle"){
+                    atk_sofrido_m++;
+                }
             }
             
+        }
+        else if(r == 20){
+            target.takeDamage(this.damage * 2);
+            if(target instanceof Enemy){
+                this.scene.events.emit("Message", "Acerto Crítico!\n" + " Dano do ataque: " +  (this.damage * 2) + ".\n" + "Resultado do dado: " + r);
+                if(this.type == "Yuusha"){
+                    atk_acertados_y++;
+                    dano_y = dano_y + (this.damage * 2);
+                }
+                else if(this.type == "Hime"){
+                    atk_acertados_h++;
+                    dano_h = dano_h + (this.damage * 2);
+                }
+                else if(this.type == "Crassus"){
+                    atk_acertados_c++;
+                    dano_c = dano_c + (this.damage * 2);
+                }
+                else if(this.type == "Marielle"){
+                    atk_acertados_m++;
+                    dano_m = dano_m + (this.damage * 2);
+                }
+            }   
+            else{
+                this.scene.events.emit("Message", "Acerto Crítico!\n" + this.type + " atacou " + target.type + " e deu " + (this.damage * 2) + " de dano. " + "\nResultado do dado:" + r);
+                if(target.type == "Yuusha"){
+                    atk_sofrido_y++;
+                }
+                else if(target.type == "Hime"){
+                    atk_sofrido_h++;
+                }
+                else if(target.type == "Crassus"){
+                    atk_sofrido_c++;
+                }
+                else if(target.type == "Marielle"){
+                    atk_sofrido_m++;
+                }
+            }
         }
         else{
             if(target instanceof Enemy){
@@ -343,231 +1866,292 @@ var Unit = new Phaser.Class({
                 }
             }
             else{
-                this.scene.events.emit("Message", "Turno do oponente!!!  \nErrou o ataque!\n" + "Resultado do dado: " + r);
+                this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
             }
             
 
         }
     },
-    // habilidade: function(target){
-    //     var r;
-    //     do{
-    //         r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
-    //     }while(r <= 20);
+    habilidade: function(target){
+        r = Math.floor(Math.random() * (20 - 1 + 1)) + 1;
         
-    //     if(MANA_Y <= 0 && this.type == "Yuusha"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_H <= 0 && this.type == "Hime"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_C <= 0 && this.type == "Crassus"){
-    //         out_of_mana = 1;
-    //     }
-    //     else if(MANA_M <= 0 && this.type == "Marielle"){
-    //         out_of_mana = 1;
-    //     }
+        out_of_mana = 0;
 
-    //     if(target.living && (r >= target.ca + 3 && r <= 20) && out_of_mana == 0){
-    //         if(this.type == "Yuusha"){
-    //             MANA_Y -= 3;
-    //             target.takeDamage(this.damage + 4);    
-    //             this.scene.events.emit("Message", "Acertou o Corte-X!\n" + " Dano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_y++;
-    //             dano_y = dano_y + this.damage + 4;
-    //         }
-    //         else if(this.type == "Hime"){
-    //             cura_total = 0;
-    //             MANA_H -= 5;
-    //             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + 2){
-    //                 HP_Y += 2;
-    //                 cura_total += 2;
-    //             }
+        if(this.mana < 3 && this.type == "Yuusha"){
+            out_of_mana = 1;
+        }
+        else if(this.mana < 3 && this.type == "Hime"){
+            out_of_mana = 1;
+        }
+        else if(this.mana < 4 && this.type == "Crassus"){
+            out_of_mana = 1;
+        }
+        else if(this.mana < 3 && this.type == "Marielle"){
+            out_of_mana = 1;
+        }
 
-    //             if(HP_H < HPT_H && HPT_H >= HP_H + 2){
-    //                 HP_H += 2;
-    //                 cura_total += 2;
-    //             }
+        if(this.type == "Hime" && r >= 1 && r < 20 && out_of_mana == 0){
+            cura_total = 0;
+            if(this.mana - 3 >= 0){
+                this.mana -= 3;
+            }
+
+            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + (2 + INT_H) && VIVO_Y){
+                HP_Y += (2 + INT_H);
+
+                cura_total += (2 + INT_H);
+            }
+            else if(!VIVO_Y){
                 
-    //             if(HP_C < HPT_C && HPT_C >= HP_C + 2){
-    //                 HP_C += 2;
-    //                 cura_total += 2;
-    //             }
+            }
+            else{
+                var dif_hp = HPT_Y - HP_Y;
+                HP_Y += dif_hp;
+                cura_total += dif_hp;
+            }
 
-    //             if(HP_M < HPT_M && HPT_M >= HP_M + 2){
-    //                 HP_M += 2;
-    //                 cura_total += 2;
-    //             }
-    //             this.scene.events.emit("Message", "Acertou a Palavra Curativa!\n" + " Cura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
-    //         }
-    //         else if(this.type == "Crassus"){
-    //             MANA_C -= 4;
-    //             target.takeDamage(INT_C + 6);    
-    //             this.scene.events.emit("Message", "Acertou a Bola de Fogo!\n" + " Dano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_c++;
-    //             dano_c = dano_c + INT_C + 6;
-    //         }
-    //         else if(this.type == "Marielle"){
-    //             MANA_M -= 3;
-    //             target.takeDamage(VEL_C + 3);
-    //             this.scene.events.emit("Message", "Acertou as Flechas de Gelo!\n" + " Dano do ataque: " +  (VEL_C + 3) + ".\n" + "Resultado do dado: " + r);
-    //             atk_acertados_m++;
-    //             dano_m = dano_m + VEL_C + 3;
-    //         }   
+            if(HP_H < HPT_H && HPT_H >= HP_H + (2 + INT_H) && VIVO_H){
+                HP_H += (2 + INT_H);
+                cura_total += (2 + INT_H);
+            }
+            else if(!VIVO_H){
+                
+            }
+            else{
+                var dif_hp = HPT_H - HP_H;
+                HP_H += dif_hp;
+                cura_total += dif_hp;
+            }
             
-    //     }
-    //     else{
+            if(HP_C < HPT_C && HPT_C >= HP_C + (2 + INT_H) && VIVO_C){
+                HP_C += (2 + INT_H);
+                cura_total += (2 + INT_H);
+            }
+            else if(!VIVO_C){
+                
+            }
+            else{
+                var dif_hp = HPT_C - HP_C;
+                HP_C += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            if(HP_M < HPT_M && HPT_M >= HP_M + (2 + INT_H) && VIVO_M){
+                HP_M += (2 + INT_H);
+                cura_total += (2 + INT_H);
+            }
+            else if(!VIVO_M){
+                
+            }
+            else{
+                var dif_hp = HPT_M - HP_M;
+                HP_M += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            this.scene.events.emit("Message", "Acertou a Palavra Curativa!\n" + " Cura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
+        }
+        else if(this.type == "Hime" && r == 20 && out_of_mana == 0){
+            cura_total = 0;
+            if(this.mana - 3 >= 0){
+                this.mana -= 3;
+            }
+            if(HP_Y < HPT_Y && HPT_Y >= HP_Y + (4 + INT_H) && VIVO_Y){
+                HP_Y += (4 + INT_H);
+
+                cura_total += (4 + INT_H);
+            }
+            else if(!VIVO_Y){
+                
+            }
+            else{
+                var dif_hp = HPT_Y - HP_Y;
+                HP_Y += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            if(HP_H < HPT_H && HPT_H >= HP_H + (4 + INT_H) && VIVO_H){
+                HP_H += (4 + INT_H);
+                cura_total += (4 + INT_H);
+            }
+            else if(!VIVO_H){
+                
+            }
+            else{
+                var dif_hp = HPT_H - HP_H;
+                HP_H += dif_hp;
+                cura_total += dif_hp;
+            }
             
-    //         this.scene.events.emit("Message", "Errou o ataque!\n" + "Resultado do dado: " + r);
-    //         if(this.type == "Yuusha"){
-    //             atk_falhos_y++;
-    //         }
-    //         else if(this.type == "Hime"){
-    //             atk_falhos_h++;
-    //         }
-    //         else if(this.type == "Crassus"){
-    //             atk_falhos_c++;
-    //         }
-    //         else if(this.type == "Marielle"){
-    //             atk_falhos_m++;
-    //         }
-            
-    //     }
-    // },
+            if(HP_C < HPT_C && HPT_C >= HP_C + (4 + INT_H) && VIVO_C){
+                HP_C += (4 + INT_H);
+                cura_total += (4 + INT_H);
+            }
+            else if(!VIVO_C){
+                
+            }
+            else{
+                var dif_hp = HPT_C - HP_C;
+                HP_C += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            if(HP_M < HPT_M && HPT_M >= HP_M + (4 + INT_H) && VIVO_M){
+                HP_M += (4 + INT_H);
+                cura_total += (4 + INT_H);
+            }
+            else if(!VIVO_M){
+                
+            }
+            else{
+                var dif_hp = HPT_M - HP_M;
+                HP_M += dif_hp;
+                cura_total += dif_hp;
+            }
+
+            this.scene.events.emit("Message", "Acertou Crítico da Palavra Curativa!" + " \nCura total: " +  cura_total + ".\n" + "Resultado do dado: " + r);
+        }
+        else if(this.type == "Hime" && out_of_mana == 1){
+            this.scene.events.emit("Message", "O personagem está sem mana suficiente!");
+        }
+        else if(this.type == "Hime" && r < 10){
+            this.scene.events.emit("Message", "Errou a habilidade!\n" + "Resultado do dado: " + r);
+        }
+        else{
+            if(target.living && (r >= target.ca + 1 && r < 20) && out_of_mana == 0){
+                if(this.type == "Yuusha"){
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+                    target.takeDamage(this.damage + 4);    
+                    this.scene.events.emit("Message", "Acertou o Corte-X!" + " \nDano do ataque: " +  (this.damage + 4) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_y++;
+                    dano_y = dano_y + this.damage + 4;
+                }
+                else if(this.type == "Crassus"){
+                    if(this.mana - 4 >= 0){
+                        this.mana -= 4;
+                    }
+                    target.takeDamage(INT_C + 6);    
+                    this.scene.events.emit("Message", "Acertou a Bola de Fogo!" + " \nDano do ataque: " +  (INT_C + 6) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_c++;
+                    dano_c = dano_c + INT_C + 6;
+                }
+                else if(this.type == "Marielle"){
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+                    target.takeDamage(this.damage + INT_M + 2);
+                    this.scene.events.emit("Message", "Acertou as Flechas de Gelo!" + " \nDano do ataque: " +  (this.damage + INT_M + 2) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_m++;
+                    dano_m = dano_m + this.damage + INT_M + 2;
+                }   
+                
+            }
+            else if(target.living && r == 20 && out_of_mana == 0){
+                if(this.type == "Yuusha"){
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+
+                    target.takeDamage((this.damage + 4) * 2);    
+                    this.scene.events.emit("Message", "Acerto Crítico do Corte-X!" + " \nDano do ataque: " +  ((this.damage + 4) * 2) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_y++;
+                    dano_y = dano_y + (this.damage + 4) * 2;
+                }
+                else if(this.type == "Crassus"){
+                    if(this.mana - 4 >= 0){
+                        this.mana -= 4;
+                    }
+                    
+                    target.takeDamage((INT_C + 6) * 2);    
+                    this.scene.events.emit("Message", "Acerto Crítico da Bola de Fogo!" + " \nDano do ataque: " +  ((INT_C + 6) * 2) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_c++;
+                    dano_c = dano_c + (INT_C + 6) * 2;
+                }
+                else if(this.type == "Marielle"){
+                    if(this.mana - 3 >= 0){
+                        this.mana -= 3;
+                    }
+                    
+                    target.takeDamage((this.damage + INT_M + 2) * 2);
+                    this.scene.events.emit("Message", "Acerto Crítico das Flechas de Gelo!" + " \nDano do ataque: " +  ((this.damage + INT_M + 2) * 2) + ".\n" + "Resultado do dado: " + r);
+                    atk_acertados_m++;
+                    dano_m = dano_m + (this.damage + INT_M + 2) * 2;
+                }
+            }
+            else if(target.living && out_of_mana == 1){
+                this.scene.events.emit("Message", "O personagem está sem mana suficiente!");
+            }
+            else{
+                
+                this.scene.events.emit("Message", "Errou a habilidade!\n" + "Resultado do dado: " + r);
+                if(this.type == "Yuusha"){
+                    atk_falhos_y++;
+                }
+                else if(this.type == "Hime"){
+                    atk_falhos_h++;
+                }
+                else if(this.type == "Crassus"){
+                    atk_falhos_c++;
+                }
+                else if(this.type == "Marielle"){
+                    atk_falhos_m++;
+                }
+                
+            }
+        }
+    },
     takeDamage: function(damage) {
         this.hp = this.hp - damage;
-        if(this.hp <= 0) {
-            // if(this.type instanceof PlayerCharacter){
-            //     tam_vetor_herois_ord--;
-            //     if(this.type == "Yuusha"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_H, VEL_C, VEL_M ];
-            //             vel_rem = VEL_Y;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_C, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_H, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_H, VEL_C ];
-            //             }
-            //             vel_rem2 = VEL_Y;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //         }
-                    
-            //     }
-            //     else if(this.type == "Hime"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_C, VEL_M ];
-            //             vel_rem = VEL_H;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_C, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_Y, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_Y, VEL_C ];
-            //             }
-            //             vel_rem2 = VEL_H;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_M && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_M)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
-            //     else if(this.type == "Crassus"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_M ];
-            //             vel_rem = VEL_C;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_H, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_Y, VEL_M ];
-            //             }
-            //             else if(vel_rem == VEL_M){
-            //                 vel_ordenada = [ VEL_Y, VEL_H ];
-            //             }
-            //             vel_rem2 = VEL_C;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_M ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_M) || (vel_rem == VEL_M && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
-            //     else if(this.type == "Marielle"){
-            //         if(tam_vetor_herois_ord == 3){
-            //             vel_ordenada = [ VEL_Y, VEL_H, VEL_C ];
-            //             vel_rem = VEL_M;
-            //         }
-            //         else if(tam_vetor_herois_ord == 2){
-            //             if(vel_rem == VEL_Y){
-            //                 vel_ordenada = [ VEL_H, VEL_C ];
-            //             }
-            //             else if(vel_rem == VEL_H){
-            //                 vel_ordenada = [ VEL_Y, VEL_C ];
-            //             }
-            //             else if(vel_rem == VEL_C){
-            //                 vel_ordenada = [ VEL_Y, VEL_H ];
-            //             }
-            //             vel_rem2 = VEL_M;
-            //         }
-            //         else if(tam_vetor_herois_ord == 1){
-            //             if((vel_rem == VEL_Y && vel_rem2 == VEL_H) || (vel_rem == VEL_H && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_C ];
-            //             }
-            //             else if((vel_rem == VEL_Y && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_Y)){
-            //                 vel_ordenada = [ VEL_H ];
-            //             }
-            //             else if((vel_rem == VEL_H && vel_rem2 == VEL_C) || (vel_rem == VEL_C && vel_rem2 == VEL_H)){
-            //                 vel_ordenada = [ VEL_Y ];
-            //             }
-            //         }
-            //     }
+        if(this.type == "Yuusha"){
+            HP_Y -= damage;
+        }
+        else if(this.type == "Hime"){
+            HP_H -= damage;
+        }
+        else if(this.type == "Crassus"){
+            HP_C -= damage;
+        }
+        else if(this.type == "Marielle"){
+            HP_M -= damage;
+        }
+        else if(this.type == "Slime"){
+            HP_S -= damage;
+        }
 
-            //     for(var i = 0 ; i < tam_vetor_herois ; i++){
-            //         for(var j = tam_vetor_herois ; j > i ; j--){
-            //             if(vel_ordenada[j] > vel_ordenada[j-1]){
-            //                 auxiliar = vel_ordenada[j];
-            //                 vel_ordenada[j] = vel_ordenada[j-1];
-            //                 vel_ordenada[j-1] = auxiliar;
-            //             }
-            //         }
-            //     }
-            // }
+        if(this.hp <= 0) {
             this.hp = 0;
+
+            if(this.type == "Yuusha"){
+                HP_Y = 0;
+                VIVO_Y = false;
+            }
+            else if(this.type == "Hime"){
+                HP_H = 0;
+                VIVO_H = false;
+            }
+            else if(this.type == "Crassus"){
+                HP_C = 0;
+                VIVO_C = false;
+            }
+            else if(this.type == "Marielle"){
+                HP_M = 0;
+                VIVO_M = false;
+            }
+            else if(this.type == "Slime"){
+                HP_S = 0;
+            }
+            else if(this.type == "Gargula"){
+                HP_GA = 0;
+            }
+            else if(this.type == "Golem"){
+                HP_GO = 0;
+            }
+            else if(this.type == "Borgrok"){
+                HP_B = 0;
+            }
+
             this.menuItem.unitKilled();
             this.living = false;
             this.visible = false;   
@@ -580,10 +2164,12 @@ var Enemy = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function Enemy(scene, x, y, texture, type, hp, damage, ca) {
+    function Enemy(scene, x, y, texture, type, hp, damage, ca, escala) {
         Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
-
-        this.setScale(0.5);
+        if(type == "Borgrok" || type == "Golem"){
+            this.flipX = true;
+        }
+        this.setScale(escala);
     }
 });
 
@@ -591,8 +2177,8 @@ var PlayerCharacter = new Phaser.Class({
     Extends: Unit,
 
     initialize:
-    function PlayerCharacter(scene, x, y, texture, type, hp, damage, escala, ca) {
-        Unit.call(this, scene, x, y, texture, type, hp, damage, ca);
+    function PlayerCharacter(scene, x, y, texture, type, hp, damage, escala, ca, mana) {
+        Unit.call(this, scene, x, y, texture, type, hp, damage, ca, mana);
         // flip the image so I don"t have to edit it manually
         this.flipX = true;
         this.setScale(escala);
@@ -647,6 +2233,12 @@ var Menu = new Phaser.Class({
         this.y = y;
         this.selected = false;
     },
+    addMenuItem4: function(unit) {
+        var menuItem = new MenuItem(0, this.menuItems.length * 36, unit, this.scene);
+        this.menuItems.push(menuItem);
+        this.add(menuItem);
+        return menuItem;        
+    },
     addMenuItem3: function(unit) {
         var menuItem = new MenuItem(0, this.menuItems.length * 46.5, unit, this.scene);
         this.menuItems.push(menuItem);
@@ -680,9 +2272,6 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = this.menuItems.length - 1;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
-        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
-        //     selecionou = this.menuItems[this.menuItemIndex];
-        // }
         
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
@@ -695,9 +2284,7 @@ var Menu = new Phaser.Class({
                 this.menuItemIndex = 0;
         } while(!this.menuItems[this.menuItemIndex].active);
         this.menuItems[this.menuItemIndex].select();
-        // if(this.menuItems[this.menuItemIndex] == "Attack" || this.menuItems[this.menuItemIndex] == "Habilidade"){
-        //     selecionou = this.menuItems[this.menuItemIndex];
-        // }
+
         sele = this.menuItemIndex;
         sele2 = this.menuItemIndex;
     },
@@ -782,8 +2369,9 @@ var ActionsMenu = new Phaser.Class({
             
     function ActionsMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
-        this.addMenuItem("Attack");
-        //this.addMenuItem("Habilidade");
+        this.addMenuItem4("Ataque");
+        this.addMenuItem4("Habilidade");
+        //this.addMenuItem4("Fugir");
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -820,8 +2408,10 @@ var FasesMenu = new Phaser.Class({
         teste[1] = "Fase 2";
         this.addMenuItem2("Fase 3");
         teste[2] = "Fase 3";
+        this.addMenuItem2("Fase 4");
+        teste[3] = "Fase 4";
         this.addMenuItem2("Loja");
-        teste[3] = "Loja";
+        teste[4] = "Loja";
 
     },
     confirm: function() {      
@@ -878,6 +2468,23 @@ var VoltarMenu = new Phaser.Class({
     
 });
 
+var AcontecimentoMenu = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function AcontecimentoMenu(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem2("Ir para a fase");
+        lista1[0] = "Ir para a fase";
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedAc");        
+    }
+    
+});
+
 var VictoryScene = new Phaser.Class({
     Extends: Phaser.GameObjects.Text,
     Extends: Phaser.Scene,
@@ -889,7 +2496,19 @@ var VictoryScene = new Phaser.Class({
     },
 
     create: function (){
-        this.add.image(400,178,'fundo_gramado');
+        if(qual_fase == "Fase 1"){
+            this.add.image(400,178,'fundo_gramado');
+        }
+        else if(qual_fase == "Fase 2"){
+            this.add.image(400,180,'fundo_deserto');
+        }
+        else if(qual_fase == "Fase 3"){
+            this.add.image(400,-152,'fundo_mar');
+        }
+        else if(qual_fase == "Fase 4"){
+            var image = this.add.image(300, 188,'fundo_bossfight');
+            image.setScale(1.5).setScrollFactor(0);
+        }
 
         vod = 1;
         this.scene.launch('UIScene3');
@@ -898,45 +2517,45 @@ var VictoryScene = new Phaser.Class({
         this.add.existing(txt_vic);
         txt_vic.setStroke("#000000", 6);
 
-        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        var texto = this.add.text(10, 70, "Ataques sofridos por personagem: ", { color: "#ffffff"});
         this.add.existing(texto);
         texto.setStroke("#000000", 6);
 
         if(tam_vetor_herois == 1){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 2){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 3){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 4){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
-            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_sofrido_m, { color: "#ffffff"});
             this.add.existing(texto4);
             texto4.setStroke("#000000", 6);
         }        
@@ -1048,7 +2667,19 @@ var DefeatScene = new Phaser.Class({
     },
 
     create: function (){
-        this.add.image(400,178,'fundo_gramado');
+        if(qual_fase == "Fase 1"){
+            this.add.image(400,178,'fundo_gramado');
+        }
+        else if(qual_fase == "Fase 2"){
+            this.add.image(400,180,'fundo_deserto');
+        }
+        else if(qual_fase == "Fase 3"){
+            this.add.image(400,-152,'fundo_mar');
+        }
+        else if(qual_fase == "Fase 4"){
+            var image = this.add.image(300, 188,'fundo_bossfight');
+            image.setScale(1.5).setScrollFactor(0);
+        }
 
         vod = 2;
         this.scene.launch('UIScene3');
@@ -1057,45 +2688,45 @@ var DefeatScene = new Phaser.Class({
         this.add.existing(txt_vic);
         txt_vic.setStroke("#000000", 6);
 
-        var texto = this.add.text(10, 70, "Ataques acertados e errados por personagem: ", { color: "#ffffff"});
+        var texto = this.add.text(10, 70, "Ataques sofridos por personagem: ", { color: "#ffffff"});
         this.add.existing(texto);
         texto.setStroke("#000000", 6);
 
         if(tam_vetor_herois == 1){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 2){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 3){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
         }
         else if(tam_vetor_herois == 4){
-            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_acertados_y + " | "  + atk_falhos_y, { color: "#ffffff"});
+            var texto1 = this.add.text(55, 90, herois[0].type + ": " + atk_sofrido_y, { color: "#ffffff"});
             this.add.existing(texto1);
             texto1.setStroke("#000000", 6);
-            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_acertados_h + " | " + atk_falhos_h, { color: "#ffffff"});
+            var texto2 = this.add.text(55, 110, herois[1].type + ": " + atk_sofrido_h, { color: "#ffffff"});
             this.add.existing(texto2);
             texto2.setStroke("#000000", 6);
-            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_acertados_c + " | " + atk_falhos_c, { color: "#ffffff"});
+            var texto3 = this.add.text(55, 130, herois[2].type + ": " + atk_sofrido_c, { color: "#ffffff"});
             this.add.existing(texto3);
             texto3.setStroke("#000000", 6);
-            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_acertados_m + " | " + atk_falhos_m, { color: "#ffffff"});
+            var texto4 = this.add.text(55, 150, herois[3].type + ": " + atk_sofrido_m, { color: "#ffffff"});
             this.add.existing(texto4);
             texto4.setStroke("#000000", 6);
         }        
@@ -1190,7 +2821,6 @@ var DefeatScene = new Phaser.Class({
             this.scene.sleep('UIScene3');
             //Start mapa
             
-            // this.scene.switch('Mapa');
             this.scene.wake('UIScene2');
             
         }
@@ -1225,27 +2855,27 @@ var Loja = new Phaser.Class({
         // add menus to the container
         this.menus.add(this.lojaMenu);
 
-        var preco1 = this.add.text(404, 125, "100 moedas", {color: "#ffffff"});
+        var preco1 = this.add.text(404, 125, "40 moedas", {color: "#ffffff"});
         preco1.setStroke("#000000", 6);
         this.add.existing(preco1);
         
-        var preco2 = this.add.text(404, 170, "260 moedas", {color: "#ffffff"});
+        var preco2 = this.add.text(404, 170, "104 moedas", {color: "#ffffff"});
         preco2.setStroke("#000000", 6);
         this.add.existing(preco2);
 
-        var preco3 = this.add.text(404, 218, "170 moedas", {color: "#ffffff"});
+        var preco3 = this.add.text(404, 218, "68 moedas", {color: "#ffffff"});
         preco3.setStroke("#000000", 6);
         this.add.existing(preco3);
 
-        var preco4 = this.add.text(404, 265, "230 moedas", {color: "#ffffff"});
+        var preco4 = this.add.text(404, 265, "60 moedas", {color: "#ffffff"});
         preco4.setStroke("#000000", 6);
         this.add.existing(preco4);
 
-        var preco5 = this.add.text(404, 312, "280 moedas", {color: "#ffffff"});
+        var preco5 = this.add.text(404, 312, "112 moedas", {color: "#ffffff"});
         preco5.setStroke("#000000", 6);
         this.add.existing(preco5);
 
-        var preco6 = this.add.text(404, 360, "330 moedas", {color: "#ffffff"});
+        var preco6 = this.add.text(404, 360, "120 moedas", {color: "#ffffff"});
         preco6.setStroke("#000000", 6);
         this.add.existing(preco6);
 
@@ -1285,8 +2915,8 @@ var Loja = new Phaser.Class({
     },
     receiveLojaSelection: function(action, cm) {
         if(action == "enter" && cm == "Aumentar HP dos personagens") {            
-            if(dinheiros >= 100){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 40){
+                this.events.emit("Message", "Compra realizada!  HP aumentado em 2 unidades.");
                 HPT_Y += 2;
                 HP_Y = HPT_Y; 
                 HPT_H += 2;
@@ -1295,7 +2925,7 @@ var Loja = new Phaser.Class({
                 HP_C = HPT_C;
                 HPT_M += 2;
                 HP_M = HPT_M;
-                dinheiros -= 100;
+                dinheiros -= 40;
                 
             }
             else{
@@ -1306,13 +2936,13 @@ var Loja = new Phaser.Class({
             sele2 = 0;              
         }
         else if(action == "enter" && cm == "Aumentar FORÇA dos personagens") {            
-            if(dinheiros >= 260){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 104){
+                this.events.emit("Message", "Compra realizada!  FORÇA aumentada em 1 unidade.");
                 FOR_Y += 1;
                 FOR_H += 1;
                 FOR_C += 1;
                 FOR_M += 1;
-                dinheiros -= 260;
+                dinheiros -= 104;
                 
             }
             else{
@@ -1323,13 +2953,13 @@ var Loja = new Phaser.Class({
             sele2 = 1;              
         }
         else if(action == "enter" && cm == "Aumentar VELOCIDADE dos personagens") {            
-            if(dinheiros >= 170){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 68){
+                this.events.emit("Message", "Compra realizada!  VELOCIDADE aumentada em 1 unidade.");
                 VEL_Y += 1;
                 VEL_H += 1;
                 VEL_C += 1;
                 VEL_M += 1;
-                dinheiros -= 170;
+                dinheiros -= 68;
                 
             }
             else{
@@ -1340,13 +2970,13 @@ var Loja = new Phaser.Class({
             sele2 = 2;              
         }
         else if(action == "enter" && cm == "Aumentar DEFESA dos personagens") {            
-            if(dinheiros >= 230){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 60){
+                this.events.emit("Message", "Compra realizada!  DEFESA aumentada em 1 unidade.");
                 DEF_Y += 1;
                 DEF_H += 1;
                 DEF_C += 1;
                 DEF_M += 1;
-                dinheiros -= 230;
+                dinheiros -= 60;
                 
             }
             else{
@@ -1357,13 +2987,13 @@ var Loja = new Phaser.Class({
             sele2 = 3;              
         }
         else if(action == "enter" && cm == "Aumentar INTELIGÊNCIA dos personagens") {            
-            if(dinheiros >= 270){
-                this.events.emit("Message", "Compra realizada!");
-                DEF_Y += 1;
-                DEF_H += 1;
-                DEF_C += 1;
-                DEF_M += 1;
-                dinheiros -= 270;
+            if(dinheiros >= 112){
+                this.events.emit("Message", "Compra realizada!  INTELIGÊNCIA aumentada em 1 unidade.");
+                INT_Y += 1;
+                INT_H += 1;
+                INT_C += 1;
+                INT_M += 1;
+                dinheiros -= 112;
                 
             }
             else{
@@ -1374,13 +3004,13 @@ var Loja = new Phaser.Class({
             sele2 = 4;              
         }
         else if(action == "enter" && cm == "Aumentar ATAQUE BASE dos personagens") {            
-            if(dinheiros >= 330){
-                this.events.emit("Message", "Compra realizada!");
+            if(dinheiros >= 120){
+                this.events.emit("Message", "Compra realizada!  ATAQUE BASE aumentado em 1 unidade.");
                 ATKB_Y += 1;
                 ATKB_H += 1;
                 ATKB_C += 1;
                 ATKB_M += 1;
-                dinheiros -= 330;
+                dinheiros -= 120;
                 
             }
             else{
@@ -1435,11 +3065,11 @@ var UIScene = new Phaser.Class({
         this.graphics.lineStyle(1, 0xffffff);
         this.graphics.fillStyle(0x031f4c, 1);
         //menu oponente        
-        this.graphics.strokeRect(1, 339, 176, 100); //(2,150,90,100)
-        this.graphics.fillRect(1, 339, 176, 100); //(2,150,90,100)
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
         //menu ataques
-        this.graphics.strokeRect(178, 339, 160, 100); //(95,150,90,100)
-        this.graphics.fillRect(178, 339, 160, 100); //(95,150,90,100)
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
         //menu herois
         this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
         this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
@@ -1447,8 +3077,8 @@ var UIScene = new Phaser.Class({
         // basic container to hold all menus
         this.menus = this.add.container();
                 
-        this.heroesMenu = new HeroesMenu(355, 353, this); //(eixo x, eixo y) = (195,153,this)       
-        this.actionsMenu = new ActionsMenu(195, 353, this); //(100,153)           
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
         this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
 
         // the currently selected menu 
@@ -1459,6 +3089,17 @@ var UIScene = new Phaser.Class({
         this.menus.add(this.heroesMenu);
         this.menus.add(this.actionsMenu);
         this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
 
         // listen for keyboard events
         this.input.keyboard.on("keydown", this.onKeyInput, this);   
@@ -1480,6 +3121,7 @@ var UIScene = new Phaser.Class({
         this.message = new Message(this, this.battleScene.events);
         this.add.existing(this.message);         
 
+        cont2 = 0;
         this.createMenu(); 
         
         
@@ -1489,8 +3131,53 @@ var UIScene = new Phaser.Class({
         this.remapHeroes();
         // map enemies menu items to enemies
         this.remapEnemies();
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
         // first move
-        this.battleScene.nextTurn();  
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});
     },
     onEnemy: function(index) {
         // when the enemy is selected, we deselect all menus and send event with the enemy id
@@ -1498,45 +3185,75 @@ var UIScene = new Phaser.Class({
         this.actionsMenu.deselect();
         this.enemiesMenu.deselect();
         this.currentMenu = null;
-        this.battleScene.receivePlayerSelection("attack", index);
-        // if(selecionou == "Attack"){
-        //     this.battleScene.receivePlayerSelection("attack", index);    
-        // }
-        // else if(selecionou == "Habilidade"){
-        //     this.battleScene.receivePlayerSelection("habilidade", index);
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
         // }
         
     },
     onPlayerSelect: function(id) {
-        var prob = ((21 - CA_S) / 20 ) * 100;
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
 
         for(var i = 0 ; i < txt.length ; i++){
             txt[i].destroy();
+            txt2[i].destroy();
             pr.destroy();
+            pro.destroy();
         }
         
         for(var i = 0 ; i < tam_vetor_herois ; i++){
             var hHp = this.battleScene.heroes[i].hp;
-            txt[i] = this.add.text(440, 353 + 20*i, hHp);
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
             this.add.existing(txt[i]);
 
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
             if(i == 0){
-                pr = this.add.text(270, 345 + 20*i, "Acerto: \n  " + prob + "%");
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
                 this.add.existing(pr);
             }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
         }
         // when its player turn, we select the active hero item and the first action
         // then we make actions menu active
         this.heroesMenu.select(id);
         this.actionsMenu.select(0);
-        //selecionou = "Attack";
+        selecionou = "Ataque";
         this.currentMenu = this.actionsMenu;
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedAction: function() {
-        this.currentMenu = this.enemiesMenu;
-        this.enemiesMenu.select(0);
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
     },
     remapHeroes: function() {
         var heroes = this.battleScene.heroes;
@@ -1550,14 +3267,55 @@ var UIScene = new Phaser.Class({
         if(this.currentMenu && this.currentMenu.selected) {
             if(event.code === "ArrowUp") {
                 this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
             } else if(event.code === "ArrowDown") {
                 this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
             } else if(event.code === "ArrowRight" || event.code === "Shift") {
 
             } else if(event.code === "Space" || event.code === "ArrowLeft") {
                 this.currentMenu.confirm();
             } 
         }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
+
     },
 });
 
@@ -1593,7 +3351,11 @@ var UIScene2 = new Phaser.Class({
         this.graphics.strokeRect(143, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
         this.graphics.fillRect(143, 339, 63, 50); //(188,150,130,100)
 
-        obj = new Objetos(this, 412, 215, "seta", 0.4);
+        //Fase 4
+        this.graphics.strokeRect(213, 339, 63, 50); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(213, 339, 63, 50); //(188,150,130,100)
+
+        obj = new Objetos(this, 270, 155, "seta", 0.4);
         this.add.existing(obj);
 
         obj2 = new Objetos(this, 484, 62, "moeda_loja", 0.04);
@@ -1640,13 +3402,14 @@ var UIScene2 = new Phaser.Class({
         sele = 0; 
         cont = 0;
         obj.destroy();
-        obj = new Objetos(this, 412, 215, "seta", 0.4);
+        obj = new Objetos(this, 270, 155, "seta", 0.4);
         this.add.existing(obj);
     },
     // we have action selected and we make the enemies menu active
     // the player needs to choose an enemy to attack
     onSelectedFase: function() {
         var cm = teste[sele];
+        qual_fase = teste[sele];
         this.fasesMenu.deselect();
         this.currentMenu = null;
         this.receiveFaseSelection("enter",cm);
@@ -1657,7 +3420,26 @@ var UIScene2 = new Phaser.Class({
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            this.scene.switch('BattleScene');                  
+            this.scene.switch('Acontecimento1');
+            
+        }
+        else if(action == "enter" && cm == "Fase 2"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('Acontecimento2');
+        }
+        else if(action == "enter" && cm == "Fase 3"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('Acontecimento3');
+        }
+        else if(action == "enter" && cm == "Fase 4"){
+            this.scene.sleep('UIScene2');
+            atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
+            // start battle
+            this.scene.switch('Acontecimento4');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
@@ -1675,11 +3457,11 @@ var UIScene2 = new Phaser.Class({
                     cont--;
                 }
                 else{
-                    cont = 3;
+                    cont = 4;
                 }
             } else if(event.code === "ArrowRight") {
                 this.currentMenu.moveSelectionRight();
-                if(cont + 1 < 4){
+                if(cont + 1 < 5){
                     cont++;
                 }
                 else{
@@ -1694,19 +3476,23 @@ var UIScene2 = new Phaser.Class({
         }
 
         if(cont == 0){
-            obj = new Objetos(this, 412, 215, "seta", 0.4);
+            obj = new Objetos(this, 270, 155, "seta", 0.4);
             this.add.existing(obj);
         }
         else if(cont == 1){
-            obj = new Objetos(this, 395, 169, "seta", 0.4);
+            obj = new Objetos(this, 175, 159, "seta", 0.4);
             this.add.existing(obj);
         }
         else if(cont == 2){
-            obj = new Objetos(this, 464, 103, "seta", 0.4);
+            obj = new Objetos(this, 76, 165, "seta", 0.4);
             this.add.existing(obj);
         }
         else if(cont == 3){
-            
+            obj = new Objetos(this, 168, 66, "seta", 0.4);
+            this.add.existing(obj);
+        }
+        else if(cont == 4){
+
         }
 
     },
@@ -1785,6 +3571,833 @@ var UIScene3 = new Phaser.Class({
                 this.currentMenu.confirm();
             } 
         }
+
+    },
+});
+
+var UIScene4 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene4 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene4" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene2");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
+        // first move
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
+
+    },
+});
+
+var UIScene5 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene5 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene5" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene3");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
+        // first move
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
+
+    },
+});
+
+var UIScene6 = new Phaser.Class({
+
+    Extends: Phaser.GameObjects.Text,
+    Extends: Phaser.Scene,
+    
+
+    initialize:
+
+    function UIScene6 ()
+    {
+        Phaser.Scene.call(this, { key: "UIScene6" });
+    },
+
+    create: function ()
+    {    
+        this.battleScene = this.scene.get("BattleScene4");
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+        //menu oponente        
+        this.graphics.strokeRect(1, 339, 156, 100); //(2,150,90,100)
+        this.graphics.fillRect(1, 339, 156, 100); //(2,150,90,100)
+        //menu ataques
+        this.graphics.strokeRect(158, 339, 180, 100); //(95,150,90,100)
+        this.graphics.fillRect(158, 339, 180, 100); //(95,150,90,100)
+        //menu herois
+        this.graphics.strokeRect(339, 339, 180, 100); //(eixo x: 188, eixo y: 150, tamanho em relação a x: 130, tamanho em relação a y:100)
+        this.graphics.fillRect(339, 339, 180, 100); //(188,150,130,100)
+        
+        // basic container to hold all menus
+        this.menus = this.add.container();
+                
+        this.heroesMenu = new HeroesMenu(355, 361, this); //(eixo x, eixo y) = (195,153,this)       
+        this.actionsMenu = new ActionsMenu(163, 353, this); //(100,153)           
+        this.enemiesMenu = new EnemiesMenu(8, 353, this); //(8,153) 
+
+        // the currently selected menu 
+        this.currentMenu = this.actionsMenu;
+        
+        // add menus to the container
+        
+        this.menus.add(this.heroesMenu);
+        this.menus.add(this.actionsMenu);
+        this.menus.add(this.enemiesMenu);
+
+        selecionou = "Ataque";
+
+        var nomes = this.add.text(355, 343, "Nomes:");
+        this.add.existing(nomes);
+
+        var agape = this.add.text(440, 343, "HP:");
+        this.add.existing(agape);
+
+        var emepe = this.add.text(485, 343, "MP:");
+        this.add.existing(emepe);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this);   
+        
+        // when its player cunit turn to move
+        this.battleScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        
+        // when the action on the menu is selected
+        // for now we have only one action so we dont send and action id
+        this.events.on("SelectedAction", this.onSelectedAction, this);
+        
+        // an enemy is selected
+        this.events.on("Enemy", this.onEnemy, this);
+
+        // when the scene receives wake event
+        this.sys.events.on('wake', this.createMenu, this);
+
+        // the message describing the current action
+        this.message = new Message(this, this.battleScene.events);
+        this.add.existing(this.message);         
+
+        cont2 = 0;
+        this.createMenu(); 
+        
+        
+    },
+    createMenu: function() {
+        // map hero menu items to heroes
+        this.remapHeroes();
+        // map enemies menu items to enemies
+        this.remapEnemies();
+        izo = this.add.text(100, 20, "Esperando para decidir o turno", {color: "#ffffff"});
+        izo.setStroke("#000000", 6);
+        this.add.existing(izo);
+
+        cont2 = 0;
+        selecionou = "Ataque";
+
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
+        // first move
+        this.time.addEvent({ delay: 1500, callback: this.battleScene.nextTurn, callbackScope: this.battleScene});  
+    },
+    onEnemy: function(index) {
+        // when the enemy is selected, we deselect all menus and send event with the enemy id
+        this.heroesMenu.deselect();
+        this.actionsMenu.deselect();
+        this.enemiesMenu.deselect();
+        this.currentMenu = null;
+        //this.battleScene.receivePlayerSelection("attack", index);
+        if(selecionou == "Ataque"){
+            this.battleScene.receivePlayerSelection("ataque", index);    
+        }
+        else if(selecionou == "Habilidade"){
+            this.battleScene.receivePlayerSelection("habilidade", index);
+            
+        }
+        // else if(selecionou == "Fugir"){
+        //     this.battleScene.receivePlayerSelection("fugir", index);
+        // }
+        
+    },
+    onPlayerSelect: function(id) {
+        
+        var prob = ((21 - this.battleScene.enemies[0].ca) / 20) * 100;
+        var prob2 = ((21 - (this.battleScene.enemies[0].ca + 1)) / 20) * 100;
+        var prob3 = 100;
+
+        for(var i = 0 ; i < txt.length ; i++){
+            txt[i].destroy();
+            txt2[i].destroy();
+            pr.destroy();
+            pro.destroy();
+        }
+        
+        for(var i = 0 ; i < tam_vetor_herois ; i++){
+            var hHp = this.battleScene.heroes[i].hp;
+            txt[i] = this.add.text(440, 361 + 20*i, hHp);
+            this.add.existing(txt[i]);
+
+            var hMana = this.battleScene.heroes[i].mana;
+            txt2[i] = this.add.text(485, 361 + 20*i, hMana);
+            this.add.existing(txt2[i]);
+
+            if(i == 0){
+                pr = this.add.text(268, 345 + 20*i, "Acerto: \n  " + prob.toFixed(1) + "%");
+                this.add.existing(pr);
+            }
+            else if(i == 1){
+                if(turno_de != "Hime"){
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n  " + prob2.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                else{
+                    pro = this.add.text(268, 362 + 20*i, "Acerto: \n " + prob3.toFixed(1) + "%");
+                    this.add.existing(pro);
+                }
+                
+            }
+
+        }
+
+        // when its player turn, we select the active hero item and the first action
+        // then we make actions menu active
+        this.heroesMenu.select(id);
+        this.actionsMenu.select(0);
+        selecionou = "Ataque";
+        this.currentMenu = this.actionsMenu;
+    },
+    // we have action selected and we make the enemies menu active
+    // the player needs to choose an enemy to attack
+    onSelectedAction: function() {
+        if((turno_de != "Hime" && selecionou == "Habilidade") || selecionou == "Ataque"){
+            this.currentMenu = this.enemiesMenu;
+            this.enemiesMenu.select(0);
+        }
+        else if(turno_de == "Hime" && selecionou == "Habilidade"){ //|| selecionou == "Fugir"){
+            this.onEnemy(null);
+        }
+        
+    },
+    remapHeroes: function() {
+        var heroes = this.battleScene.heroes;
+        this.heroesMenu.remap(heroes);
+    },
+    remapEnemies: function() {
+        var enemies = this.battleScene.enemies;
+        this.enemiesMenu.remap(enemies);
+    },
+    onKeyInput: function(event) {
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowUp") {
+                this.currentMenu.moveSelectionUp();
+
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 - 1 >= 0){
+                        cont2--;
+                    }
+                    else{
+                        cont2 = 1;
+                    }
+                }
+
+            } else if(event.code === "ArrowDown") {
+                this.currentMenu.moveSelectionDown();
+                
+                if(this.currentMenu == this.actionsMenu){
+                    if(cont2 + 1 < 2){
+                        cont2++;
+                    }
+                    else{
+                        cont2 = 0;
+                    }
+                }
+
+            } else if(event.code === "ArrowRight" || event.code === "Shift") {
+
+            } else if(event.code === "Space" || event.code === "ArrowLeft") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+        if(cont2 == 0){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Ataque";
+            }
+        }
+        else if(cont2 == 1){
+            if(this.currentMenu == this.actionsMenu){
+                selecionou = "Habilidade";
+            }
+        }
+        // else if(cont2 == 2){
+        //     if(this.currentMenu == this.actionsMenu){
+        //         selecionou = "Fugir";
+        //     }
+        // }
+        else if(cont2 == 2){
+
+        }
+        
 
     },
 });
