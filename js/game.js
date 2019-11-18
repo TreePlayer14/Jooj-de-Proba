@@ -74,6 +74,7 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_bossfight','Imagens/Burned_background-Recovered.jpg');
         this.load.image('fundo_acontecimento','Imagens/placa.png');
         this.load.image('fundo_castelo','Imagens/castelo.png');
+        this.load.image('fundo_castelo_chovendo','Imagens/castelo_destruido.jpeg');
         
     },
 
@@ -1888,8 +1889,8 @@ var Historia2 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Historia2" });
     },
     create: function (){
-        var image = this.add.image(260, 200,'fundo_castelo');
-        image.setScale(0.6);
+        var image = this.add.image(260, 200,'fundo_castelo_chovendo');
+        image.setScale(1);
 
         this.graphics = this.add.graphics();
         this.graphics.lineStyle(1, 0xffffff);
@@ -1911,32 +1912,37 @@ var Historia2 = new Phaser.Class({
         // add menus to the container
         this.menus.add(this.histMenu);
 
-        var txt_texto = this.add.text(60, 40, "Em um passado distante, o reino de Winx", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(60, 40, "Com seu exército de monstros, Borgrok", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});        
 
-        var txt_texto = this.add.text(30, 88, "prosperava em uma era de paz, seu povo era", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(30, 88, "destruiu cidades, queimou vilas e espalhou o", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(30, 136, "abençoado com grandes colheitas e a guerra", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(30, 136, "caos pelo reino.", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(30, 184, "não atormentava a vida dos cidadãos do reino", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(60, 184, "Devastado pela força de seu inimigo, o", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(30, 232, "a décadas.", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(30, 232, "reino estava a beira da destruição completa", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(60, 280, "Até o dia da chegada de Borgrok.", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(30, 280, "quando as 12 ordens de cavaleiros se uniram", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 328, "em uma investida final contra o vilão.", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
