@@ -268,7 +268,7 @@ var BattleScene = new Phaser.Class({
         }
         else if(action == "habilidade"){
             this.units[ind].habilidade(this.enemies[target]);
-            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
                         this.heroes[i].hp += (2 + INT_H);
@@ -564,7 +564,7 @@ var BattleScene2 = new Phaser.Class({
         }
         else if(action == "habilidade"){
             this.units[ind].habilidade(this.enemies[target]);
-            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
                         this.heroes[i].hp += (2 + INT_H);
@@ -863,7 +863,7 @@ var BattleScene3 = new Phaser.Class({
         }
         else if(action == "habilidade"){
             this.units[ind].habilidade(this.enemies[target]);
-            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
                         this.heroes[i].hp += (2 + INT_H);
@@ -1160,7 +1160,7 @@ var BattleScene4 = new Phaser.Class({
         }
         else if(action == "habilidade"){
             this.units[ind].habilidade(this.enemies[target]);
-            if(this.units[ind].type == "Hime" && r >= 10 && r < 20){
+            if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
                         this.heroes[i].hp += (2 + INT_H);
@@ -1419,23 +1419,23 @@ var Acontecimento2 = new Phaser.Class({
         this.add.existing(txt_ti);
         txt_ti.setStroke("#000000", 6);
 
-        var txt_texto = this.add.text(56, 70, "Após passarem pelos slimes, nossos heróis", { color: "#ffffff", fontSize: "16px"});
+        var txt_texto = this.add.text(66, 70, "Após passarem pelos slimes, nossos heróis", { color: "#ffffff", fontSize: "16px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
 
-        var txt_texto2 = this.add.text(38, 93, "continuam sua jornada e, em meio ao temível", { color: "#ffffff", fontSize: "16px"});
+        var txt_texto2 = this.add.text(48, 93, "continuam sua jornada e, em meio ao temível", { color: "#ffffff", fontSize: "16px"});
         this.add.existing(txt_texto2);
         txt_texto2.setStroke("#000000", 6);
 
-        var txt_texto3 = this.add.text(38, 116, "deserto Sabaku, são surpreendidos por golens", { color: "#ffffff", fontSize: "16px"});
+        var txt_texto3 = this.add.text(48, 116, "deserto Sabaku, são surpreendidos por golens", { color: "#ffffff", fontSize: "16px"});
         this.add.existing(txt_texto3);
         txt_texto3.setStroke("#000000", 6);
 
-        var txt_texto4 = this.add.text(38, 139, "de pedra criados por Borgrok, os mesmos", { color: "#ffffff", fontSize: "16px"});
+        var txt_texto4 = this.add.text(48, 139, "de pedra criados por Borgrok, os mesmos", { color: "#ffffff", fontSize: "16px"});
         this.add.existing(txt_texto4);
         txt_texto4.setStroke("#000000", 6);
 
-        var txt_texto5 = this.add.text(38, 162, "tentam se livrar de nossos heróis.", { color: "#ffffff", fontSize: "16px"});
+        var txt_texto5 = this.add.text(48, 162, "tentam se livrar de nossos heróis.", { color: "#ffffff", fontSize: "16px"});
         this.add.existing(txt_texto5);
         txt_texto5.setStroke("#000000", 6);
 
@@ -1476,6 +1476,246 @@ var Acontecimento2 = new Phaser.Class({
             
             //Start battle
             this.scene.switch('BattleScene2');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
+});
+
+var Acontecimento3 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento3(){
+        Phaser.Scene.call(this, { key: "Acontecimento3" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(118, 10, "Assalto das Gárgulas", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(66, 40, "Ao sair do deserto, nossos herois decidem", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(48, 63, "descansar na cidade de Guidelight antes da", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(48, 86, "batalha final, porém mal sabiam eles que", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(48, 109, "Borgrok havia enviado Gárgulas para destruí-", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(48, 132, "los juntamente com a cidade portuária.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_texto6 = this.add.text(66, 155, "Eles então devem derrotá-las e salvar a", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto6);
+        txt_texto6.setStroke("#000000", 6);
+
+        var txt_texto7 = this.add.text(48, 178, "cidade.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto7);
+        txt_texto7.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 200 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "100 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento3');
+            
+            //Start battle
+            this.scene.switch('BattleScene3');
+            
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+
+    },
+
+});
+
+var Acontecimento4 = new Phaser.Class({
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Acontecimento4(){
+        Phaser.Scene.call(this, { key: "Acontecimento4" });
+    },
+    create: function (){
+        var image = this.add.image(260, 230,'fundo_acontecimento');
+        image.setScale(0.5);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.acMenu = new AcontecimentoMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.acMenu;
+        
+        this.acMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.acMenu);
+
+        var txt_ti = this.add.text(168, 10, "Batalha Final", { color: "#ffffff", fontSize: "23px"});
+        this.add.existing(txt_ti);
+        txt_ti.setStroke("#000000", 6);
+
+        var txt_texto = this.add.text(66, 40, "Nossos heróis finalmente chegam as ruínas", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+
+        var txt_texto2 = this.add.text(48, 63, "de Baldur Grok para sua última batalha desta", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto2);
+        txt_texto2.setStroke("#000000", 6);
+
+        var txt_texto3 = this.add.text(48, 86, "jornada.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto3);
+        txt_texto3.setStroke("#000000", 6);
+
+        var txt_texto4 = this.add.text(66, 109, "É chegada a hora de enfrentar Borgrok com", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto4);
+        txt_texto4.setStroke("#000000", 6);
+
+        var txt_texto5 = this.add.text(48, 132, "todas as forças e trazer a paz definitiva ", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto5);
+        txt_texto5.setStroke("#000000", 6);
+
+        var txt_texto6 = this.add.text(48, 155, "para o reino de Winx.", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_texto6);
+        txt_texto6.setStroke("#000000", 6);
+
+        var txt_rec = this.add.text(100, 202, "Recompensa: 400 moedas caso vença", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec);
+        txt_rec.setStroke("#000000", 6);
+
+        var txt_rec2 = this.add.text(215, 225, "175 moedas caso perca", { color: "#ffffff", fontSize: "16px"});
+        this.add.existing(txt_rec2);
+        txt_rec2.setStroke("#000000", 6);
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedAc", this.onSelectedAc, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.acMenu;
+        this.acMenu.select(0);
+        
+    },
+    onSelectedAc: function() {
+        
+        var cm = lista1[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveAcSelection("enter",cm);
+        
+    },
+    receiveAcSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para a fase") {            
+            this.scene.sleep('Acontecimento4');
+            
+            //Start battle
+            this.scene.switch('BattleScene4');
             
         }
     },
@@ -1655,6 +1895,7 @@ var Unit = new Phaser.Class({
             if(this.mana - 3 >= 0){
                 this.mana -= 3;
             }
+
             if(HP_Y < HPT_Y && HPT_Y >= HP_Y + (2 + INT_H) && VIVO_Y){
                 HP_Y += (2 + INT_H);
 
@@ -3192,13 +3433,13 @@ var UIScene2 = new Phaser.Class({
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            this.scene.switch('BattleScene3');
+            this.scene.switch('Acontecimento3');
         }
         else if(action == "enter" && cm == "Fase 4"){
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            this.scene.switch('BattleScene4');
+            this.scene.switch('Acontecimento4');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
