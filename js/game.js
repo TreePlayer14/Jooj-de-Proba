@@ -39,6 +39,7 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
+var contHist11 = 0, lista3 = [];
 
 var BootScene = new Phaser.Class({
 
@@ -3226,6 +3227,115 @@ var Historia10 = new Phaser.Class({
 
 });
 
+var Historia11 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Historia11(){
+        Phaser.Scene.call(this, { key: "Historia11" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_castelo');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new HistoriaMenu2(350,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(60, 20, "Ao descobrirem a verdade sobre o retorno", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 70, "de Borgrok, nossos heróis convencem Marielle", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 120, "a se juntar a eles e o grupo então se", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 170, "prepara para a batalha final que irá decidir", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 220, "o futuro do reino.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        contHist11 = 0;
+        selection = 0;
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista3[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para o jogo"){
+            this.scene.sleep('Historia11');
+            
+            //Start battle
+            this.scene.switch('UIScene2');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
 var Objetos = new Phaser.Class({
     Extends: Phaser.GameObjects.Sprite,
 
@@ -3722,6 +3832,12 @@ var Menu = new Phaser.Class({
         this.y = y;
         this.selected = false;
     },
+    addMenuItem6: function(unit) {
+        var menuItem = new MenuItem(this.menuItems.length * 100, 0, unit, this.scene);
+        this.menuItems.push(menuItem);
+        this.add(menuItem);
+        return menuItem;        
+    },
     addMenuItem5: function(unit) {
         var menuItem = new MenuItem(this.menuItems.length * 90, 0, unit, this.scene);
         this.menuItems.push(menuItem);
@@ -3993,6 +4109,24 @@ var HistoriaMenu = new Phaser.Class({
         lista2[0] = "Próximo";
         this.addMenuItem5("Pular História");
         lista2[1] = "Pular História";
+
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedHist");        
+    }
+    
+});
+
+var HistoriaMenu2 = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function HistoriaMenu2(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem6("Ir para o jogo");
+        lista3[0] = "Ir para o jogo";
 
     },
     confirm: function() {      
