@@ -38,7 +38,7 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 //Variáveis Random 3
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
-var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0;
+var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
 
 var BootScene = new Phaser.Class({
 
@@ -2677,72 +2677,47 @@ var Historia7 = new Phaser.Class({
         // add menus to the container
         this.menus.add(this.histMenu);
 
-        var h = new Objetos(this, 485, 290, "crassus", 1);
-        this.add.existing(h);
-        h.flipX = true;
-        this.add.tween({targets: h, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+        var c = new Objetos(this, 460, 310, "crassus", 1);
+        this.add.existing(c);
+        c.flipX = true;
+        this.add.tween({targets: c, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(40, 5, "Juntamente com Hime havia também Crassus,", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(40, 20, "Juntamente com Hime havia também Crassus,", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});        
 
-        var txt_texto = this.add.text(10, 35, "segundo filho de uma família nobre e também um", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 60, "segundo filho de uma família nobre e também um", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(10, 65, "exímio mago.", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 100, "exímio mago.", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(40, 95, "Como Crassus não teria direito aos", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(40, 140, "Como Crassus não teria direito aos", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(10, 125, "territórios de seu pai e que teria que viver", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 180, "territórios de seu pai e que teria que viver", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(10, 155, "como um auxiliar de seu irmão, ele decide", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 220, "como um auxiliar de seu irmão, ele decide", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(10, 185, "recusar seu destino, pois não queria viver na", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 260, "recusar seu destino, pois não queria", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        var txt_texto = this.add.text(10, 215, "sombra de seu irmão.", { color: "#ffffff", fontSize: "18px"});
-        this.add.existing(txt_texto);
-        txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
-
-        var txt_texto = this.add.text(40, 245, "Crassus então abandona seu título e", { color: "#ffffff", fontSize: "18px"});
-        this.add.existing(txt_texto);
-        txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
-
-        var txt_texto = this.add.text(10, 275, "família para virar aventureiro, porém", { color: "#ffffff", fontSize: "18px"});
-        this.add.existing(txt_texto);
-        txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
-
-        var txt_texto = this.add.text(10, 305, "foi ferido em uma de suas missões", { color: "#ffffff", fontSize: "18px"});
-        this.add.existing(txt_texto);
-        txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
-
-        var txt_texto = this.add.text(10, 335, "próximas a Magvel, sendo tratado por Hime", { color: "#ffffff", fontSize: "18px"});
-        this.add.existing(txt_texto);
-        txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
-
-        var txt_texto = this.add.text(10, 365, "que o levou junto quando saiu do monastério.", { color: "#ffffff", fontSize: "18px"});
+        var txt_texto = this.add.text(10, 300, "viver na sombra de seu irmão.", { color: "#ffffff", fontSize: "18px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
@@ -2810,6 +2785,435 @@ var Historia7 = new Phaser.Class({
                     }
                     else{
                         contHist7 = 0;
+                    }
+                }
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Historia8 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Historia8(){
+        Phaser.Scene.call(this, { key: "Historia8" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_castelo');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new HistoriaMenu(270,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var c = new Objetos(this, 460, 310, "crassus", 1);
+        this.add.existing(c);
+        c.flipX = true;
+        this.add.tween({targets: c, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(60, 20, "Crassus então abandona seu título e", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 70, "família para virar aventureiro, porém", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 120, "foi ferido em uma de suas missões", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 170, "próximas a Magvel, sendo tratado por Hime", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 220, "que o levou junto quando saiu do", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 270, "monastério.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        contHist8 = 0;
+        selection = 0;
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        contHist8 = 0;
+        selection = 0;
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista2[selection];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Historia8');
+            
+            //Start battle
+            this.scene.switch('Historia9');
+        }
+        else if(action == "enter" && cm == "Pular História") {            
+            this.scene.sleep('História8');
+            
+            //Start battle
+            this.scene.switch('UIScene2');   
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                this.currentMenu.moveSelectionLeft();
+                if(this.currentMenu == this.histMenu){
+                    if(contHist8 - 1 >= 0){
+                        contHist8--;
+                    }
+                    else{
+                        contHist8 = 1;
+                    }
+                }
+            } else if(event.code === "ArrowRight") {
+                this.currentMenu.moveSelectionRight();
+                if(this.currentMenu == this.actionsMenu){
+                    if(contHist8 + 1 < 2){
+                        contHist8++;
+                    }
+                    else{
+                        contHist8 = 0;
+                    }
+                }
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Historia9 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Historia9(){
+        Phaser.Scene.call(this, { key: "Historia9" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_castelo');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new HistoriaMenu(270,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var m = new Objetos(this, 460, 310, "marielle", 1.5);
+        this.add.existing(m);
+        m.flipX = true;
+        this.add.tween({targets: m, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(40, 20, "Durante uma dificil batalha para salvar", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 60, "uma aldeia, o grupo é auxiliado por uma elfa", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 100, "desconhecida que, após o término do combate,", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 140, "revela sua identidade.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(40, 180, "Ela diz que seu nome é Marielle e conta", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 220, "para nossos heróis o motivo de sua", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 260, "jornada e também a verdade por trás", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(10, 300, "dos ataques recentes.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        contHist9 = 0;
+        selection = 0;
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        contHist9 = 0;
+        selection = 0;
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista2[selection];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Historia9');
+            
+            //Start battle
+            this.scene.switch('Historia10');
+        }
+        else if(action == "enter" && cm == "Pular História") {            
+            this.scene.sleep('História9');
+            
+            //Start battle
+            this.scene.switch('UIScene2');   
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                this.currentMenu.moveSelectionLeft();
+                if(this.currentMenu == this.histMenu){
+                    if(contHist9 - 1 >= 0){
+                        contHist9--;
+                    }
+                    else{
+                        contHist9 = 1;
+                    }
+                }
+            } else if(event.code === "ArrowRight") {
+                this.currentMenu.moveSelectionRight();
+                if(this.currentMenu == this.actionsMenu){
+                    if(contHist9 + 1 < 2){
+                        contHist9++;
+                    }
+                    else{
+                        contHist9 = 0;
+                    }
+                }
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Historia10 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Historia10(){
+        Phaser.Scene.call(this, { key: "Historia10" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_castelo');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new HistoriaMenu(270,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var m = new Objetos(this, 460, 310, "marielle", 1.5);
+        this.add.existing(m);
+        m.flipX = true;
+        this.add.tween({targets: m, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(60, 20, "A pedido de sua tribo, a elfa partiu para", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 70, "as ruínas de Baldur Grok buscando derrotar", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 120, "o renascido Borgrok antes que ele possa", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 170, "se reerguer por completo.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        contHist10 = 0;
+        selection = 0;
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        contHist10 = 0;
+        selection = 0;
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista2[selection];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Historia10');
+            
+            //Start battle
+            this.scene.switch('Historia11');
+        }
+        else if(action == "enter" && cm == "Pular História") {            
+            this.scene.sleep('História10');
+            
+            //Start battle
+            this.scene.switch('UIScene2');   
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                this.currentMenu.moveSelectionLeft();
+                if(this.currentMenu == this.histMenu){
+                    if(contHist10 - 1 >= 0){
+                        contHist10--;
+                    }
+                    else{
+                        contHist10 = 1;
+                    }
+                }
+            } else if(event.code === "ArrowRight") {
+                this.currentMenu.moveSelectionRight();
+                if(this.currentMenu == this.actionsMenu){
+                    if(contHist10 + 1 < 2){
+                        contHist10++;
+                    }
+                    else{
+                        contHist10 = 0;
                     }
                 }
             } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
