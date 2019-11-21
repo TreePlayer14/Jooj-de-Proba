@@ -23,10 +23,10 @@ var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S,
 var HPT_GO = 60, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
 
 //Atributos do Gárgula:
-var HPT_GA = 70, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
+var HPT_GA = 55, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
 
 //Atributos do Borgrok:
-var HPT_B = 200, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
+var HPT_B = 150, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -39,7 +39,7 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
-var contHist11 = 0, lista3 = [];
+var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo;
 
 var BootScene = new Phaser.Class({
 
@@ -76,7 +76,9 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_acontecimento','Imagens/placa.png');
         this.load.image('fundo_castelo','Imagens/castelo.png');
         this.load.image('fundo_castelo_chovendo','Imagens/castelo_destruido.jpeg');
-        
+        this.load.image('fundo_cidade','Imagens/sprite_cidade.jpg');
+        this.load.image('tigre_escudo','Imagens/sprite_tigrao_att_bombapatch_escudo_semi.png');
+        this.load.image('titulo','Imagens/titulo.png');
     },
 
     create: function ()
@@ -3336,6 +3338,906 @@ var Historia11 = new Phaser.Class({
 
 });
 
+var Ending1 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending1(){
+        Phaser.Scene.call(this, { key: "Ending1" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(60, 20, "Depois de derrotar Borgrok com seus", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 70, "companheiros, Yuusha ficou em dúvida, sem", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 120, "monstros atacando Winx, qual seria o", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 170, "propósito das ordens de cavaleiro agora?", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(60, 220, "Com a mente em conflito sobre qual rumo", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 270, "seguir, o jovem seguiu o caminho de volta", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 320, "para casa acompanhado de Crassus e Hime.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending1');
+            
+            //Start battle
+            this.scene.switch('Ending2');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending2 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending2(){
+        Phaser.Scene.call(this, { key: "Ending2" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(60, 10, "Após meses de viajem, os amigos se", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 60, "despediram quando Yuusha finalmente retornou", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 110, "a base da ordem do tigre.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(60, 160, "Para sua surpresa, Yuusha encontrou uma", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 210, "base renovada, um número surpreendente de", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 260, "novos recrutas e os veteranos animados, como", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 310, "se a ordem nunca tivesse passado por", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 360, "dificuldades.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending2');
+            
+            //Start battle
+            this.scene.switch('Ending3');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending3 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending3(){
+        Phaser.Scene.call(this, { key: "Ending3" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(60, 20, "Yuusha foi recebido com uma grande", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 70, "celebração, recrutas ansiosos formavam filas", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 120, "para poder se apresentar para o herói, os", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 170, "integrantes veteranos pareciam mais", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 220, "otimistas do que antes.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending3');
+            
+            //Start battle
+            this.scene.switch('Ending4');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending4 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending4(){
+        Phaser.Scene.call(this, { key: "Ending4" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(60, 10, "Embora Borgrok tenha sido derrotado, para", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 60, "Hime isso não era o suficiente, monstros não", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 110, "eram o único mal que assolava os habitantes", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 160, "de Winx. ", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(60, 210, "Para continuar seguindo seu objetivo, Hime", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 260, "decidiu seguir a vida de aventureira, para", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 310, "poder ajudar o reino a se recuperar de", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(30, 360, "verdade.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending4');
+            
+            //Start battle
+            this.scene.switch('Ending5');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending5 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending5(){
+        Phaser.Scene.call(this, { key: "Ending5" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(50, 20, "Crassus, ainda obstinado em se tornar o", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 70, "mago mais famoso de Winx seguiu sua jornada", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 120, "ao lado de Hime.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(50, 170, "Com a diferença de suas motivações, muitas", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 220, "discussões acompanharam a vida dos dois, mas", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 270, "nunca deixaram de viajar juntos.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending5');
+            
+            //Start battle
+            this.scene.switch('Ending6');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending6 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending6(){
+        Phaser.Scene.call(this, { key: "Ending6" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu(370,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(50, 20, "Assim como os outros elfos, Marielle não se", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 70, "sentiu confortável ficando entre humanos por", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 120, "muito tempo, embora a compania de Yuusha,", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 170, "Crassus e Hime não lhe fosse desagradável, a", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 220, "fama e a atenção que a elfa obteve com o", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 270, "sucesso de sua missão nunca foram o objetivo", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 320, "dela.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista4[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Próximo"){
+            this.scene.sleep('Ending6');
+            
+            //Start battle
+            this.scene.switch('Ending7');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Ending7 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Ending7(){
+        Phaser.Scene.call(this, { key: "Ending7" });
+    },
+    create: function (){
+        var image = this.add.image(260, 200,'fundo_cidade');
+        image.setScale(0.6);
+
+        this.graphics = this.add.graphics();
+        this.graphics.lineStyle(1, 0xffffff);
+        this.graphics.fillStyle(0x031f4c, 1);
+
+        this.graphics.strokeRect(1, 389, 520, 50); 
+        this.graphics.fillRect(1, 389, 520, 50);
+
+        // basic container to hold all menus
+        this.menus = this.add.container();
+
+        this.histMenu = new EndingMenu2(330,407,this); //(eixo x, eixo y)
+
+        // the currently selected menu 
+        this.currentMenu = this.histMenu;
+        
+        this.histMenu.select(0);
+
+        // add menus to the container
+        this.menus.add(this.histMenu);
+
+        var txt_texto = this.add.text(50, 10, "Marielle foi a primeira a deixar o grupo,", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 60, "retornando a floresta de Lórien do mesmo", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 110, "jeito que tinha saído: sozinha.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(50, 160, "Pouco se sabe sobre o que aconteceu com", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 210, "Marielle depois da batalha, alguns boatos", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 260, "dizem que a guardiã se tornou a líder de sua", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 310, "vila e mantém a tradição élfica de não", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        var txt_texto = this.add.text(20, 360, "interferir na vida dos humanos.", { color: "#ffffff", fontSize: "18px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 1500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        // listen for keyboard events
+        this.input.keyboard.on("keydown", this.onKeyInput, this); 
+        
+        // an enemy is selected
+        this.events.on("SelectedHist", this.onSelectedHist, this);
+
+        this.sys.events.on('wake', this.acorda, this);
+        this.acorda();
+
+    },
+    acorda: function(){
+        this.currentMenu = this.histMenu;
+        this.histMenu.select(0);
+        
+    },
+    onSelectedHist: function() {
+        
+        var cm = lista5[0];
+        //this.fasesMenu.deselect();
+        this.currentMenu = null;
+        this.receiveHistSelection("enter",cm);
+        
+    },
+    receiveHistSelection: function(action, cm) {
+        if(action == "enter" && cm == "Ir para os Créditos"){
+            this.scene.sleep('Ending7');
+            
+            //Start battle
+            this.scene.switch('Creditos');
+        }
+    },
+    onKeyInput: function(event) {
+
+        if(this.currentMenu && this.currentMenu.selected) {
+            if(event.code === "ArrowLeft") {
+                
+            } else if(event.code === "ArrowRight") {
+                
+            } else if(event.code === "ArrowUp" || event.code === "ArrowDown") {
+
+            } else if(event.code === "Space") {
+                this.currentMenu.confirm();
+            } 
+        }
+    },
+
+});
+
+var Creditos = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Creditos(){
+        Phaser.Scene.call(this, { key: "Creditos" });
+    },
+    create: function (){
+        
+        var txt_texto = this.add.text(173, 160, "FIM", { color: "#ffffff", fontFamily: "Futura", fontSize: "100px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 2500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 2500, delay: 0, alpha: { getStart: () => 1, getEnd: () => 0 },});
+        
+        this.time.addEvent({ delay: 2500, callback: this.proximo, callbackScope: this});  
+
+    },
+    proximo: function(){
+        this.scene.sleep("Creditos");
+        this.scene.switch("Creditos2");
+    }
+
+});
+
+var Creditos2 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Creditos2(){
+        Phaser.Scene.call(this, { key: "Creditos2" });
+    },
+    create: function (){
+        
+        escudo = new Objetos(this, 260, 160, "tigre_escudo", 0.8);
+        this.add.existing(escudo);
+        this.add.tween({targets: escudo, ease: 'Sine.easeInOut', duration: 3000, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        titulao = new Objetos(this, 260, 280, "titulo", 0.17);
+        this.add.existing(titulao);
+        this.add.tween({targets: titulao, ease: 'Sine.easeInOut', duration: 2500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+
+        this.time.addEvent({ delay: 1500, callback: this.vai, callbackScope: this});  
+
+    },
+    vai: function(){
+        this.scene.sleep("Creditos2");
+        this.scene.switch("Creditos3");
+    }
+
+});
+
+var Creditos3 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Creditos3(){
+        Phaser.Scene.call(this, { key: "Creditos3" });
+    },
+    create: function (){
+    
+        escudo.destroy();
+        titulao.destroy();
+
+        escudo = new Objetos(this, 260, 160, "tigre_escudo", 0.8);
+        this.add.existing(escudo);
+        this.add.tween({targets: escudo, ease: 'Sine.easeInOut', duration: 3500, delay: 0, y: { getStart: () => 160, getEnd: () => -100 },});
+
+        titulao = new Objetos(this, 260, 280, "titulo", 0.17);
+        this.add.existing(titulao);
+        this.add.tween({targets: titulao, ease: 'Sine.easeInOut', duration: 4500, delay: 0, y: { getStart: () => 280, getEnd: () => -100 },});
+  
+        var txt_texto = this.add.text(123, 160, "Créditos:", { color: "#ffffff", fontFamily: "Futura", fontSize: "80px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 10000, delay: 0, y: { getStart: () => 500, getEnd: () => -100 },});
+
+
+    },
+
+});
+
 var Objetos = new Phaser.Class({
     Extends: Phaser.GameObjects.Sprite,
 
@@ -4071,8 +4973,8 @@ var VoltarMenu = new Phaser.Class({
             
     function VoltarMenu(x, y, scene) {
         Menu.call(this, x, y, scene);   
-        this.addMenuItem2("Voltar ao mapa");
-        lista[0] = "Voltar ao mapa";
+        this.addMenuItem2("Concluído");
+        lista[0] = "Concluído";
     },
     confirm: function() {      
         // we select an action and go to the next menu and choose from the enemies to apply the action
@@ -4127,6 +5029,42 @@ var HistoriaMenu2 = new Phaser.Class({
         Menu.call(this, x, y, scene);   
         this.addMenuItem6("Ir para o jogo");
         lista3[0] = "Ir para o jogo";
+
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedHist");        
+    }
+    
+});
+
+var EndingMenu = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function EndingMenu(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem6("Próximo");
+        lista4[0] = "Próximo";
+
+    },
+    confirm: function() {      
+        // we select an action and go to the next menu and choose from the enemies to apply the action
+        this.scene.events.emit("SelectedHist");        
+    }
+    
+});
+
+var EndingMenu2 = new Phaser.Class({
+    Extends: Menu,
+    
+    initialize:
+            
+    function EndingMenu2(x, y, scene) {
+        Menu.call(this, x, y, scene);   
+        this.addMenuItem6("Ir para os Créditos");
+        lista5[0] = "Ir para os Créditos";
 
     },
     confirm: function() {      
@@ -4296,13 +5234,18 @@ var VictoryScene = new Phaser.Class({
 
     },
     receiveFaseSelection: function(action, cm) {
-        if(action == "enter" && cm == "Voltar ao mapa") {            
+        if(action == "enter" && cm == "Concluído") {            
             this.scene.sleep('VictoryScene');
             this.scene.sleep('UIScene3');
 
-            //Start mapa
-            this.scene.wake('UIScene2');
-            
+            if(qual_fase == "Fase 4"){
+                this.scene.switch("Ending1");
+            }
+            else{
+                //Vai para o mapa
+                this.scene.wake('UIScene2');
+            }
+   
         }
     },
 });
@@ -4325,7 +5268,7 @@ var DefeatScene = new Phaser.Class({
             this.add.image(400,180,'fundo_deserto');
         }
         else if(qual_fase == "Fase 3"){
-            this.add.image(400,-152,'fundo_mar');
+            this.add.image(400,-145,'fundo_mar');
         }
         else if(qual_fase == "Fase 4"){
             var image = this.add.image(300, 188,'fundo_bossfight');
@@ -4467,7 +5410,7 @@ var DefeatScene = new Phaser.Class({
 
     },
     receiveFaseSelection: function(action, cm) {
-        if(action == "enter" && cm == "Voltar ao mapa") {            
+        if(action == "enter" && cm == "Concluído") {            
             this.scene.sleep('DefeatScene');
             this.scene.sleep('UIScene3');
             //Start mapa
@@ -5090,7 +6033,8 @@ var UIScene2 = new Phaser.Class({
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            this.scene.switch('Acontecimento4');
+            //this.scene.switch('Acontecimento4');
+            this.scene.switch('Ending1');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
