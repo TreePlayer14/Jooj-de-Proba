@@ -80,7 +80,8 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_cidade','Imagens/sprite_cidade.jpg');
         this.load.image('tigre_escudo','Imagens/sprite_tigrao_att_bombapatch_escudo_semi.png');
         this.load.image('titulo','Imagens/titulo.png');
-        this.load.audio('tema_mapa','Soundtrack/World_Map.mp3');
+
+        //this.load.audio('tema_mapa','Soundtrack/World_Map.mp3');
         this.load.audio('tema_loja','Soundtrack/Maybe_shop_theme(1).mp3');
         this.load.audio('tema_intro','Soundtrack/intro.mp3');
         this.load.audio('tema_fase1','Soundtrack/battle(1).mp3');
@@ -88,6 +89,7 @@ var BootScene = new Phaser.Class({
         this.load.audio('tema_boss','Soundtrack/Boss_battle.mp3');
         this.load.audio('tema_final','Soundtrack/victory.mp3');
         this.load.audio('tema_telavic','Soundtrack/World_Map(1).mp3');
+        this.load.audio('tema_mapa','Soundtrack/I_dont_know.mp3');
     },
 
     create: function ()
