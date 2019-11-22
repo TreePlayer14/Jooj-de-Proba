@@ -39,7 +39,8 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
-var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo, music, music2, music3, music4, music5;
+var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo, music, music2, music3, music4, music5, music6;
+var music7, music8;
 
 var BootScene = new Phaser.Class({
 
@@ -84,6 +85,9 @@ var BootScene = new Phaser.Class({
         this.load.audio('tema_intro','Soundtrack/intro.mp3');
         this.load.audio('tema_fase1','Soundtrack/battle(1).mp3');
         this.load.audio('tema_acont1','Soundtrack/I_dont_know(1).mp3');
+        this.load.audio('tema_boss','Soundtrack/Boss_battle.mp3');
+        this.load.audio('tema_final','Soundtrack/victory.mp3');
+        this.load.audio('tema_telavic','Soundtrack/World_Map(1).mp3');
     },
 
     create: function ()
@@ -1002,6 +1006,11 @@ var BattleScene4 = new Phaser.Class({
     },
     create: function ()
     {
+        music6 = this.sound.add("tema_boss");
+        music6.play();
+        music6.setLoop(true);
+        music6.setVolume(0.5);
+
         var image = this.add.image(300, 146,'fundo_bossfight');
         let scaleX = this.cameras.main.width / image.width;
         let scaleY = this.cameras.main.height / image.height;
@@ -1271,6 +1280,8 @@ var BattleScene4 = new Phaser.Class({
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
 
+        music6.stop();
+
         this.scene.sleep('UIScene6'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
@@ -1419,6 +1430,11 @@ var Acontecimento2 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Acontecimento2" });
     },
     create: function (){
+        music5 = this.sound.add("tema_acont1");
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         var image = this.add.image(260, 230,'fundo_acontecimento');
         image.setScale(0.5);
 
@@ -1485,6 +1501,10 @@ var Acontecimento2 = new Phaser.Class({
 
     },
     acorda: function(){
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         this.currentMenu = this.acMenu;
         this.acMenu.select(0);
         
@@ -1499,6 +1519,8 @@ var Acontecimento2 = new Phaser.Class({
     },
     receiveAcSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para a fase") {            
+            music5.stop();
+
             this.scene.sleep('Acontecimento2');
             
             //Start battle
@@ -1533,6 +1555,11 @@ var Acontecimento3 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Acontecimento3" });
     },
     create: function (){
+        music5 = this.sound.add("tema_acont1");
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         var image = this.add.image(260, 230,'fundo_acontecimento');
         image.setScale(0.5);
 
@@ -1607,6 +1634,11 @@ var Acontecimento3 = new Phaser.Class({
 
     },
     acorda: function(){
+        
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         this.currentMenu = this.acMenu;
         this.acMenu.select(0);
         
@@ -1621,6 +1653,7 @@ var Acontecimento3 = new Phaser.Class({
     },
     receiveAcSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para a fase") {            
+            music5.stop();
             this.scene.sleep('Acontecimento3');
             
             //Start battle
@@ -1655,6 +1688,11 @@ var Acontecimento4 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Acontecimento4" });
     },
     create: function (){
+        music5 = this.sound.add("tema_acont1");
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         var image = this.add.image(260, 230,'fundo_acontecimento');
         image.setScale(0.5);
 
@@ -1725,6 +1763,11 @@ var Acontecimento4 = new Phaser.Class({
 
     },
     acorda: function(){
+        
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         this.currentMenu = this.acMenu;
         this.acMenu.select(0);
         
@@ -1739,6 +1782,7 @@ var Acontecimento4 = new Phaser.Class({
     },
     receiveAcSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para a fase") {            
+            music5.stop();
             this.scene.sleep('Acontecimento4');
             
             //Start battle
@@ -3387,6 +3431,11 @@ var Ending1 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Ending1" });
     },
     create: function (){
+        music7 = this.sound.add("tema_final");
+        music7.play();
+        music7.setLoop(true);
+        music7.setVolume(0.5);
+
         var image = this.add.image(260, 200,'fundo_cidade');
         image.setScale(0.6);
 
@@ -4166,6 +4215,7 @@ var Ending7 = new Phaser.Class({
     },
     receiveHistSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para os Créditos"){
+            music7.stop();
             this.scene.sleep('Ending7');
             
             //Start battle
@@ -5124,6 +5174,11 @@ var VictoryScene = new Phaser.Class({
     },
 
     create: function (){
+        music8 = this.sound.add("tema_telavic");
+        music8.play();
+        music8.setLoop(true);
+        music8.setVolume(0.5);
+
         if(qual_fase == "Fase 1"){
             this.add.image(400,178,'fundo_gramado');
         }
@@ -5274,6 +5329,7 @@ var VictoryScene = new Phaser.Class({
     },
     receiveFaseSelection: function(action, cm) {
         if(action == "enter" && cm == "Concluído") {            
+            music8.stop();
             this.scene.sleep('VictoryScene');
             this.scene.sleep('UIScene3');
 
@@ -6866,6 +6922,11 @@ var UIScene6 = new Phaser.Class({
         
     },
     createMenu: function() {
+        
+        music6.play();
+        music6.setLoop(true);
+        music6.setVolume(0.5);
+
         // map hero menu items to heroes
         this.remapHeroes();
         // map enemies menu items to enemies
