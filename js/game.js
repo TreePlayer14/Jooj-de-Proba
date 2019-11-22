@@ -39,7 +39,7 @@ var atk_sofrido_y = 0, atk_sofrido_h = 0, atk_sofrido_c = 0, atk_sofrido_m = 0;
 var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar, contadorzin = 0, exec = 0, aviso = 0, vod, vel_rem, vel_rem2, tam_vetor_herois_ord = 0;
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
-var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo;
+var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo, music, music2, music3, music4, music5;
 
 var BootScene = new Phaser.Class({
 
@@ -67,7 +67,7 @@ var BootScene = new Phaser.Class({
         this.load.image('borgrok','Imagens/flame_blood_lancer1.png');
         this.load.image('mapa','Imagens/mapa.png');
         this.load.image('seta','Imagens/setinea.png');
-        this.load.image('fundo_gramado','Imagens/Field_background2.jpg');
+        this.load.image('fundo_gramado','Imagens/Field_background3.png');
         this.load.image('moeda_loja','Imagens/sprite-loja.png');
         this.load.image('fundo_loja','Imagens/Loja2.png');
         this.load.image('fundo_deserto','Imagens/Wasteland_background1.png');
@@ -79,6 +79,11 @@ var BootScene = new Phaser.Class({
         this.load.image('fundo_cidade','Imagens/sprite_cidade.jpg');
         this.load.image('tigre_escudo','Imagens/sprite_tigrao_att_bombapatch_escudo_semi.png');
         this.load.image('titulo','Imagens/titulo.png');
+        this.load.audio('tema_mapa','Soundtrack/World_Map.mp3');
+        this.load.audio('tema_loja','Soundtrack/Maybe_shop_theme(1).mp3');
+        this.load.audio('tema_intro','Soundtrack/intro.mp3');
+        this.load.audio('tema_fase1','Soundtrack/battle(1).mp3');
+        this.load.audio('tema_acont1','Soundtrack/I_dont_know(1).mp3');
     },
 
     create: function ()
@@ -100,6 +105,12 @@ var BattleScene = new Phaser.Class({
     },
     create: function ()
     {
+
+        music4 = this.sound.add("tema_fase1");
+        music4.play();
+        music4.setLoop(true);
+        music4.setVolume(0.5);
+
         this.add.image(400,130,'fundo_gramado');
         // Run UI Scene at the same time
         this.scene.run("UIScene");
@@ -368,7 +379,7 @@ var BattleScene = new Phaser.Class({
        
         din_ant = dinheiros; //Guarda o valor anterior de moedas que o jogador possuia
         
-
+        music4.stop();
         this.scene.sleep('UIScene'); //Sai da cena de combate
 
         if(resultado == 1){ //Se o jogador ganhou a partida, ele entra na tela de vitória.
@@ -1284,6 +1295,12 @@ var Acontecimento1 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Acontecimento1" });
     },
     create: function (){
+
+        music5 = this.sound.add("tema_acont1");
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
+
         var image = this.add.image(260, 230,'fundo_acontecimento');
         image.setScale(0.5);
 
@@ -1350,6 +1367,9 @@ var Acontecimento1 = new Phaser.Class({
 
     },
     acorda: function(){
+        music5.play();
+        music5.setLoop(true);
+        music5.setVolume(0.5);
         this.currentMenu = this.acMenu;
         this.acMenu.select(0);
         
@@ -1364,6 +1384,7 @@ var Acontecimento1 = new Phaser.Class({
     },
     receiveAcSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para a fase") {            
+            music5.stop();
             this.scene.sleep('Acontecimento1');
             
             //Start battle
@@ -1753,6 +1774,11 @@ var Historia1 = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Historia1" });
     },
     create: function (){
+        music3 = this.sound.add("tema_intro");
+        music3.play();
+        music3.setLoop(true);
+        music3.setVolume(0.5);
+
         var image = this.add.image(260, 200,'fundo_castelo');
         image.setScale(0.6);
 
@@ -1842,6 +1868,9 @@ var Historia1 = new Phaser.Class({
             this.scene.switch('Historia2');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            
+            music3.stop();
+        
             this.scene.sleep('História1');
             
             //Start battle
@@ -1985,6 +2014,7 @@ var Historia2 = new Phaser.Class({
             this.scene.switch('Historia3');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História2');
             
             //Start battle
@@ -2128,6 +2158,7 @@ var Historia3 = new Phaser.Class({
             this.scene.switch('Historia4');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História3');
             
             //Start battle
@@ -2276,6 +2307,7 @@ var Historia4 = new Phaser.Class({
             this.scene.switch('Historia5');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História4');
             
             //Start battle
@@ -2449,6 +2481,7 @@ var Historia5 = new Phaser.Class({
             this.scene.switch('Historia6');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História5');
             
             //Start battle
@@ -2608,6 +2641,7 @@ var Historia6 = new Phaser.Class({
             this.scene.switch('Historia7');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História6');
             
             //Start battle
@@ -2761,6 +2795,7 @@ var Historia7 = new Phaser.Class({
             this.scene.switch('Historia8');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História7');
             
             //Start battle
@@ -2904,6 +2939,7 @@ var Historia8 = new Phaser.Class({
             this.scene.switch('Historia9');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História8');
             
             //Start battle
@@ -3057,6 +3093,7 @@ var Historia9 = new Phaser.Class({
             this.scene.switch('Historia10');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História9');
             
             //Start battle
@@ -3190,6 +3227,7 @@ var Historia10 = new Phaser.Class({
             this.scene.switch('Historia11');
         }
         else if(action == "enter" && cm == "Pular História") {            
+            music3.stop();
             this.scene.sleep('História10');
             
             //Start battle
@@ -3315,6 +3353,7 @@ var Historia11 = new Phaser.Class({
     },
     receiveHistSelection: function(action, cm) {
         if(action == "enter" && cm == "Ir para o jogo"){
+            music3.stop();
             this.scene.sleep('Historia11');
             
             //Start battle
@@ -4196,7 +4235,7 @@ var Creditos2 = new Phaser.Class({
         this.add.existing(titulao);
         this.add.tween({targets: titulao, ease: 'Sine.easeInOut', duration: 2500, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
 
-        this.time.addEvent({ delay: 1500, callback: this.vai, callbackScope: this});  
+        this.time.addEvent({ delay: 3500, callback: this.vai, callbackScope: this});  
 
     },
     vai: function(){
@@ -5433,6 +5472,11 @@ var Loja = new Phaser.Class({
     },
     create: function()
     {
+        music2 = this.sound.add("tema_loja");
+        music2.play();
+        music2.setLoop(true);
+        music2.setVolume(0.5);
+
         this.add.image(260,220,'fundo_loja');
 
         // basic container to hold all menus
@@ -5488,6 +5532,10 @@ var Loja = new Phaser.Class({
         this.acor();
     },
     acor: function(){
+        music2.play();
+        music2.setLoop(true);
+        music2.setVolume(0.5);
+
         // moedas.destroy();
 
         // moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
@@ -5615,6 +5663,7 @@ var Loja = new Phaser.Class({
             sele2 = 5;              
         }
         else if(action == "enter" && cm == "Voltar para o mapa"){
+            music2.stop();
             this.scene.sleep('Loja');
 
             this.scene.wake('UIScene2');
@@ -5721,6 +5770,10 @@ var UIScene = new Phaser.Class({
         
     },
     createMenu: function() {
+        music4.play();
+        music4.setLoop(true);
+        music4.setVolume(0.5);
+
         // map hero menu items to heroes
         this.remapHeroes();
         // map enemies menu items to enemies
@@ -5929,6 +5982,10 @@ var UIScene2 = new Phaser.Class({
 
     create: function ()
     {    
+        music = this.sound.add("tema_mapa");
+        music.play();
+        music.setLoop(true);
+        music.setVolume(0.5);
 
         this.add.image(260,220,'mapa');
         
@@ -5985,6 +6042,11 @@ var UIScene2 = new Phaser.Class({
         
     },
     acorda: function(){
+        
+        music.play();
+        music.setLoop(true);
+        music.setVolume(0.5);
+
         moedas.destroy();
 
         moedas = this.add.text(10, 30, "Moedas: " + dinheiros, { color: "#ffffff"});
@@ -6010,6 +6072,7 @@ var UIScene2 = new Phaser.Class({
         
     },
     receiveFaseSelection: function(action, cm) {
+        music.stop();
         if(action == "enter" && cm == "Fase 1") {            
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
