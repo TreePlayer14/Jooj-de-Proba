@@ -4335,11 +4335,41 @@ var Creditos3 = new Phaser.Class({
         var txt_texto = this.add.text(123, 160, "Créditos:", { color: "#ffffff", fontFamily: "Futura", fontSize: "80px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
-        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 10000, delay: 0, y: { getStart: () => 500, getEnd: () => -100 },});
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 14000, delay: 0, y: { getStart: () => 500, getEnd: () => -350 },});
 
+        var txt_texto = this.add.text(20, 160, "Roteiro: Jaime Mitsuru Hirai Filho.\nProgramação: Tiago Pinheiro Camargo. \nDesigns: Igor Yoshimitsu Ide \n               Jaime Mitsuru Hirai Filho \nSoundtrack: Igor Yoshimitsu Ide \n\n\n\n\n*Este jogo é uma obra de ficção, portanto \nqualquer semelhança com a vida real é mera \ncoincidência.", { color: "#ffffff", fontFamily: "Futura", fontSize: "26px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 17000, delay: 0, y: { getStart: () => 550, getEnd: () => -400 },});
+
+        this.time.addEvent({ delay: 17000, callback: this.vai, callbackScope: this}); 
 
     },
+    vai: function(){
+        this.scene.sleep("Creditos3");
+        this.scene.switch("Creditos4");
+    }
+});
 
+var Creditos4 = new Phaser.Class({
+    Extends: Phaser.Tween,
+    Extends: Phaser.Scene,
+
+    initialize:
+
+    function Creditos4(){
+        Phaser.Scene.call(this, { key: "Creditos4" });
+    },
+    create: function (){
+  
+        var txt_texto = this.add.text(40, 120, "Obrigado por \n      Jogar", { color: "#ffffff", fontFamily: "Futura", fontSize: "80px"});
+        this.add.existing(txt_texto);
+        txt_texto.setStroke("#000000", 6);
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
+        this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 1, getEnd: () => 0 },});
+
+    },
+    
 });
 
 var Objetos = new Phaser.Class({
@@ -6174,8 +6204,8 @@ var UIScene2 = new Phaser.Class({
             this.scene.sleep('UIScene2');
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
-            //this.scene.switch('Acontecimento4');
-            this.scene.switch('Ending1');
+            this.scene.switch('Acontecimento4');
+            // this.scene.switch('Ending1');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');
@@ -6678,7 +6708,7 @@ var UIScene5 = new Phaser.Class({
         music4.play();
         music4.setLoop(true);
         music4.setVolume(0.5);
-        
+
         // map hero menu items to heroes
         this.remapHeroes();
         // map enemies menu items to enemies
