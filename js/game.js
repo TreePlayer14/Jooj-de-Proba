@@ -40,7 +40,7 @@ var maior_dano, ih = 0, vel_ordenada = [ VEL_Y, VEL_H, VEL_C, VEL_M ], auxiliar,
 var dinheiros = 0, din_ant = 0, moedas, obj2, lista_loja = [], sele2, selecionou, out_of_mana = 0, cura_total = 0, izo, ordem_turnos = [], turno_de, r, qual_fase, lista1 = [];
 var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, contHist4 = 0, contHist5 = 0, contHist6 = 0, contHist7 = 0, contHist8 = 0, contHist9 = 0, contHist10 = 0;
 var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo, music, music2, music3, music4, music5, music6;
-var music7, music8, music9;
+var music7, music8, music9, music10;
 
 var BootScene = new Phaser.Class({
 
@@ -90,7 +90,8 @@ var BootScene = new Phaser.Class({
         this.load.audio('tema_final','Soundtrack/victory.mp3');
         this.load.audio('tema_telavic','Soundtrack/World_Map(1).mp3');
         this.load.audio('tema_mapa','Soundtrack/I_dont_know.mp3');
-        this.load.audio('tema_defeat','Soundtrack/Maybe_shop_theme.mp3')
+        this.load.audio('tema_defeat','Soundtrack/Maybe_shop_theme.mp3');
+        this.load.audio('tema_creditos','Soundtrack/Maybe_shop_theme.mp3');
     },
 
     create: function ()
@@ -4265,6 +4266,11 @@ var Creditos = new Phaser.Class({
     },
     create: function (){
         
+        music10 = this.sound.add("tema_creditos");
+        music10.play();
+        music10.setLoop(true);
+        music10.setVolume(0.5);
+
         var txt_texto = this.add.text(173, 160, "FIM", { color: "#ffffff", fontFamily: "Futura", fontSize: "100px"});
         this.add.existing(txt_texto);
         txt_texto.setStroke("#000000", 6);
@@ -4368,6 +4374,7 @@ var Creditos4 = new Phaser.Class({
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 1, getEnd: () => 0 },});
 
+        music10.stop();
     },
     
 });
@@ -4839,7 +4846,7 @@ var MenuItem = new Phaser.Class({
     },
     
     select: function() {
-        this.setColor("#f8ff38");
+        this.setColor("#FFCA2D");
     },
     
     deselect: function() {
@@ -6205,7 +6212,7 @@ var UIScene2 = new Phaser.Class({
             atk_falhos_y = 0; atk_acertados_y = 0; atk_falhos_h = 0; atk_acertados_h = 0; atk_falhos_c = 0; atk_acertados_c = 0; atk_falhos_m = 0; atk_acertados_m = 0; dano_y = 0; dano_h = 0; dano_c = 0; dano_m = 0;
             // start battle
             this.scene.switch('Acontecimento4');
-            // this.scene.switch('Ending1');
+            //this.scene.switch('Ending1');
         }
         else if(action == "enter" && cm == "Loja"){
             this.scene.sleep('UIScene2');

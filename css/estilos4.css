@@ -1,14 +1,14 @@
 @charset "utf-8";
 
 #bodi{
-    background: url("../Imagens/fundo3.png") no-repeat fixed center top;
+    background: url("../Imagens/fundo3.png") no-repeat center top;
     background-size: 90%;
     background-color: #000;
 }
 
 section#botoes{
     text-align:center;
-    margin-left:15%;
+    margin-left:9%;
 }
 
 #botao{
@@ -21,10 +21,6 @@ section#botoes h1{
     font-size:40px;
     color: #fff;
     font-family: 'Trebuchet MS Bold',sans-serif;
-}
-
-#btn2{
-    margin-top:3%;
 }
 
 section#botoes a:hover{
