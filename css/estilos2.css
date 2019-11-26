@@ -10,7 +10,6 @@ section#jooj{
     padding-top:18%;
 }
 
-
 #botao{
     background-color:#d9a42f;
     padding:2%;
@@ -18,7 +17,7 @@ section#jooj{
     width:60%;
     height:auto;
     text-align: center;
-    margin-left:25%;
+    
 }
 
 section#mapa{
@@ -40,19 +39,5 @@ section#mapa h1:hover{
 }
 
 #botao:hover{
-    background-color: #fff;
-}
-
-#fase-teste{
-    background-color:#d9a42f;
-    padding:2%;
-    border-radius:10px;
-    width:60%;
-    height:auto;
-    text-align: center;
-    margin-left:40%;
-}
-
-#fase-teste:hover{
     background-color: #fff;
 }
