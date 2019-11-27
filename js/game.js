@@ -5239,7 +5239,7 @@ var VictoryScene = new Phaser.Class({
             this.add.image(400,178,'fundo_gramado');
         }
         else if(qual_fase == "Fase 2"){
-            this.add.image(400,180,'fundo_deserto');
+            this.add.image(400,178,'fundo_deserto');
         }
         else if(qual_fase == "Fase 3"){
             this.add.image(400,-152,'fundo_mar');
@@ -5422,7 +5422,7 @@ var DefeatScene = new Phaser.Class({
             this.add.image(400,178,'fundo_gramado');
         }
         else if(qual_fase == "Fase 2"){
-            this.add.image(400,180,'fundo_deserto');
+            this.add.image(400,178,'fundo_deserto');
         }
         else if(qual_fase == "Fase 3"){
             this.add.image(400,-145,'fundo_mar');
