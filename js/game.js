@@ -20,13 +20,13 @@ var SOR = 0;
 var HPT_S = 20, HP_S = HPT_S, VEL_S = 2, FOR_S = 3, DEF_S = 1, INT_S = 0, SOR_S, ATKB_S = 0, CA_S = 1 + VEL_S + DEF_S; //CA = 6
 
 //Atributos do Golem:
-var HPT_GO = 60, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
+var HPT_GO = 40, HP_GO = HPT_GO, VEL_GO = 1, FOR_GO = 4, DEF_GO = 3, INT_GO = 0, SOR_GO, ATKB_GO = 2, CA_GO = 3 + VEL_GO + DEF_GO; //CA = 7
 
 //Atributos do Gárgula:
-var HPT_GA = 55, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
+var HPT_GA = 30, HP_GA = HPT_GA, VEL_GA = 3, FOR_GA = 3, DEF_GA = 3, INT_GA = 1, SOR_GA, ATKB_GA = 2, CA_GA = 3 + VEL_GA + DEF_GA; //CA = 9
 
 //Atributos do Borgrok:
-var HPT_B = 150, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
+var HPT_B = 50, HP_B = HPT_B, VEL_B = 4, FOR_B = 5, DEF_B = 3, INT_B = 0, SOR_B, ATKB_B = 3, CA_B = 3 + VEL_B + DEF_B; //CA = 10
 
 //Variáveis Random 2
 var velocidades = [ VEL_Y, VEL_H, VEL_C, VEL_M ], max = 0, ind = -1, tam_vetor_herois, herois = [];
@@ -42,6 +42,7 @@ var lista2 = [], contHist = 0, selection = 0, contHist2 = 0, contHist3 = 0, cont
 var contHist11 = 0, lista3 = [], lista4 = [], contEnd = 0, contEnd2 = 0, contEnd3 = 0, contEnd4 = 0, lista5 = [], titulao, escudo, music, music2, music3, music4, music5, music6;
 var music7, music8, music9, music10;
 
+//Classe que irá bootar o jogo.
 var BootScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -55,7 +56,7 @@ var BootScene = new Phaser.Class({
 
     preload: function ()
     {
-        // load resources
+        // Carrega as imagens necessárias
         this.load.image('fundo', 'Imagens/fundo_fase_teste.jpg');
         this.load.spritesheet("player", "assets/RPG_assets.png", { frameWidth: 16, frameHeight: 16 });
         this.load.image("slime", "Imagens/ligma.png");
@@ -81,6 +82,7 @@ var BootScene = new Phaser.Class({
         this.load.image('tigre_escudo','Imagens/sprite_tigrao_att_bombapatch_escudo_semi.png');
         this.load.image('titulo','Imagens/titulo.png');
 
+        // Carrega os áudios necessários
         //this.load.audio('tema_mapa','Soundtrack/World_Map.mp3');
         this.load.audio('tema_loja','Soundtrack/Maybe_shop_theme(1).mp3');
         this.load.audio('tema_intro','Soundtrack/intro.mp3');
@@ -4266,10 +4268,12 @@ var Creditos = new Phaser.Class({
     },
     create: function (){
         
+        music7.stop();
+
         music10 = this.sound.add("tema_creditos");
         music10.play();
         music10.setLoop(true);
-        music10.setVolume(0.5);
+        music10.setVolume(0.3);
 
         var txt_texto = this.add.text(173, 160, "FIM", { color: "#ffffff", fontFamily: "Futura", fontSize: "100px"});
         this.add.existing(txt_texto);
