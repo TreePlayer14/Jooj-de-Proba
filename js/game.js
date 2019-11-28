@@ -4267,13 +4267,6 @@ var Creditos = new Phaser.Class({
         Phaser.Scene.call(this, { key: "Creditos" });
     },
     create: function (){
-        
-        music7.stop();
-
-        music10 = this.sound.add("tema_creditos");
-        music10.play();
-        music10.setLoop(true);
-        music10.setVolume(0.3);
 
         var txt_texto = this.add.text(173, 160, "FIM", { color: "#ffffff", fontFamily: "Futura", fontSize: "100px"});
         this.add.existing(txt_texto);
@@ -4377,8 +4370,6 @@ var Creditos4 = new Phaser.Class({
         txt_texto.setStroke("#000000", 6);
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 0, getEnd: () => 1 },});
         this.add.tween({targets: txt_texto, ease: 'Sine.easeInOut', duration: 5000, delay: 0, alpha: { getStart: () => 1, getEnd: () => 0 },});
-
-        music10.stop();
     },
     
 });
