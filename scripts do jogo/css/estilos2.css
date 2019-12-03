@@ -1,0 +1,43 @@
+/*
+section#jooj{
+    text-align:center;
+}
+*/
+#bodi{
+    background: url("../Imagens/fundo-2.4.png") no-repeat center top;
+    background-size: 100%;
+    background-color: #000;
+    padding-top:18%;
+}
+
+#botao{
+    background-color:#d9a42f;
+    padding:2%;
+    border-radius:10px;
+    width:60%;
+    height:auto;
+    text-align: center;
+    
+}
+
+section#mapa{
+    margin-top:1%;
+}
+
+section#mapa h1{
+    font-size:35px;
+    color: #fff;
+    font-family: 'Trebuchet MS Bold',sans-serif;
+}
+
+section#mapa a:hover{
+    text-decoration: none;
+}
+
+section#mapa h1:hover{
+    color:#d9a42f;
+}
+
+#botao:hover{
+    background-color: #fff;
+}
