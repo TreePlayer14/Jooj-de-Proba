@@ -96,12 +96,14 @@ var BootScene = new Phaser.Class({
         this.load.audio('tema_creditos','Soundtrack/Maybe_shop_theme.mp3');
     },
 
+    //Inicia a cena Historia1, que é a primeira cena contendo história no começo do jogo
     create: function ()
     {
         this.scene.start("Historia1");
     }
 });
 
+//Cena do background, musica e personagens da batalha da fase 1
 var BattleScene = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -115,18 +117,21 @@ var BattleScene = new Phaser.Class({
     },
     create: function ()
     {
-
+        //Começa a tocar a música da fase
         music4 = this.sound.add("tema_fase1");
         music4.play();
         music4.setLoop(true);
         music4.setVolume(0.5);
 
+        //Adiciona a imagem de background
         this.add.image(400,130,'fundo_gramado');
-        // Run UI Scene at the same time
+
+        //Executa a cena UIScene ao mesmo tempo da atual
         this.scene.run("UIScene");
         
         exec++;
 
+        //Instancia um objeto do tipo de cada heroi de dois inimigos do tipo slime adicionando eles na tela
         //player character - Crassus
         var mage = new PlayerCharacter(this, 450, 240, "crassus", "Crassus", HP_C, ATKB_C + FOR_C, 0.7, CA_C, MANA_C);
         this.add.existing(mage);
@@ -148,6 +153,7 @@ var BattleScene = new Phaser.Class({
         this.add.existing(ligma1);
         this.add.existing(ligma2);
 
+        //Volta a quantidade de mana dos personagens para o total delas
         MANA_Y = INT_Y + 5;
         yuusha.mana = MANA_Y;
         MANA_H = INT_H + 5;
@@ -162,6 +168,7 @@ var BattleScene = new Phaser.Class({
         VIVO_C = true;
         VIVO_M = true;
 
+        //Volta o hp dos personagens para o total
         HP_Y = HPT_Y;
         yuusha.hp = HPT_Y;
 
@@ -178,21 +185,23 @@ var BattleScene = new Phaser.Class({
         ligma1.hp = HPT_S;
         ligma2.hp = HPT_S;
 
-        // array with heroes
+        //Vetor dos heróis
         this.heroes = [ yuusha, healer, mage, archer ];
         herois = [ yuusha, healer, mage, archer ];
         tam_vetor_herois = 4;
         tam_vetor_herois_ord = 4;
 
-        // array with enemies
+        //Vetor dos inimigos
         this.enemies = [ ligma1, ligma2 ];
-        // array with both parties, who will attack
+
+        //Vetor das unidades, contendo tanto heróis quanto inimigos
         this.units = this.heroes.concat(this.enemies);
 
         this.index = -1;
 
         contadorzin = 0;
 
+        //Verifica a ordem de quem é mais rápido, fazendo um vetor na ordem de quem irá atacar
         if(VEL_M >= VEL_S && VEL_Y < VEL_S && VEL_H < VEL_S && VEL_C < VEL_S){
             ordem_turnos = [archer, ligma1, ligma2, yuusha, healer, mage];
         }
@@ -213,17 +222,20 @@ var BattleScene = new Phaser.Class({
         max = 0;
         ind = -1;
     },
+    //Método para realizar um turno do combate
     nextTurn: function() {
         cont2 = 0;
         
-        // if we have victory or game over
+        //Se temos uma vitória ou derrota, irá para o método para encerrar o combate
         if(this.checkEndBattle()) {           
             this.endBattle(this.checkEndBattle());
             return;
         }
 
+        //Verifica se a unidade atual do vetor esta viva, se não estiver continua a verificação na unidade seguinte
         do { 
             
+            //Guarda em uma variável o indice da unidade que está tendo seu turno no momento
             for(var i = 0 ; i < this.units.length ; i++){
                 if(this.units[i] == ordem_turnos[contadorzin]){
                     ind = i;
@@ -232,29 +244,29 @@ var BattleScene = new Phaser.Class({
             turno_de = ordem_turnos[contadorzin].type;
             contadorzin++;
 
-            // // if there are no more units, we start again from the first one
+            //se não há mais unidades no vetor, começa novamente do primeiro elemento do mesmo
             if(contadorzin >= this.units.length) {
                 contadorzin = 0;
             }
 
         } while(!this.units[ind].living);
-        // if its player hero
+        //Se a unidade for um herói
         if(this.units[ind] instanceof PlayerCharacter) {
             
-            // we need the player to select action and then enemy
+            //É necessário que o jogador selecione a ação e o inimigo
             this.events.emit("PlayerSelect", ind);
             izo.destroy();
             izo = this.add.text(213, 20, "Seu turno!", {color: "#0CE82A"});
             izo.setStroke("#000000", 6);
             this.add.existing(izo);
             
-        } else { // else if its enemy unit
+        } else { //Se a unidade for um inimigo
             izo.destroy();
             izo = this.add.text(171, 20, "Turno do Oponente!", {color: "#FF2A1E"});
             izo.setStroke("#000000", 6);
             this.add.existing(izo);
 
-            // pick random living hero to be attacked
+            //Escolhe um heroi vivo randomicamente para ser atacado
             var r;
             do {
                 r = Math.floor(Math.random() * this.heroes.length);
@@ -290,11 +302,14 @@ var BattleScene = new Phaser.Class({
     },
     // when the player have selected the enemy to be attacked
     receivePlayerSelection: function(action, target) {
+        //Se a ação escolhida for um ataque normal
         if(action == "ataque") {            
-            this.units[ind].ataque(this.enemies[target]); //this.units[ind]              
+            this.units[ind].ataque(this.enemies[target]);              
         }
+        //Se a ação escolhida for uma habilidade
         else if(action == "habilidade"){
             this.units[ind].habilidade(this.enemies[target]);
+            //Se a unidade que estiver usando a habilidade for a Hime
             if(this.units[ind].type == "Hime" && r >= 1 && r < 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (2 + INT_H) && this.heroes[i].living){
@@ -331,6 +346,7 @@ var BattleScene = new Phaser.Class({
         
                 }
             }
+            //Caso o número que sair no dado rolado da habilidade da Hime acabe sendo um 20
             else if(this.units[ind].type == "Hime" && r == 20){
                 for(var i = 0 ; i < 4 ; i++){
                     if(this.heroes[i].type == "Yuusha" && this.heroes[i].hp < HPT_Y && HPT_Y >= this.heroes[i].hp + (4 + INT_H) && this.heroes[i].living){
@@ -368,15 +384,11 @@ var BattleScene = new Phaser.Class({
                 }
             }
         }
-        // else if(action == "fugir"){
-        //     this.scene.sleep('UIScene');
-
-        //     this.scene.switch('UIScene2');
-        // }
 
         // next turn in 4 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
+    //Método para encerrar a batalha
     endBattle: function(resultado) {       
 
         // remove os sprites e limpa a tela.
@@ -405,6 +417,7 @@ var BattleScene = new Phaser.Class({
     },
 });
 
+//As funcionalidades desta classe são praticamente as mesmas da anterior, mas essa daqui é usada para a fase 2
 var BattleScene2 = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -669,13 +682,8 @@ var BattleScene2 = new Phaser.Class({
                 }
             }
         }
-        // else if(action == "fugir"){
-        //     this.scene.sleep('UIScene');
 
-        //     this.scene.switch('UIScene2');
-        // }
-
-        // next turn in 3 seconds
+        // next turn in 4 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
     },
     endBattle: function(resultado) {       
@@ -706,6 +714,7 @@ var BattleScene2 = new Phaser.Class({
     },
 });
 
+//As funcionalidades desta classe são praticamente as mesmas das anteriores, mas essa daqui é usada para a fase 3
 var BattleScene3 = new Phaser.Class({
 
     Extends: Phaser.Scene,
@@ -974,11 +983,6 @@ var BattleScene3 = new Phaser.Class({
                 }
             }
         }
-        // else if(action == "fugir"){
-        //     this.scene.sleep('UIScene');
-
-        //     this.scene.switch('UIScene2');
-        // }
 
         // next turn in 3 seconds
         this.time.addEvent({ delay: 4000, callback: this.nextTurn, callbackScope: this });        
